@@ -1,0 +1,7 @@
+#devid=dschaedler97
+#devtitle=Dee Schaedler
+#gameid=galacticSpaceTrader
+#gametitle=Galactic Space Trader
+#version=0.1
+#icon=metadata/icon.png
+#compile_ruby=false
