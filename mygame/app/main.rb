@@ -1,30 +1,33 @@
-ELEMENTS = ["H", "Li", "C", "N", "O", "Al", "Si", "Cl", "Zn", "Au"]
+# Require Files
+require 'lib/data_arrays_lib.rb' # EXOPLANET_NAMES, ELEMENT_NAMES, ELEMENT_SYMBOLS
+
+# Define Constants
+
+ALPHANUM = (('A'..'Z').to_a + (0..9).to_a) # Creates an array containing A-Z + 0-9
+
 COMMODITIES = ["Air", "Water", "Microprocessors"]
 SUPPLIES = []
 
-PLANET_TYPES = ["T", "J", "R", "O", "D", "A", "G", "I", "T", "S"]
-# Terran, Jungle, Rock, Ocean, Desert, Arctic, Gas, Inferno, Toxic, Sun
+PLANET_TYPES = ["T", "J", "R", "O", "D", "A", "G", "I", "T"]
+PLANET_TYPE_STRINGS = ["Terran", "Jungle", "Rock", "Ocean", "Desert", "Arctic", "Gas", "Inferno", "Toxic"]
 
-ALPHANUM = (('A'..'Z').to_a + (0..9).to_a)
-
-def tick args
+def tick args # Called by engine every game cycle.
   init(args)
   main(args)
 
-  args.outputs.primitives << args.gtk.current_framerate_primitives
+  args.outputs.primitives << args.gtk.current_framerate_primitives # Display debug data. Comment to disable.
 end
 
-def init args
+def init args # Used to set initial values in args.state, etc. Self latching to only run once.
   args.state.initDone ||= 0
 
   if args.state.initDone == 0
     args.state.planets = []
-
     args.state.initDone = 1
   end
 end
 
-def main args
+def start args # Runs once at the beginning of the game.
   # Populate planets if the store is empty
   if args.state.planets == []
     rnd_planet(args)
@@ -32,13 +35,21 @@ def main args
     rnd_planet(args)
   end
 
+  args.state.planetIndex ||= 0 # Set the default index position
+end
+
+# Called every tick by "tick". Main game code should originate here.
+def main args
+
+  # LOCAL VARIABLES
   # Reference Screen Limits
   top = args.grid.top
   right = args.grid.right
+  
+  index = args.state.planetIndex
+  planet = args.state.planets[index]
 
-  # Set the default index position
-  args.state.planetIndex ||= 0
-
+  # KEYPRESS EVENTS
   # Change the index position on keypress
   if args.inputs.keyboard.key_up.left 
     if args.state.planetIndex > 0
@@ -50,76 +61,59 @@ def main args
     end
   end
 
-  # Local variables for simplicity
-  index = args.state.planetIndex
-  planet = args.state.planets[index]
-
-  # Change planet hue randomly
-  args.state.planetHue ||= [255, 255, 255]
-  
+  # CYCLE UPDATE
   if args.state.tick_count % 60 == 0
-    hueR = randr(170, 255)
-    hueG = randr(170, 255)
-    hueB = randr(170, 255)
-    args.state.planetHue = [hueR, hueG, hueB]
   end
 
-  # Offset index for sprites
-  spriteIndex = index + 1
+  # GET STATE
+  planetTypeString = PLANET_TYPE_STRINGS[PLANET_TYPES.index(planet[:type])] # Determine Planet Type
+  ptsDowncase = planetTypeString.downcase
+  
+  # GAME DRAW
   # Draw planet sprite
-  sprite_array = [right / 2, top / 2, 300, 300, "sprites/planets/planet#{spriteIndex}.png"] + [0, 255] + args.state.planetHue
+  sprite_array = [right / 2, top / 2, 300, 300, "sprites/PixelPlanets/#{ptsDowncase}#{index}.png"] #+ [0, 255] + args.state.planetHue
   args.outputs.primitives << sprite_array.sprite
 
   #Draw Planet Info
-  args.outputs.primitives << [100, top - 100, "ID: #{index}"].label
-  args.outputs.primitives << [100, top - 120, "Name: #{planet[:name]}"].label
-  args.outputs.primitives << [100, top - 140, "Elements: #{planet[:elements]}"].label
-  args.outputs.primitives << [100, top - 160, "Commodities: #{planet[:commodities]}"].label
+  args.outputs.primitives << {x: 100, y: top - 100, text: "ID: #{index}"}.label
+  args.outputs.primitives << {x: 100, y: top - 120, text: "Name: #{args.state.exName}"}.label
+  args.outputs.primitives << {x: 100, y: top - 140, text: "Type: #{planetTypeString}"}.label
+  args.outputs.primitives << {x: 100, y: top - 160, text: "Elements: #{planet[:elements]}"}.label
+  args.outputs.primitives << {x: 100, y: top - 180, text: "Commodities: #{planet[:commodities]}"}.label
 end
 
-def rnd_planet args # Returns the position of this planet in args.state.planets
+def rnd_planet args # Creates a new planet. Returns the position of this planet in args.state.planets
   # Generate Characteristics
-  name = rnd_planetName()
-  elements = rnd_planetElements()
-  commodities = rnd_planetComodities()
+  type = PLANET_TYPES.sample
+  name = rnd_planetName(type)
 
-  # Get current planets
-  store = args.state.planets
-  # Determine what number planet this is
-  len = store.length()
+  # Choose random elements
+  s = ELEMENT_SYMBOLS.shuffle
+  elements = [s[0], s[1], s[2]]
 
-  # Store the new planet
-  args.state.planets[len] = {name: name, elements: elements, commodities: commodities}
+  # Choose random commodities
+  s = COMMODITIES.shuffle
+  commodities = [s[0], s[1], s[2]]
+  
+  store = args.state.planets # Get current planets
+  len = store.length() # Determine what number planet this is
+
+  args.state.planets[len] = {name: name, type: type, elements: elements, commodities: commodities} # Store the new planet
 
   return len
 end
 
-def rnd_planetName  
+#DEPRECIATED
+def rnd_planetName type # Generates a random planet name ex. "T-AB01". Type determines leading character.
   randomIdentifier = (0...4).map { # make array of length 4
     |n| ALPHANUM.sample           # put a random ALPHANUM in 'n'
   }.join
-  
-  type = PLANET_TYPES.sample # Random Planet Type from Constant
 
   planetName = type.to_s + "-" + randomIdentifier.to_s # Concatinate final name
 
   return planetName
 end
 
-def rnd_planetElements
-  # Select set of 3 random elements
-  s = ELEMENTS.shuffle
-  elements = [s[0], s[1], s[2]]
-  return elements
-end
-
-def rnd_planetComodities
-  # Select set of 3 random commodities
-  s = COMMODITIES.shuffle
-  commodities = [s[0], s[1], s[2]]
-  return commodities
-end
-
-def randr (min, max)
+def randr (min, max) # Returns a random number in a range of min, max. Not included in engine for some reason
   rand(max - min) + min
 end
