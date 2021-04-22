@@ -1,13 +1,15 @@
 # Require Files
 require 'lib/data_arrays_lib.rb' # EXOPLANET_NAMES, ELEMENT_NAMES, ELEMENT_SYMBOLS
 
+require 'app/planetGeneration.rb'
+require 'app/utils.rb'
+
 # Define Constants
 ALPHANUM = (('A'..'Z').to_a + (0..9).to_a) # Creates an array containing A-Z + 0-9
 
 COMMODITIES = ["Air", "Water", "Microprocessors"]
 SUPPLIES = []
 
-PLANET_TYPES = ["T", "J", "R", "O", "D", "A", "G", "I", "T"]
 PLANET_TYPE_STRINGS = ["Terran", "Jungle", "Rock", "Ocean", "Desert", "Arctic", "Gas", "Inferno", "Toxic"]
 
 def tick args # Called by engine every game cycle.
@@ -70,10 +72,7 @@ def main args
   end
 
   # GET STATE
-  index = args.state.planetIndex # Current Planet number
-  planet = args.state.planets[index] # Current Planet reference
-  planetTypeString = PLANET_TYPE_STRINGS[PLANET_TYPES.index(planet[:type])] # Determine Planet Type
-  ptsDowncase = planetTypeString.downcase # Image files are downcase, only used to fetch those.
+  planet = args.state.planets[args.state.planetIndex] # Current Planet reference
 
   # CYCLE UPDATE
   if args.state.tick_count % 60 == 0 || args.state.updateNeeded == true
@@ -81,9 +80,9 @@ def main args
     args.state.updateNeeded = false
     
     # Generate Persistent Labels
-    args.state.persistent_labels[:planetIndex] = {x: 100, y: top - 100, text: "ID: #{index}", primitive_marker: :label}
+    args.state.persistent_labels[:planetIndex] = {x: 100, y: top - 100, text: "ID: #{args.state.planetIndex}", primitive_marker: :label}
     args.state.persistent_labels[:planetName] = {x: 100, y: top - 120, text: "Name: #{planet[:name]}", primitive_marker: :label}
-    args.state.persistent_labels[:planetType] = {x: 100, y: top - 140, text: "Type: #{planetTypeString}", primitive_marker: :label}
+    args.state.persistent_labels[:planetType] = {x: 100, y: top - 140, text: "Type: #{planet[:type]}", primitive_marker: :label}
     args.state.persistent_labels[:planetElements] = {x: 100, y: top - 160, text: "Elements: #{planet[:elements]}", primitive_marker: :label}
     args.state.persistent_labels[:planetCommodities] = {x: 100, y: top - 180, text: "Commodities: #{planet[:commodities]}", primitive_marker: :label}
   end
@@ -94,7 +93,7 @@ def main args
   draw_persistent_labels(args)
 
   # Draw planet sprite
-  sprite_array = [right / 2, top / 2, 300, 300, "sprites/PixelPlanets/#{ptsDowncase}#{planet[:image]}.png"] #+ [0, 255] + args.state.planetHue
+  sprite_array = [right / 2, top / 2, 300, 300, "sprites/PixelPlanets/#{planet[:type].downcase}#{planet[:image]}.png"] #+ [0, 255] + args.state.planetHue
   args.outputs.primitives << sprite_array.sprite
 
 end
@@ -103,45 +102,4 @@ def draw_persistent_labels args
   args.state.persistent_labels.each do |key, value|
     args.outputs.primitives << args.state.persistent_labels[key]
   end
-end
-
-def rnd_planet args # Creates a new planet. Returns the position of this planet in args.state.planets
-  # Generate Characteristics
-  type = PLANET_TYPES.sample
-  name = rnd_planetName(type)
-  if type == "I" || "T"
-    image = randr(0, 3)
-  else
-    image = randr(0, 5)
-  end
-
-  # Choose random elements
-  s = ELEMENT_SYMBOLS.shuffle
-  elements = [s[0], s[1], s[2]]
-
-  # Choose random commodities
-  s = COMMODITIES.shuffle
-  commodities = [s[0], s[1], s[2]]
-  
-  store = args.state.planets # Get current planets
-  len = store.length() # Determine what number planet this is
-
-  args.state.planets[len] = {name: name, type: type, image: image, elements: elements, commodities: commodities} # Store the new planet
-
-  return len
-end
-
-#DEPRECIATED
-def rnd_planetName type # Generates a random planet name ex. "T-AB01". Type determines leading character.
-  randomIdentifier = (0...4).map { # make array of length 4
-    |n| ALPHANUM.sample           # put a random ALPHANUM in 'n'
-  }.join
-
-  planetName = type.to_s + "-" + randomIdentifier.to_s # Concatinate final name
-
-  return planetName
-end
-
-def randr (min, max) # Returns a random number in a range of min, max. Not included in engine for some reason
-  rand(max - min) + min
 end
