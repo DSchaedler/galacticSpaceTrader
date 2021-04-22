@@ -2,7 +2,6 @@
 require 'lib/data_arrays_lib.rb' # EXOPLANET_NAMES, ELEMENT_NAMES, ELEMENT_SYMBOLS
 
 # Define Constants
-
 ALPHANUM = (('A'..'Z').to_a + (0..9).to_a) # Creates an array containing A-Z + 0-9
 
 COMMODITIES = ["Air", "Water", "Microprocessors"]
@@ -34,9 +33,11 @@ end
 def start args # Runs once at the beginning of the game.
   # Populate planets if the store is empty
   if args.state.planets == []
-    rnd_planet(args)
-    rnd_planet(args)
-    rnd_planet(args)
+    x = 0
+    until x > 9
+      rnd_planet(args)
+      x += 1
+    end
   end
 
   args.state.planetIndex ||= 0 # Set the default index position
@@ -93,7 +94,7 @@ def main args
   draw_persistent_labels(args)
 
   # Draw planet sprite
-  sprite_array = [right / 2, top / 2, 300, 300, "sprites/PixelPlanets/#{ptsDowncase}#{index}.png"] #+ [0, 255] + args.state.planetHue
+  sprite_array = [right / 2, top / 2, 300, 300, "sprites/PixelPlanets/#{ptsDowncase}#{planet[:image]}.png"] #+ [0, 255] + args.state.planetHue
   args.outputs.primitives << sprite_array.sprite
 
 end
@@ -108,6 +109,11 @@ def rnd_planet args # Creates a new planet. Returns the position of this planet 
   # Generate Characteristics
   type = PLANET_TYPES.sample
   name = rnd_planetName(type)
+  if type == "I" || "T"
+    image = randr(0, 3)
+  else
+    image = randr(0, 5)
+  end
 
   # Choose random elements
   s = ELEMENT_SYMBOLS.shuffle
@@ -120,7 +126,7 @@ def rnd_planet args # Creates a new planet. Returns the position of this planet 
   store = args.state.planets # Get current planets
   len = store.length() # Determine what number planet this is
 
-  args.state.planets[len] = {name: name, type: type, elements: elements, commodities: commodities} # Store the new planet
+  args.state.planets[len] = {name: name, type: type, image: image, elements: elements, commodities: commodities} # Store the new planet
 
   return len
 end
