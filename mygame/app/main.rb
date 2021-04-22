@@ -23,6 +23,10 @@ def init args # Used to set initial values in args.state, etc. Self latching to 
 
   if args.state.initDone == 0
     args.state.planets = []
+    args.state.persistent_labels = {}
+
+    start(args)
+
     args.state.initDone = 1
   end
 end
@@ -36,6 +40,7 @@ def start args # Runs once at the beginning of the game.
   end
 
   args.state.planetIndex ||= 0 # Set the default index position
+  args.state.updateNeeded ||= false
 end
 
 # Called every tick by "tick". Main game code should originate here.
@@ -45,41 +50,58 @@ def main args
   # Reference Screen Limits
   top = args.grid.top
   right = args.grid.right
-  
-  index = args.state.planetIndex
-  planet = args.state.planets[index]
 
   # KEYPRESS EVENTS
   # Change the index position on keypress
-  if args.inputs.keyboard.key_up.left 
-    if args.state.planetIndex > 0
-      args.state.planetIndex -= 1
+  if args.inputs.keyboard.keys != []
+    
+    if args.inputs.keyboard.key_up.left 
+      if args.state.planetIndex > 0
+        args.state.planetIndex -= 1
+      end
+    elsif args.inputs.keyboard.key_up.right
+      if args.state.planetIndex < args.state.planets.length() - 1
+        args.state.planetIndex += 1
+      end
     end
-  elsif args.inputs.keyboard.key_up.right
-    if args.state.planetIndex < args.state.planets.length() - 1
-      args.state.planetIndex += 1
-    end
-  end
 
-  # CYCLE UPDATE
-  if args.state.tick_count % 60 == 0
+    args.state.updateNeeded = true
   end
 
   # GET STATE
+  index = args.state.planetIndex # Current Planet number
+  planet = args.state.planets[index] # Current Planet reference
   planetTypeString = PLANET_TYPE_STRINGS[PLANET_TYPES.index(planet[:type])] # Determine Planet Type
-  ptsDowncase = planetTypeString.downcase
-  
+  ptsDowncase = planetTypeString.downcase # Image files are downcase, only used to fetch those.
+
+  # CYCLE UPDATE
+  if args.state.tick_count % 60 == 0 || args.state.updateNeeded == true
+
+    args.state.updateNeeded = false
+    
+    # Generate Persistent Labels
+    args.state.persistent_labels[:planetIndex] = {x: 100, y: top - 100, text: "ID: #{index}", primitive_marker: :label}
+    args.state.persistent_labels[:planetName] = {x: 100, y: top - 120, text: "Name: #{planet[:name]}", primitive_marker: :label}
+    args.state.persistent_labels[:planetType] = {x: 100, y: top - 140, text: "Type: #{planetTypeString}", primitive_marker: :label}
+    args.state.persistent_labels[:planetElements] = {x: 100, y: top - 160, text: "Elements: #{planet[:elements]}", primitive_marker: :label}
+    args.state.persistent_labels[:planetCommodities] = {x: 100, y: top - 180, text: "Commodities: #{planet[:commodities]}", primitive_marker: :label}
+  end
+
   # GAME DRAW
+
+  # Draw persistent labels
+  draw_persistent_labels(args)
+
   # Draw planet sprite
   sprite_array = [right / 2, top / 2, 300, 300, "sprites/PixelPlanets/#{ptsDowncase}#{index}.png"] #+ [0, 255] + args.state.planetHue
   args.outputs.primitives << sprite_array.sprite
 
-  #Draw Planet Info
-  args.outputs.primitives << {x: 100, y: top - 100, text: "ID: #{index}"}.label
-  args.outputs.primitives << {x: 100, y: top - 120, text: "Name: #{args.state.exName}"}.label
-  args.outputs.primitives << {x: 100, y: top - 140, text: "Type: #{planetTypeString}"}.label
-  args.outputs.primitives << {x: 100, y: top - 160, text: "Elements: #{planet[:elements]}"}.label
-  args.outputs.primitives << {x: 100, y: top - 180, text: "Commodities: #{planet[:commodities]}"}.label
+end
+
+def draw_persistent_labels args
+  args.state.persistent_labels.each do |key, value|
+    args.outputs.primitives << args.state.persistent_labels[key]
+  end
 end
 
 def rnd_planet args # Creates a new planet. Returns the position of this planet in args.state.planets
