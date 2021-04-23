@@ -14,5 +14,6 @@
 | 10 | Air | Oxygen (3), Nitrogen (7) |
 | 3 | Water | Hydrogen (2), Oxygen (1)
 ||
-| 16 | Battery | Steel (10), Zn (3), Mn (1), O (2) |
-| 1 | Charged Battery | Battery (1), Energy (50)
+| 16 | Battery | Steel (10), Zinc (3), Manganese (1), Oxygen (2) |
+| 1 | Charged Battery | Battery (1), Energy (50) |
+| 1 | Computer | Silicon (1), Wire (1) |

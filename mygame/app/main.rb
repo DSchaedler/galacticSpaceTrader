@@ -7,8 +7,8 @@ require 'app/utils.rb'
 # Define Constants
 ALPHANUM = (('A'..'Z').to_a + (0..9).to_a) # Creates an array containing A-Z + 0-9
 
-COMMODITIES = ["Air", "Water", "Microprocessors"]
-SUPPLIES = []
+RESOURCES = ["Silicon", "Oxygen", "Copper", "Iron", "Carbon", "Manganese", "Nickel", "Aluminum", "Nitrogen", "Hydrogen", "Zinc"]
+COMMODITIES = ["Silica", "Stone", "Sand", "Glass", "Wire", "Steel", "Machine Part", "Solar Panel", "Factory", "Space Station", "Food", "Water", "Battery", "Charged Battery", "Computer", "Energy"]
 
 PLANET_TYPE_STRINGS = ["Terran", "Jungle", "Rock", "Ocean", "Desert", "Arctic", "Gas", "Inferno", "Toxic"]
 
