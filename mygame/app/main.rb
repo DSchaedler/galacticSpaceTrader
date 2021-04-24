@@ -3,6 +3,7 @@ require 'lib/data_arrays_lib.rb' # EXOPLANET_NAMES, ELEMENT_NAMES, ELEMENT_SYMBO
 
 require 'app/planetGeneration.rb'
 require 'app/utils.rb'
+require 'app/materialTest.rb'
 
 # Define Constants
 ALPHANUM = (('A'..'Z').to_a + (0..9).to_a) # Creates an array containing A-Z + 0-9
@@ -49,6 +50,8 @@ end
 # Called every tick by "tick". Main game code should originate here.
 def main args
 
+  materialTest(args)
+
   # LOCAL VARIABLES
   # Reference Screen Limits
   top = args.grid.top
@@ -80,11 +83,11 @@ def main args
     args.state.updateNeeded = false
     
     # Generate Persistent Labels
-    args.state.persistent_labels[:planetIndex] = {x: 100, y: top - 100, text: "ID: #{args.state.planetIndex}", primitive_marker: :label}
-    args.state.persistent_labels[:planetName] = {x: 100, y: top - 120, text: "Name: #{planet[:name]}", primitive_marker: :label}
-    args.state.persistent_labels[:planetType] = {x: 100, y: top - 140, text: "Type: #{planet[:type]}", primitive_marker: :label}
-    args.state.persistent_labels[:planetElements] = {x: 100, y: top - 160, text: "Elements: #{planet[:elements]}", primitive_marker: :label}
-    args.state.persistent_labels[:planetCommodities] = {x: 100, y: top - 180, text: "Commodities: #{planet[:commodities]}", primitive_marker: :label}
+    args.state.persistent_labels[:planetIndex] = {x: 10, y: top - 100, text: "ID: #{args.state.planetIndex}", primitive_marker: :label}
+    args.state.persistent_labels[:planetName] = {x: 10, y: top - 120, text: "Name: #{planet[:name]}", primitive_marker: :label}
+    args.state.persistent_labels[:planetType] = {x: 10, y: top - 140, text: "Type: #{planet[:type]}", primitive_marker: :label}
+    args.state.persistent_labels[:planetElements] = {x: 10, y: top - 160, text: "Elements: #{planet[:elements]}", primitive_marker: :label}
+    args.state.persistent_labels[:planetCommodities] = {x: 10, y: top - 180, text: "Commodities: #{planet[:commodities]}", primitive_marker: :label}
   end
 
   # GAME DRAW
@@ -93,7 +96,7 @@ def main args
   draw_persistent_labels(args)
 
   # Draw planet sprite
-  sprite_array = [right / 2, top / 2, 300, 300, "sprites/PixelPlanets/#{planet[:type].downcase}#{planet[:image]}.png"] #+ [0, 255] + args.state.planetHue
+  sprite_array = [10, top / 2 - 150, 300, 300, "sprites/PixelPlanets/#{planet[:type].downcase}#{planet[:image]}.png"] #+ [0, 255] + args.state.planetHue
   args.outputs.primitives << sprite_array.sprite
 
 end
