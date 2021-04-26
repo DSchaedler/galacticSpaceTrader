@@ -15,6 +15,10 @@ class Game
 
   # Main loop
   def tick
+    # Tick Begin
+    
+    # Tick End
+    args.outputs.primitives << args.gtk.current_framerate_primitives # Display debug data. Comment to disable.
   end
 
   # Other game instance methods

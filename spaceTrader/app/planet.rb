@@ -26,6 +26,15 @@ class Planet
       @materials[i] = resourceInfo
     end
     puts @materials
+  end
 
+  def drawInfo (originX: 0, originY: args.grid.top)
+    args.outputs.primitives << {
+      x: originX,
+      y: originY,
+      w: 100,
+      h: 100,
+      path: @image,
+      primitive_marker: :sprite}
   end
 end
