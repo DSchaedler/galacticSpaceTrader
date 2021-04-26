@@ -1,5 +1,7 @@
 # Require Files
 require 'lib/data_arrays_lib.rb' # EXOPLANET_NAMES, ELEMENT_NAMES, ELEMENT_SYMBOLS
+require 'lib/di_lib.rb'
+require 'lib/xkcd_colors.rb'
 
 require 'app/planetGeneration.rb'
 require 'app/utils.rb'
@@ -28,6 +30,7 @@ def init args # Used to set initial values in args.state, etc. Self latching to 
     args.state.persistent_labels = {}
 
     start(args)
+    di_lib(args, reset: false)
 
     args.state.initDone = 1
   end

@@ -3,11 +3,12 @@ def materialTest(args)
   # Run Setup
   args.state.materialSetup ||= false
   if args.state.materialSetup == false
-    args.state.materialRates ||= {}
-    args.state.materialStore ||= {}
+    args.state.materialRates ||= {} # Hash of generation rates for materials
+    args.state.materialStore ||= {} # Hash of stored materials
     
+    # Populate the hashes above
     for i in RESOURCES
-      args.state.materialRates[i] = 0.01
+      args.state.materialRates[i] = randr(0.01, 1)
       args.state.materialStore[i] = 0
     end
 
@@ -27,26 +28,34 @@ def materialTest(args)
 
     # Update quantites each second
     if args.state.tick_count % 60 == 0 && totalVolume < 1000
-      args.state.materialStore[i] += randr(1, 3)
+      args.state.materialStore[i] += args.state.materialRates[i]
       args.state.materialStore[i] = args.state.materialStore[i].round(2)
     end
 
     # Print labels
-    textSize = args.gtk.calcstringbox(i)
-    args.outputs.labels << [args.grid.right / 2 - textSize[0], args.grid.top - ( textSize[1] * printIndex ), "#{i}"] #RESOURCE NAME
-    args.outputs.labels << [args.grid.right / 2 + 10, args.grid.top - (textSize[1]*printIndex), args.state.materialStore[i]] #RESOURCE STORED
-    
-    labelWidth = args.gtk.calcstringbox(args.state.materialStore[i].to_s)[0] #Width of quantity label
+    textSize = args.gtk.calcstringbox(i) # Get size of text, useful to have pre-calculated
+    top = args.grid.top
+    right = args.grid.right
     center = args.grid.right / 2 #Reference for simplicity
+
+    args.outputs.primitives << {x: center - textSize[0], y: top - ( textSize[1] * printIndex ), text: "#{i}", primitive_marker: :label} #RESOURCE NAME
+    args.outputs.primitives << {x: center + 10, y: top - (textSize[1] * printIndex), text: args.state.materialStore[i], primitive_marker: :label} #RESOURCE STORED
+
+    labelWidth = args.gtk.calcstringbox("999.99")[0] # Width of quantity label
     
     # Print percent bar
-    barwidth = args.grid.right - (center / 2 + labelWidth)
+    barwidth = right - (center + labelWidth)
     materialPercent = args.state.materialStore[i] / totalVolume
-    args.outputs.solids << [
-      center + 300, 
-      args.grid.top - ( textSize[1] * printIndex) - textSize[1], 
-      materialPercent * barwidth,
-      textSize[1]] #Black Bar
+    color = hexToRGB(XKCD_COLORS.values[printIndex * 10])
+    args.outputs.primitives << {
+      x: center + labelWidth, 
+      y: args.grid.top - ( textSize[1] * printIndex) - textSize[1], 
+      w: materialPercent * barwidth,
+      h: textSize[1],
+      r: color[0],
+      g: color[1],
+      b: color[2],
+      primitive_marker: :solid} #Black Bar
     
     # Iterate Index
     printIndex += 1
@@ -54,6 +63,6 @@ def materialTest(args)
   end
 
   #Print total volume
-  args.outputs.labels << [args.grid.right / 2 + 10, args.grid.top - (textSize[1]*printIndex+1), "#{totalVolume.round(2)}"]
+  args.outputs.primitives << [args.grid.right / 2 + 10, args.grid.top - (textSize[1]*printIndex+1), "#{totalVolume.round(2)}"].label
 
 end
