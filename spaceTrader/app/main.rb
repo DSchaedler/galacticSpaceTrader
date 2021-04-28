@@ -10,15 +10,24 @@ class Game
 
   # Runs once when game instance created
   def initialize
-    @firstPlanet = Planet.new()
+    @planets = []
   end
 
   # Main loop
   def tick
     # Tick Begin
+    if @planets == []
+      i = 0
+      until i > 10 do
+        @planets[i] = Planet.new()
+        i += 1
+      end
+    end
+
+    @planets[0].drawInfo(args)
     
     # Tick End
-    args.outputs.primitives << args.gtk.current_framerate_primitives # Display debug data. Comment to disable.
+    #args.outputs.primitives << args.gtk.current_framerate_primitives # Display debug data. Comment to disable.
   end
 
   # Other game instance methods
@@ -28,7 +37,7 @@ end
 # Don't put anything else here, put it in $game.tick.
 def tick args
   $game ||= Game.new
-  $game.args = args
+  $game.args = args # This is unavailable in Game.initialize, so plan accordingly.
   $game.tick
 end
 

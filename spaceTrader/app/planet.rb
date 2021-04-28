@@ -25,16 +25,36 @@ class Planet
       resourceInfo[:stored] = 0
       @materials[i] = resourceInfo
     end
-    puts @materials
   end
 
-  def drawInfo (originX: 0, originY: args.grid.top)
-    args.outputs.primitives << {
-      x: originX,
-      y: originY,
-      w: 100,
-      h: 100,
-      path: @image,
-      primitive_marker: :sprite}
+  def drawInfo (args, originX: args.grid.left, originY: args.grid.top)
+    # No information should be calculated here. Only interface elements
+
+    elementPadding = 10
+
+    # Stuff for calculating the width of the column
+    manganeseWidth = args.gtk.calcstringbox("Manganese")[0] # This is the longest element name
+    storedAmountWidth = args.gtk.calcstringbox("0000.00")[0] # This is the maximum amount of a single material
+
+    imageWidth = manganeseWidth + storedAmountWidth
+    imageHeight = imageWidth
+    
+    # Textbox Sprite
+    args.outputs.primitives << {x: 0, y: 0, w: imageWidth + elementPadding * 2, h: 720, path: "sprites/300x700textbox.png", primitive_marker: :sprite}
+    # Planet Sprite
+    args.outputs.primitives << { x: originX + elementPadding, y: originY - imageHeight - elementPadding, w: imageWidth, h: imageHeight, path: @image, primitive_marker: :sprite}
+
+    #Labels
+    sampleStringHeight = args.gtk.calcstringbox(@name)[1]
+    args.outputs.primitives << { x: originX + elementPadding, y: args.grid.top - imageHeight - elementPadding - ( sampleStringHeight * 1 ), text: @name, primitive_marker: :label}
+    args.outputs.primitives << { x: originX + elementPadding, y: args.grid.top - imageHeight - elementPadding - ( sampleStringHeight * 2 ), text: @type, primitive_marker: :label}
+
+    printIndex = 0
+    listStart = args.grid.top - imageHeight - ( sampleStringHeight * 4 )
+    for i in RESOURCES
+      args.outputs.primitives << {x: args.grid.left + elementPadding , y: listStart - ( sampleStringHeight * printIndex ), text: "#{i}", primitive_marker: :label} #RESOURCE NAME
+      args.outputs.primitives << {x: args.grid.left + manganeseWidth + storedAmountWidth, y: listStart - ( sampleStringHeight * printIndex), text: @materials[i][:stored], primitive_marker: :label} #RESOURCE STORED
+      printIndex += 1
+    end
   end
 end
