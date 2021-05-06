@@ -6,6 +6,8 @@ require 'app/background.rb'
 require 'app/planet.rb'
 require 'app/textboxMaking.rb'
 
+PLAYFIELD = [180, 0, 1280, 720]
+
 # Main game class
 class Game
   attr_gtk # Magic
@@ -13,28 +15,39 @@ class Game
   # Runs once when game instance created
   # CANT USE ARGS
   def initialize
+    # Game Instance Variables
     @planets = []
     @planetIndex = 0
+    @setupDone = false
+
+    # Generate Planets
+    i = 0
+    until i > 10 do
+      @planets[i] = Planet.new()
+      i += 1
+    end
+
+    @background = Background.new(stars: 150, maxStarSize: 6, minX: PLAYFIELD[0], minY: 0)
+  end
+
+  # If you can't do it in initialize because you need args, do it here.
+  def setup args
+    @setupDone = true
+    
+    @background.drawBackground(args, r: 20, g: 24, b: 46) # A nice space blue
+    for planet in @planets
+      planet.drawPlanet(args)
+    end
   end
 
   # Main loop
   def tick
+
+    if @setupDone == false
+      setup(args)
+    end
+
     # Tick Begin
-    if @planets == []
-      i = 0
-      until i > 10 do
-        @planets[i] = Planet.new()
-        i += 1
-      end
-
-      @background = Background.new(stars: 150, maxStarSize: 6, minX: 180, minY: 0) # Magic Numner - minX is the width of the info textbox
-    end
-
-    if args.keyboard.key_up.left && @planetIndex > 0
-      @planetIndex -= 1
-    elsif args.keyboard.key_up.right && @planetIndex < @planets.length() - 1
-      @planetIndex += 1
-    end
     
     i=0
     for planet in @planets
@@ -43,9 +56,14 @@ class Game
       end
       i += 1
     end
+    
+    for planet in @planets
+      if args.inputs.mouse.inside_rect? [planet.x, planet.y, 28, 28]
+        planet.drawInfo(args)
+      end
+    end
 
-    @background.drawBackground(args, r: 20, g: 24, b: 46) # A nice space blue
-    @planets[@planetIndex].drawInfo(args)
+    #@planets[@planetIndex].drawInfo(args)
     # Tick End
     #args.outputs.primitives << args.gtk.current_framerate_primitives # Display debug data. Comment to disable.
   end

@@ -9,7 +9,7 @@ class Background
 
   def drawBackground (args, r:, g:, b:, a: 255)
     args.outputs.background_color = [0, 0, 0] # Set Engine background color to black. Makes Letterboxing Black.
-    args.outputs.solids << [0, 0, args.grid.w, args.grid.h, r, g, b, a] # Draw a background color for the actual game area.
-    args.outputs.solids << @stars
+    args.outputs.static_solids << [0, 0, args.grid.w, args.grid.h, r, g, b, a] # Draw a background color for the actual game area.
+    args.outputs.static_solids << @stars
   end
 end
