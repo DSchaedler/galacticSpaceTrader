@@ -2,6 +2,7 @@
 # Clustered Data
 require 'app/constants.rb'
 # Classes
+require 'app/background.rb'
 require 'app/planet.rb'
 require 'app/textboxMaking.rb'
 
@@ -10,6 +11,7 @@ class Game
   attr_gtk # Magic
 
   # Runs once when game instance created
+  # CANT USE ARGS
   def initialize
     @planets = []
     @planetIndex = 0
@@ -24,6 +26,8 @@ class Game
         @planets[i] = Planet.new()
         i += 1
       end
+
+      @background = Background.new(stars: 150, maxStarSize: 6, minX: 180, minY: 0) # Magic Numner - minX is the width of the info textbox
     end
 
     if args.keyboard.key_up.left && @planetIndex > 0
@@ -40,6 +44,7 @@ class Game
       i += 1
     end
 
+    @background.drawBackground(args, r: 20, g: 24, b: 46) # A nice space blue
     @planets[@planetIndex].drawInfo(args)
     # Tick End
     #args.outputs.primitives << args.gtk.current_framerate_primitives # Display debug data. Comment to disable.

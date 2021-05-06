@@ -39,7 +39,7 @@ class Planet
     imageWidth = manganeseWidth + storedAmountWidth
     imageHeight = imageWidth
     
-    # Textbox Sprite
+    # Textbox Sprite 
     textboxBackground(args, x: 0, y: args.grid.top, w: imageWidth + elementPadding * 2, h: args.grid.h)
     # Planet Sprite
     args.outputs.primitives << { x: originX + elementPadding, y: originY - imageHeight - elementPadding, w: imageWidth, h: imageHeight, path: @image, primitive_marker: :sprite}
