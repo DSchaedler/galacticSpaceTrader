@@ -3,6 +3,7 @@
 require 'app/constants.rb'
 # Classes
 require 'app/planet.rb'
+require 'app/textboxMaking.rb'
 
 # Main game class
 class Game
@@ -11,6 +12,7 @@ class Game
   # Runs once when game instance created
   def initialize
     @planets = []
+    @planetIndex = 0
   end
 
   # Main loop
@@ -24,8 +26,21 @@ class Game
       end
     end
 
-    @planets[0].drawInfo(args)
+    if args.keyboard.key_up.left && @planetIndex > 0
+      @planetIndex -= 1
+    elsif args.keyboard.key_up.right && @planetIndex < @planets.length() - 1
+      @planetIndex += 1
+    end
     
+    i=0
+    for planet in @planets
+      for material in RESOURCES
+        @planets[i].materials[material][:store] += @planets[i].materials[material][:store]
+      end
+      i += 1
+    end
+
+    @planets[@planetIndex].drawInfo(args)
     # Tick End
     #args.outputs.primitives << args.gtk.current_framerate_primitives # Display debug data. Comment to disable.
   end

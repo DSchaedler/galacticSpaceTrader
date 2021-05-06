@@ -40,7 +40,7 @@ class Planet
     imageHeight = imageWidth
     
     # Textbox Sprite
-    args.outputs.primitives << {x: 0, y: 0, w: imageWidth + elementPadding * 2, h: 720, path: "sprites/300x700textbox.png", primitive_marker: :sprite}
+    textboxBackground(args, x: 0, y: args.grid.top, w: imageWidth + elementPadding * 2, h: args.grid.h)
     # Planet Sprite
     args.outputs.primitives << { x: originX + elementPadding, y: originY - imageHeight - elementPadding, w: imageWidth, h: imageHeight, path: @image, primitive_marker: :sprite}
 
