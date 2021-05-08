@@ -1,4 +1,5 @@
-class Planet
+class ObjectPlanet < Object
+
   # Creates attribute accessors for instance variables.
   # Just pretend that you have to declare instance variables and it will be fine.
   attr_accessor :x
@@ -8,10 +9,10 @@ class Planet
   attr_accessor :image
   attr_accessor :materials
 
-  def initialize
+  def initialize args
     # Generate unique planet information
-    @x = randr(PLAYFIELD[0], PLAYFIELD[2] - 28)
-    @y = randr(PLAYFIELD[1], PLAYFIELD[3] - 28)
+    @x = randr(1, 38) * 32
+    @y = randr(1, 21) * 32
     @type = PLANET_TYPE_STRINGS.sample()
     @name = EXOPLANET_NAMES.sample()
 
@@ -29,9 +30,7 @@ class Planet
       resourceInfo[:stored] = 0
       @materials[i] = resourceInfo
     end
-  end
 
-  def drawPlanet (args)
     args.outputs.static_primitives << { x: @x, y: @y, w: 28, h: 28, path: @image, primitive_marker: :sprite}
   end
 

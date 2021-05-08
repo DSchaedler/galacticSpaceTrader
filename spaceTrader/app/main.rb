@@ -2,11 +2,13 @@
 # Clustered Data
 require 'app/constants.rb'
 # Classes
-require 'app/background.rb'
-require 'app/planet.rb'
+require 'app/context/context.rb'
+require 'app/scene/scene.rb'
+require 'app/object/Object.rb'
 require 'app/textboxMaking.rb'
 
-PLAYFIELD = [180, 0, 1280, 720]
+PLAYFIELD = [0, 8, 1280, 716]
+# 40x22 Grid
 
 # Main game class
 class Game
@@ -14,58 +16,14 @@ class Game
 
   # Runs once when game instance created
   # CANT USE ARGS
-  def initialize
-    # Game Instance Variables
-    @planets = []
-    @planetIndex = 0
-    @setupDone = false
-
-    # Generate Planets
-    i = 0
-    until i > 10 do
-      @planets[i] = Planet.new()
-      i += 1
-    end
-
-    @background = Background.new(stars: 150, maxStarSize: 6, minX: PLAYFIELD[0], minY: 0)
-  end
-
-  # If you can't do it in initialize because you need args, do it here.
-  def setup args
-    @setupDone = true
-    
-    @background.drawBackground(args, r: 20, g: 24, b: 46) # A nice space blue
-    for planet in @planets
-      planet.drawPlanet(args)
-    end
+  def initialize args
+    @sceneMain = SceneMain.new(args)
+    @scene = :main
   end
 
   # Main loop
-  def tick
-
-    if @setupDone == false
-      setup(args)
-    end
-
-    # Tick Begin
-    
-    i=0
-    for planet in @planets
-      for material in RESOURCES
-        @planets[i].materials[material][:store] += @planets[i].materials[material][:store]
-      end
-      i += 1
-    end
-    
-    for planet in @planets
-      if args.inputs.mouse.inside_rect? [planet.x, planet.y, 28, 28]
-        planet.drawInfo(args)
-      end
-    end
-
-    #@planets[@planetIndex].drawInfo(args)
-    # Tick End
-    #args.outputs.primitives << args.gtk.current_framerate_primitives # Display debug data. Comment to disable.
+  def tick args
+    @sceneMain.tick(args)
   end
 
   # Other game instance methods
@@ -74,9 +32,8 @@ end
 # Engine loop. Creates the game instance, then immdiately routes tick to $game.tick.
 # Don't put anything else here, put it in $game.tick.
 def tick args
-  $game ||= Game.new
-  $game.args = args # This is unavailable in Game.initialize, so plan accordingly.
-  $game.tick
+  $game ||= Game.new(args)
+  $game.tick(args)
 end
 
 # Engine methods
