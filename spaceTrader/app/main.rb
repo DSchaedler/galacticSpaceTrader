@@ -2,32 +2,11 @@
 # Clustered Data
 require 'app/constants.rb'
 # Classes
+require 'app/Game.rb'
 require 'app/context/context.rb'
 require 'app/scene/scene.rb'
 require 'app/object/Object.rb'
 require 'app/textboxMaking.rb'
-
-PLAYFIELD = [0, 8, 1280, 716]
-# 40x22 Grid
-
-# Main game class
-class Game
-  attr_gtk # Magic
-
-  # Runs once when game instance created
-  # CANT USE ARGS
-  def initialize args
-    @sceneMain = SceneMain.new(args)
-    @scene = :main
-  end
-
-  # Main loop
-  def tick args
-    @sceneMain.tick(args)
-  end
-
-  # Other game instance methods
-end
 
 # Engine loop. Creates the game instance, then immdiately routes tick to $game.tick.
 # Don't put anything else here, put it in $game.tick.
@@ -36,7 +15,7 @@ def tick args
   $game.tick(args)
 end
 
-# Engine methods
+# Engine methods - Not associated with any game logic, these are useful shortcuts to have.
 
 # Produces random number in range min through max.
 def randr (min, max) 

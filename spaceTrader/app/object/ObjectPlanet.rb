@@ -30,8 +30,10 @@ class ObjectPlanet < Object
       resourceInfo[:stored] = 0
       @materials[i] = resourceInfo
     end
+  end
 
-    args.outputs.static_primitives << { x: @x, y: @y, w: 28, h: 28, path: @image, primitive_marker: :sprite}
+  def draw args
+    args.outputs.primitives << { x: @x, y: @y, w: 28, h: 28, path: @image, primitive_marker: :sprite}
   end
 
   def drawInfo (args, originX: args.grid.left, originY: args.grid.top)
