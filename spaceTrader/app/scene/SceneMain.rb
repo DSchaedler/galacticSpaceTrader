@@ -31,13 +31,27 @@ class SceneMain < Scene
     else
       #
     end
+    
+  end
 
-    i=0
+  def cycle args
     for planet in @planets
-      for material in RESOURCES
-        @planets[i].materials[material][:store] += @planets[i].materials[material][:store]
+      totalStored = 0
+      planet.materials = planet.materials.sort_by { |k| -k[:stored]}
+
+      m = 0
+      for i in planet.materials
+        totalStored += planet.materials[m][:stored]
+        m += 1
       end
-      i += 1
+      if totalStored < 1000
+        m = 0
+        for i in planet.materials
+          planet.materials[m][:stored] += planet.materials[m][:rate]
+          planet.materials[m][:stored] = planet.materials[m][:stored].round(2)
+          m += 1
+        end
+      end
     end
   end
   
