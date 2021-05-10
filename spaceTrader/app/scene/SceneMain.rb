@@ -37,19 +37,7 @@ class SceneMain < Scene
   def cycle args
     for planet in @planets
 
-      totalStored = 0
-      planet.materials = planet.materials.sort_by {|material, values| -values[:stored]}
-
-      planet.materials.each {|material, values|
-        totalStored += values[:stored]
-      }
-
-      if totalStored < 1000
-        planet.materials.each {|material, values|
-          values[:stored] += values[:rate]
-          values[:stored] = values[:stored].round(2)
-        }
-      end
+      planet.cycle(args)
 
       #Simulate a factory
       #if planet.materials.

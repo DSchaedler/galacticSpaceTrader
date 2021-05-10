@@ -36,6 +36,22 @@ class ObjectPlanet < Object
     @materials["Water"] = {:rate => 0, :stored => 0}
   end
 
+  def cycle args
+    totalStored = 0
+    @materials = @materials.sort_by {|material, values| -values[:stored]}
+
+    @materials.each {|material, values|
+      totalStored += values[:stored]
+    }
+
+    if totalStored < 1000
+      @materials.each {|material, values|
+        values[:stored] += values[:rate]
+        values[:stored] = values[:stored].round(2)
+      }
+    end
+  end
+
   def draw args
     args.outputs.primitives << { x: @x, y: @y, w: 28, h: 28, path: @image, primitive_marker: :sprite}
   end
