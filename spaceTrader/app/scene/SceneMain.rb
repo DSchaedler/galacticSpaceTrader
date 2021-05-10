@@ -28,6 +28,7 @@ class SceneMain < Scene
       @planetMap.tick(args)
     when :contextPlanetMenu
       @planetMenu.tick(args, @planetSelect)
+      puts @planetSelect.materials
     else
       #
     end
@@ -36,18 +37,18 @@ class SceneMain < Scene
 
   def cycle args
     for planet in @planets
+
       totalStored = 0
       planet.materials = planet.materials.sort_by { |k| -k[:stored]}
 
-      m = 0
       for i in planet.materials
-        totalStored += planet.materials[m][:stored]
-        m += 1
+        totalStored += i[:stored]
       end
+
       if totalStored < 1000
         m = 0
         for i in planet.materials
-          planet.materials[m][:stored] += planet.materials[m][:rate]
+          planet.materials[m][:stored] += i[:rate]
           planet.materials[m][:stored] = planet.materials[m][:stored].round(2)
           m += 1
         end

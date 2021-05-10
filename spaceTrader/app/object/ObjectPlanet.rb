@@ -22,7 +22,7 @@ class ObjectPlanet < Object
     else
       @image = "sprites/PixelPlanets/#{@type.downcase}#{randr(0, 5)}.png"
     end
-
+    
     i = 0
     @materials = []
     for resource in RESOURCES
@@ -63,8 +63,8 @@ class ObjectPlanet < Object
 
     printIndex = 0
     listStart = args.grid.top - imageHeight - ( sampleStringHeight * 4 )
-    for i in RESOURCES
-      args.outputs.primitives << {x: args.grid.left + elementPadding , y: listStart - ( sampleStringHeight * printIndex ), text: "#{i}", primitive_marker: :label} #RESOURCE NAME
+    for m in @materials
+      args.outputs.primitives << {x: args.grid.left + elementPadding , y: listStart - ( sampleStringHeight * printIndex ), text: "#{m[:id]}", primitive_marker: :label} #RESOURCE NAME
       args.outputs.primitives << {x: args.grid.left + manganeseWidth + elementPadding, y: listStart - ( sampleStringHeight * printIndex), text: @materials[printIndex][:stored], primitive_marker: :label} #RESOURCE STORED
       printIndex += 1
     end
