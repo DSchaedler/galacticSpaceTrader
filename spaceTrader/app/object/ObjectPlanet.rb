@@ -24,15 +24,16 @@ class ObjectPlanet < Object
     end
     
     i = 0
-    @materials = []
+    @materials = {}
     for resource in RESOURCES
       resourceInfo = {}
-      resourceInfo[:id] = resource
       resourceInfo[:rate] = randr(0.01, 1).round(2)
       resourceInfo[:stored] = 0
-      @materials[i] = resourceInfo
+      @materials[resource] = resourceInfo
       i += 1
     end
+
+    @materials["Water"] = {:rate => 0, :stored => 0}
   end
 
   def draw args
@@ -63,10 +64,11 @@ class ObjectPlanet < Object
 
     printIndex = 0
     listStart = args.grid.top - imageHeight - ( sampleStringHeight * 4 )
-    for m in @materials
-      args.outputs.primitives << {x: args.grid.left + elementPadding , y: listStart - ( sampleStringHeight * printIndex ), text: "#{m[:id]}", primitive_marker: :label} #RESOURCE NAME
-      args.outputs.primitives << {x: args.grid.left + manganeseWidth + elementPadding, y: listStart - ( sampleStringHeight * printIndex), text: @materials[printIndex][:stored], primitive_marker: :label} #RESOURCE STORED
+    @materials.each {|m, values|
+      puts m, values
+      args.outputs.primitives << {x: args.grid.left + elementPadding , y: listStart - ( sampleStringHeight * printIndex ), text: "#{m}", primitive_marker: :label} #RESOURCE NAME
+      args.outputs.primitives << {x: args.grid.left + manganeseWidth + elementPadding, y: listStart - ( sampleStringHeight * printIndex), text: values[:stored], primitive_marker: :label} #RESOURCE STORED
       printIndex += 1
-    end
+    }
   end
 end

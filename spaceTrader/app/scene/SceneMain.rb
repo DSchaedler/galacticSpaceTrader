@@ -28,7 +28,6 @@ class SceneMain < Scene
       @planetMap.tick(args)
     when :contextPlanetMenu
       @planetMenu.tick(args, @planetSelect)
-      puts @planetSelect.materials
     else
       #
     end
@@ -39,20 +38,21 @@ class SceneMain < Scene
     for planet in @planets
 
       totalStored = 0
-      planet.materials = planet.materials.sort_by { |k| -k[:stored]}
+      planet.materials = planet.materials.sort_by {|material, values| -values[:stored]}
 
-      for i in planet.materials
-        totalStored += i[:stored]
-      end
+      planet.materials.each {|material, values|
+        totalStored += values[:stored]
+      }
 
       if totalStored < 1000
-        m = 0
-        for i in planet.materials
-          planet.materials[m][:stored] += i[:rate]
-          planet.materials[m][:stored] = planet.materials[m][:stored].round(2)
-          m += 1
-        end
+        planet.materials.each {|material, values|
+          values[:stored] += values[:rate]
+          values[:stored] = values[:stored].round(2)
+        }
       end
+
+      #Simulate a factory
+      #if planet.materials.
     end
   end
   
