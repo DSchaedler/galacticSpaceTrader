@@ -104,52 +104,7 @@ class ObjectPlanet < Object
   end
 
   def draw args
-    args.outputs.primitives << { x: @x, y: @y, w: 28, h: 28, path: @image, primitive_marker: :sprite}
+    return { x: @x, y: @y, w: 28, h: 28, path: @image, primitive_marker: :sprite}
   end
 
-  def drawInfo (args, originX: args.grid.left, originY: args.grid.top)
-    # No information should be calculated here. Only interface elements
-
-    elementPadding = 10
-
-    # Stuff for calculating the width of the column
-    manganeseWidth = args.gtk.calcstringbox("Manganese")[0] # This is the longest element name
-    storedAmountWidth = args.gtk.calcstringbox("0000.00")[0] # This is the maximum amount of a single material
-    priceWidth = args.gtk.calcstringbox("0000.00")[0] # Max price of a material is 9999.99
-
-    imageWidth = manganeseWidth + storedAmountWidth + priceWidth + storedAmountWidth
-    imageHeight = imageWidth
-    
-    # Textbox Sprite 
-    textboxBackground(args, x: 0, y: args.grid.top, w: imageWidth + elementPadding * 2, h: args.grid.h)
-    # Planet Sprite
-    args.outputs.primitives << { x: originX + elementPadding, y: originY - imageHeight - elementPadding, w: imageWidth, h: imageHeight, path: @image, primitive_marker: :sprite}
-
-    #Labels
-    sampleStringHeight = args.gtk.calcstringbox(@name)[1]
-    args.outputs.primitives << { x: originX + elementPadding, y: args.grid.top - imageHeight - elementPadding - ( sampleStringHeight * 1 ), text: @name, primitive_marker: :label}
-    args.outputs.primitives << { x: originX + elementPadding, y: args.grid.top - imageHeight - elementPadding - ( sampleStringHeight * 2 ), text: @type, primitive_marker: :label}
-
-    printIndex = 0
-    listStart = args.grid.top - imageHeight - ( sampleStringHeight * 4 )
-
-    args.outputs.primitives << {x: args.grid.left + elementPadding , y: listStart - ( sampleStringHeight * printIndex ), text: "Element", primitive_marker: :label} #RESOURCE NAME
-    args.outputs.primitives << {x: args.grid.left + manganeseWidth + elementPadding * 2, y: listStart - ( sampleStringHeight * printIndex), text: "Stored", primitive_marker: :label} #RESOURCE STORED
-    args.outputs.primitives << {x: args.grid.left + manganeseWidth + elementPadding * 3 + storedAmountWidth, y: listStart - ( sampleStringHeight * printIndex), text: "Price", primitive_marker: :label} #RESOURCE STORED
-    args.outputs.primitives << {x: args.grid.left + manganeseWidth + elementPadding * 4 + storedAmountWidth + priceWidth, y: listStart - ( sampleStringHeight * printIndex), text: "Ship", primitive_marker: :label} #RESOURCE STORED
-    
-    listStart = args.grid.top - imageHeight - ( sampleStringHeight * 5 )
-
-    @materials.each {|m, v|
-      v[:shipStored] = $game.sceneMain.ship.materials[m][:stored]
-    }
-    sortedMaterials = @materials.sort_by {|material, values| -values[:price]}
-    sortedMaterials.each {|m, values|
-      args.outputs.primitives << {x: args.grid.left + elementPadding , y: listStart - ( sampleStringHeight * printIndex ), text: "#{m}", primitive_marker: :label} #RESOURCE NAME
-      args.outputs.primitives << {x: args.grid.left + manganeseWidth + elementPadding * 2, y: listStart - ( sampleStringHeight * printIndex), text: values[:stored], primitive_marker: :label} #RESOURCE STORED
-      args.outputs.primitives << {x: args.grid.left + manganeseWidth + elementPadding * 3 + storedAmountWidth, y: listStart - ( sampleStringHeight * printIndex), text: values[:price], primitive_marker: :label} #RESOURCE PRICE
-      args.outputs.primitives << {x: args.grid.left + manganeseWidth + elementPadding * 4 + storedAmountWidth + priceWidth, y: listStart - ( sampleStringHeight * printIndex), text: values[:shipStored], primitive_marker: :label} #RESOURCE STORED SHIP
-      printIndex += 1
-    }
-  end
 end

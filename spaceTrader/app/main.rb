@@ -13,6 +13,8 @@ require 'app/textboxMaking.rb'
 def tick args
   $game ||= Game.new(args)
   $game.tick(args)
+
+  args.outputs.debug << args.gtk.framerate_diagnostics_primitives
 end
 
 # Engine methods - Not associated with any game logic, these are useful shortcuts to have.

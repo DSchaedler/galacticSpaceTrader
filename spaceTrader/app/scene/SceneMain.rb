@@ -1,6 +1,8 @@
 class SceneMain < Scene
   attr_accessor :planets
   attr_accessor :planetSelect
+  attr_accessor :planetMap
+  attr_accessor :planetMenu
   attr_accessor :ship
   attr_accessor :context
 
@@ -20,6 +22,7 @@ class SceneMain < Scene
 
     # Background
     @planetMap = ContextPlanetMap.new(args)
+    @planetMap.createMap(args, @planets)
 
     @planetMenu = ContextPlanetMenu.new(args)
   end
@@ -28,8 +31,9 @@ class SceneMain < Scene
 
     case @context
     when :contextPlanetMap
-      @planetMap.tick(args)
+      @planetMap.tick(args, @planets)
     when :contextPlanetMenu
+      @planetMap.tick(args, @planets)
       @planetMenu.tick(args, @planetSelect)
     else
       #
