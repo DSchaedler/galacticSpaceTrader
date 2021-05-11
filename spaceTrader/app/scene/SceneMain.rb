@@ -1,6 +1,7 @@
 class SceneMain < Scene
   attr_accessor :planets
   attr_accessor :planetSelect
+  attr_accessor :ship
   attr_accessor :context
 
   def initialize args
@@ -14,6 +15,8 @@ class SceneMain < Scene
       @planets[i] = ObjectPlanet.new(args)
       i += 1
     end
+
+    @ship = ObjectShip.new(args)
 
     # Background
     @planetMap = ContextPlanetMap.new(args)
