@@ -1,4 +1,6 @@
 # Require our various files.
+# Lib
+require 'lib/di_lib.rb'
 # Clustered Data
 require 'app/constants.rb'
 # Classes
@@ -6,6 +8,7 @@ require 'app/Game.rb'
 require 'app/context/context.rb'
 require 'app/scene/scene.rb'
 require 'app/object/Object.rb'
+require 'app/ui/UI.rb'
 require 'app/textboxMaking.rb'
 
 # Engine loop. Creates the game instance, then immdiately routes tick to $game.tick.
