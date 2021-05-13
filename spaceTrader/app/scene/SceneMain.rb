@@ -32,6 +32,7 @@ class SceneMain < Scene
     case @context
     when :contextPlanetMap
       @planetMap.tick(args, @planets)
+      @planetMap.checkPlanetSelect(args, @planets)
     when :contextPlanetMenu
       @planetMap.tick(args, @planets)
       @planetMenu.tick(args, @planetSelect)

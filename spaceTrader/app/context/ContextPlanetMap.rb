@@ -36,7 +36,9 @@ class ContextPlanetMap < Context
   
   def tick (args, planets)
     args.outputs.primitives << @staticOutput
-    
+  end
+
+  def checkPlanetSelect(args, planets)  
     for planet in planets
 
       if args.inputs.mouse.inside_rect? [planet.x, planet.y, 28, 28]

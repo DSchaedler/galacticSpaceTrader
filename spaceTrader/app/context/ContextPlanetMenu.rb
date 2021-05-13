@@ -91,7 +91,7 @@ class ContextPlanetMenu < Context
     }
 
     for button in buttons
-      button.tick(args)
+      button.tick(args, planet)
     end
 
     args.outputs.primitives << table # Make it so
