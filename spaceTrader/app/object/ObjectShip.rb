@@ -1,9 +1,11 @@
 class ObjectShip < Object
   attr_accessor :name
+  attr_accessor :money
   attr_accessor :materials
 
   def initialize args
     @name = "Ship"
+    @money = 1000.00
     
     i = 0
     @materials = {}

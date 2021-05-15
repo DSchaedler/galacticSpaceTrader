@@ -41,6 +41,8 @@ class UIBuyButton < UIButton
     if args.inputs.mouse.click
       if args.inputs.mouse.click.inside_rect? @staticOutput[0]
         $game.sceneMain.ship.materials[@material][:Stored] += 1
+        $game.sceneMain.ship.money -= planet.materials[@material][:Price]
+        $game.sceneMain.ship.money = $game.sceneMain.ship.money.round(2)
         planet.materials[@material][:Stored] -= 1
         planet.materials[@material][:Price] += 0.01
       end
@@ -54,6 +56,8 @@ class UISellButton < UIButton
     if args.inputs.mouse.click
       if args.inputs.mouse.click.inside_rect? @staticOutput[0]
         $game.sceneMain.ship.materials[@material][:Stored] -= 1
+        $game.sceneMain.ship.money += planet.materials[@material][:Price]
+        $game.sceneMain.ship.money = $game.sceneMain.ship.money.round(2)
         planet.materials[@material][:Stored] += 1
         planet.materials[@material][:Stored] -= 0.01
       end

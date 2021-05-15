@@ -55,6 +55,9 @@ class ContextPlanetMenu < Context
 
     args.outputs.primitives << table # Make it so
 
+    # Money I guess
+    args.outputs.primitives << {x: @originX, y: 0 + @textHeight, text: "Money: #{$game.sceneMain.ship.money}"}
+
   end
 
   def printTable(args, table, buttons, planet, startY)
