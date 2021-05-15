@@ -27,27 +27,27 @@ class ObjectPlanet < Object
     @materials = {}
     for resource in RESOURCES
       resourceInfo = {}
-      resourceInfo[:rate] = randr(0.01, 1).round(2)
-      resourceInfo[:stored] = 0
-      resourceInfo[:price] = 1
+      resourceInfo[:Rate] = randr(0.01, 1).round(2)
+      resourceInfo[:Stored] = 0
+      resourceInfo[:Price] = 1
       @materials[resource] = resourceInfo
       i += 1
     end
 
-    @materials["Water"] = {:rate => 0, :stored => 0, :price => 1}
+    @materials["Water"] = {:Rate => 0, :Stored => 0, :Price => 1}
   end
 
   def cycle args
     totalStored = 0
 
     @materials.each {|material, values|
-      totalStored += values[:stored]
+      totalStored += values[:Stored]
     }
 
     if totalStored < 1000
       @materials.each {|material, values|
-        values[:stored] += values[:rate]
-        values[:stored] = values[:stored].round(2)
+        values[:Stored] += values[:Rate]
+        values[:Stored] = values[:Stored].round(2)
       }
     end
 
@@ -59,10 +59,10 @@ class ObjectPlanet < Object
   end
 
   def consume (args, material, quantity)
-    if @materials[material][:stored] >= quantity
-      @materials[material][:stored] = (@materials[material][:stored] - quantity).round(2)
+    if @materials[material][:Stored] >= quantity
+      @materials[material][:Stored] = (@materials[material][:Stored] - quantity).round(2)
     else
-      @materials[material][:price] = (@materials[material][:price] + (0.01 * quantity)).round(2)
+      @materials[material][:Price] = (@materials[material][:Price] + (0.01 * quantity)).round(2)
     end
   end
 
@@ -70,20 +70,20 @@ class ObjectPlanet < Object
     product = recipe[0]
     recipe.shift()
 
-    productCost = @materials[product[0]][:price] * product[1]
+    productCost = @materials[product[0]][:Price] * product[1]
     
     sumCost = 0
     recipe.each { |i|
-      sumCost += @materials[i[0]][:price] * i[1]
+      sumCost += @materials[i[0]][:Price] * i[1]
     }
 
     if productCost > sumCost
       # Request Materials
       haveMaterials = []
       recipe.each { |i|
-        if @materials[i[0]][:stored] <= i[1] # If we don't have enough materials
+        if @materials[i[0]][:Stored] <= i[1] # If we don't have enough materials
           haveMaterials << false
-          @materials[i[0]][:price] = (@materials[i[0]][:price] + 0.01).round(2) # Increase the price with increased deman
+          @materials[i[0]][:Price] = (@materials[i[0]][:Price] + 0.01).round(2) # Increase the price with increased deman
         else
           haveMaterials << true
         end
@@ -91,14 +91,14 @@ class ObjectPlanet < Object
     
       unless haveMaterials.include? false # Don't craft if we're missing materials
         recipe.each { |i|
-          @materials[i[0]][:stored] = (@materials[i[0]][:stored] - i[1]).round(2)
+          @materials[i[0]][:Stored] = (@materials[i[0]][:Stored] - i[1]).round(2)
         }
-        @materials[product[0]][:stored] = (@materials[product[0]][:stored] + product[1]).round(2)
+        @materials[product[0]][:Stored] = (@materials[product[0]][:Stored] + product[1]).round(2)
       end
 
     else
       recipe.each { |i|
-        @materials[i[0]][:price] = (@materials[i[0]][:price] - 0.01).round(2)
+        @materials[i[0]][:Price] = (@materials[i[0]][:Price] - 0.01).round(2)
       }
     end
   end

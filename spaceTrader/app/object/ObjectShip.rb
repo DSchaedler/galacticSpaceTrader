@@ -9,12 +9,12 @@ class ObjectShip < Object
     @materials = {}
     for resource in RESOURCES
       resourceInfo = {}
-      resourceInfo[:stored] = 0
+      resourceInfo[:Stored] = 0
       @materials[resource] = resourceInfo
       i += 1
     end
     puts @materials
-    @materials["Water"] = {:stored => 0}
+    @materials["Water"] = {:Stored => 0}
     puts @materials
   end
 end
