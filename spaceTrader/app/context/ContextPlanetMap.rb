@@ -36,6 +36,16 @@ class ContextPlanetMap < Context
   
   def tick (args, planets)
     args.outputs.primitives << @staticOutput
+
+    args.state.shipFrame = args.state.tick_count.idiv(5).mod(3)
+    args.outputs.primitives << {x: args.inputs.mouse.x, y: args.inputs.mouse.y, w:32, h: 32, path: "sprites/spaceship#{args.state.shipFrame}.png", primitive_marker: :sprite}
+
+    # We got math to do baby.
+    # We need to determine what degree around the planet the ship is.
+    args.state.shipDegree = args.state.tick_count.mod(360)
+    # Now we need to determine the location of the ship using triginometry
+    # Given a point, angle, and distance, determine a new point
+    args.outputs.primitives << [100, 100, "#{args.state.shipDegree}"].label
   end
 
   def checkPlanetSelect(args, planets)  
