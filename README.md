@@ -1,6 +1,9 @@
 # galacticSpaceTrader
 Game about spaceship logistics and turning profits on thin margins.
 
+# Trello
+https://trello.com/b/LojDhsU9
+
 # License and Copyright information.
 Look. I'm not a lawyer. If you are one, there's a license on this code, the GNU Affero General Public License v3.0. This is the version that I thought best protected the code in this repository.
 
