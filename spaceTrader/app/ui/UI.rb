@@ -38,13 +38,18 @@ end
 class UIBuyButton < UIButton
   def tick (args, planet)
     args.outputs.primitives << @staticOutput
-    if args.inputs.mouse.click
+    if args.inputs.mouse.click 
       if args.inputs.mouse.click.inside_rect? @staticOutput[0]
-        $game.sceneMain.ship.materials[@material][:Stored] += 1
-        $game.sceneMain.ship.money -= planet.materials[@material][:Price]
-        $game.sceneMain.ship.money = $game.sceneMain.ship.money.round(2)
-        planet.materials[@material][:Stored] -= 1
-        planet.materials[@material][:Price] += 0.01
+        if planet.materials[@material][:Stored] >= 1 
+          if $game.sceneMain.ship.money >= planet.materials[@material][:Price]
+            $game.sceneMain.ship.materials[@material][:Stored] += 1
+            $game.sceneMain.ship.money -= planet.materials[@material][:Price]
+            $game.sceneMain.ship.money = $game.sceneMain.ship.money.round(2)
+            planet.materials[@material][:Stored] -= 1
+            planet.materials[@material][:Price] += 0.01
+            planet.materials[@material][:Price] = planet.materials[@material][:Price].round(2)
+          end
+        end
       end
     end
   end
@@ -55,11 +60,14 @@ class UISellButton < UIButton
     args.outputs.primitives << @staticOutput
     if args.inputs.mouse.click
       if args.inputs.mouse.click.inside_rect? @staticOutput[0]
-        $game.sceneMain.ship.materials[@material][:Stored] -= 1
-        $game.sceneMain.ship.money += planet.materials[@material][:Price]
-        $game.sceneMain.ship.money = $game.sceneMain.ship.money.round(2)
-        planet.materials[@material][:Stored] += 1
-        planet.materials[@material][:Stored] -= 0.01
+        if $game.sceneMain.ship.materials[@material][:Stored] >= 1
+          $game.sceneMain.ship.materials[@material][:Stored] -= 1
+          $game.sceneMain.ship.money += planet.materials[@material][:Price]
+          $game.sceneMain.ship.money = $game.sceneMain.ship.money.round(2)
+          planet.materials[@material][:Stored] += 1
+          planet.materials[@material][:Price] -= 0.01
+          planet.materials[@material][:Price] = planet.materials[@material][:Price].round(2)
+        end
       end
     end
   end

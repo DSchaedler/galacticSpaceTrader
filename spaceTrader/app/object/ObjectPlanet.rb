@@ -29,12 +29,12 @@ class ObjectPlanet < Object
       resourceInfo = {}
       resourceInfo[:Rate] = randr(0.01, 1).round(2)
       resourceInfo[:Stored] = 0
-      resourceInfo[:Price] = 1
+      resourceInfo[:Price] = 10
       @materials[resource] = resourceInfo
       i += 1
     end
 
-    @materials["Water"] = {:Rate => 0, :Stored => 0, :Price => 1}
+    @materials["Water"] = {:Rate => 0, :Stored => 0, :Price => 10}
   end
 
   def cycle args
@@ -48,6 +48,10 @@ class ObjectPlanet < Object
       @materials.each {|material, values|
         values[:Stored] += values[:Rate]
         values[:Stored] = values[:Stored].round(2)
+        if values[:Rate] > 0
+          values[:Price] -= 0.01
+          values[:Price] = values[:Price].round(2)
+        end
       }
     end
 
@@ -94,12 +98,15 @@ class ObjectPlanet < Object
           @materials[i[0]][:Stored] = (@materials[i[0]][:Stored] - i[1]).round(2)
         }
         @materials[product[0]][:Stored] = (@materials[product[0]][:Stored] + product[1]).round(2)
+        @materials[product[0]][:Price] -= 0.1
+        @materials[product[0]][:Price] = @materials[product[0]][:Price].round(2)
       end
 
     else
-      recipe.each { |i|
-        @materials[i[0]][:Price] = (@materials[i[0]][:Price] - 0.01).round(2)
-      }
+      #
+      #recipe.each { |i|
+      #  @materials[i[0]][:Price] = (@materials[i[0]][:Price] - 0.01).round(2)
+      #}
     end
   end
 
