@@ -23,6 +23,9 @@ class ContextPlanetMap < Context
     end
 
     @staticOutput = []
+
+    @shipMode = :Orbit
+    @shipPos = [args.grid.center.w / 2, args.grid.center.h / 2]
   end
 
   def createMap(args, planets)
@@ -37,21 +40,52 @@ class ContextPlanetMap < Context
   def tick (args, planets)
     args.outputs.primitives << @staticOutput
 
-    if $game.sceneMain.planetSelect
+    shipFrame = args.state.tick_count.idiv(5).mod(3)
+
+    if $game.sceneMain.planetSelect and @shipMode == :Orbit
       planetSelect = $game.sceneMain.planetSelect
 
-      shipFrame = args.state.tick_count.idiv(5).mod(3)
       shipDegree = args.state.tick_count.mod(360)
       distance = 60
 
       DEGREES_TO_RADIANS = Math::PI / 180
 
-      posX = (distance * Math.cos(shipDegree * DEGREES_TO_RADIANS)) + planetSelect.x
-      posY = distance * Math.sin(shipDegree * DEGREES_TO_RADIANS) + planetSelect.y
+      @shipPos[0] = (distance * Math.cos(shipDegree * DEGREES_TO_RADIANS)) + planetSelect.x
+      @shipPos[1] = (distance * Math.sin(shipDegree * DEGREES_TO_RADIANS)) + planetSelect.y
 
-      args.outputs.primitives << {x: posX, y: posY, w:32, h: 32, path: "sprites/spaceship#{shipFrame}.png", angle: shipDegree, primitive_marker: :sprite}
+      args.outputs.primitives << {x: @shipPos[0], y: @shipPos[1], w:32, h: 32, path: "sprites/spaceship#{shipFrame}.png", angle: shipDegree, primitive_marker: :sprite}
+    elsif @shipMode = :Move
+      if $game.sceneMain.planetSelect
+        shipDegree = moveShip(args)
+      end
+      args.outputs.primitives << {x: @shipPos[0], y: @shipPos[1], w:32, h: 32, path: "sprites/spaceship#{shipFrame}.png", angle: shipDegree - 90, primitive_marker: :sprite}
     end
 
+  end
+
+  def moveShip(args)
+    
+    if $game.sceneMain.planetSelect
+      planetSelect = $game.sceneMain.planetSelect
+      destination = [planetSelect.x, planetSelect.y]
+    end
+
+    speed = 5
+    distance = args.geometry.distance(@shipPos, destination)
+    puts distance
+
+    if distance > speed
+      shipDegree = args.geometry.angle_to(@shipPos, destination)
+      DEGREES_TO_RADIANS = Math::PI / 180
+      @shipPos[0] = (speed * Math.cos(shipDegree * DEGREES_TO_RADIANS)) + @shipPos[0]
+      @shipPos[1] = (speed * Math.sin(shipDegree * DEGREES_TO_RADIANS)) + @shipPos[1]
+    else
+      shipDegree = args.geometry.angle_to(@shipPos, destination)
+      @shipPos = destination
+      @shipMode = :Orbit
+    end
+
+    return shipDegree
   end
 
   def checkPlanetSelect(args, planets)  
@@ -69,6 +103,9 @@ class ContextPlanetMap < Context
         args.outputs.primitives << {x: planet.x - 2, y: planet.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png',primitive_marker: :sprite}
         if args.inputs.mouse.up
           $game.sceneMain.planetMenu.destroyMenu(args)
+          if planet != $game.sceneMain.planetSelect
+            @shipMode = :Move
+          end
           $game.sceneMain.planetSelect = planet
         end
       end
