@@ -38,7 +38,8 @@ class ContextPlanetMap < Context
   end
   
   def tick (args, planets)
-    args.outputs.primitives << @staticOutput
+    @tickOutput = []
+    @tickOutput << @staticOutput
 
     shipFrame = args.state.tick_count.idiv(5).mod(3)
 
@@ -53,7 +54,16 @@ class ContextPlanetMap < Context
       @shipPos[0] = (distance * Math.cos(shipDegree * DEGREES_TO_RADIANS)) + planetSelect.x
       @shipPos[1] = (distance * Math.sin(shipDegree * DEGREES_TO_RADIANS)) + planetSelect.y
 
-      args.outputs.primitives << {x: @shipPos[0], y: @shipPos[1], w:32, h: 32, path: "sprites/spaceship#{shipFrame}.png", angle: shipDegree, primitive_marker: :sprite}
+      @tickOutput << {x: @shipPos[0], y: @shipPos[1], w:32, h: 32, path: "sprites/spaceship#{shipFrame}.png", angle: shipDegree, primitive_marker: :sprite}
+
+      dockButton = {x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: "sprites/dockButton.png", primitive_marker: :sprite}
+      @tickOutput << dockButton
+      if args.inputs.mouse.click and args.inputs.mouse.intersect_rect? dockButton
+        $game.sceneMain.planetMenu.createMenu(args, planetSelect)
+        $game.sceneMain.context = :contextPlanetMenu
+      end
+
+
     elsif @shipMode = :Move
       if $game.sceneMain.planetSelect
         planetSelect = $game.sceneMain.planetSelect
@@ -64,9 +74,10 @@ class ContextPlanetMap < Context
         shipTarget = (distance * Math.cos(shipDegree * DEGREES_TO_RADIANS)) + planetSelect.x, (distance * Math.sin(shipDegree * DEGREES_TO_RADIANS)) + planetSelect.y
         shipDegree = moveShip(args, shipTarget)
       end
-      args.outputs.primitives << {x: @shipPos[0], y: @shipPos[1], w:32, h: 32, path: "sprites/spaceship#{shipFrame}.png", angle: shipDegree - 90, primitive_marker: :sprite}
+      @tickOutput << args.outputs.primitives << {x: @shipPos[0], y: @shipPos[1], w:32, h: 32, path: "sprites/spaceship#{shipFrame}.png", angle: shipDegree - 90, primitive_marker: :sprite}
     end
 
+    args.outputs.primitives << @tickOutput
   end
 
   def moveShip(args, shipTarget)
@@ -95,18 +106,19 @@ class ContextPlanetMap < Context
   end
 
   def checkPlanetSelect(args, planets)  
+    selectOutput = []
     for planet in planets
 
       if $game.sceneMain.planetSelect
         planetSelect = $game.sceneMain.planetSelect
         
-        args.outputs.primitives << {x: planetSelect.x + 14, y: planetSelect.y - 4, text:planetSelect.name, r: 255, g:255, b:255, alignment_enum: 1, primitive_marker: :label}
-        args.outputs.primitives << {x: planetSelect.x - 2, y: planetSelect.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png',primitive_marker: :sprite}
+        selectOutput << {x: planetSelect.x + 14, y: planetSelect.y - 4, text:planetSelect.name, r: 255, g:255, b:255, alignment_enum: 1, primitive_marker: :label}
+        selectOutput << {x: planetSelect.x - 2, y: planetSelect.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png',primitive_marker: :sprite}
       end
 
       if args.inputs.mouse.inside_rect? [planet.x, planet.y, 28, 28]
-        args.outputs.primitives << {x: planet.x + 14, y: planet.y - 4, text:planet.name, r: 255, g:255, b:255, alignment_enum: 1, primitive_marker: :label}
-        args.outputs.primitives << {x: planet.x - 2, y: planet.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png',primitive_marker: :sprite}
+        selectOutput << {x: planet.x + 14, y: planet.y - 4, text:planet.name, r: 255, g:255, b:255, alignment_enum: 1, primitive_marker: :label}
+        selectOutput << {x: planet.x - 2, y: planet.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png',primitive_marker: :sprite}
         if args.inputs.mouse.up
           $game.sceneMain.planetMenu.destroyMenu(args)
           if planet != $game.sceneMain.planetSelect
@@ -116,8 +128,12 @@ class ContextPlanetMap < Context
         end
       end
 
+      
+
       #$game.sceneMain.planetMenu.createMenu(args, planet)
       #$game.sceneMain.context = :contextPlanetMenu
     end
+
+    args.outputs.primitives << selectOutput
   end
 end
