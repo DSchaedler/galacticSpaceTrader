@@ -56,21 +56,27 @@ class ContextPlanetMap < Context
       args.outputs.primitives << {x: @shipPos[0], y: @shipPos[1], w:32, h: 32, path: "sprites/spaceship#{shipFrame}.png", angle: shipDegree, primitive_marker: :sprite}
     elsif @shipMode = :Move
       if $game.sceneMain.planetSelect
-        shipDegree = moveShip(args)
+        planetSelect = $game.sceneMain.planetSelect
+        shipDegree = args.state.tick_count.mod(360)
+        distance = 60
+        DEGREES_TO_RADIANS = Math::PI / 180
+      
+        shipTarget = (distance * Math.cos(shipDegree * DEGREES_TO_RADIANS)) + planetSelect.x, (distance * Math.sin(shipDegree * DEGREES_TO_RADIANS)) + planetSelect.y
+        shipDegree = moveShip(args, shipTarget)
       end
       args.outputs.primitives << {x: @shipPos[0], y: @shipPos[1], w:32, h: 32, path: "sprites/spaceship#{shipFrame}.png", angle: shipDegree - 90, primitive_marker: :sprite}
     end
 
   end
 
-  def moveShip(args)
+  def moveShip(args, shipTarget)
     
     if $game.sceneMain.planetSelect
       planetSelect = $game.sceneMain.planetSelect
-      destination = [planetSelect.x, planetSelect.y]
+      destination = shipTarget
     end
 
-    speed = 5
+    speed = 2
     distance = args.geometry.distance(@shipPos, destination)
     puts distance
 
