@@ -1,5 +1,6 @@
 class SceneMain < Scene
   attr_accessor :planets
+  attr_accessor :systems
   attr_accessor :planetSelect
   attr_accessor :planetMap
   attr_accessor :planetMenu
@@ -20,7 +21,12 @@ class SceneMain < Scene
 
     @ship = ObjectShip.new(args)
 
+    @systems = []
+
     # Background
+    @galaxyMap = ContextGalaxyMap.new(args)
+    @galaxyMap.createMap(args, systems)
+
     @planetMap = ContextPlanetMap.new(args)
     @planetMap.createMap(args, @planets)
 
@@ -33,6 +39,8 @@ class SceneMain < Scene
     when :contextPlanetMap
       @planetMap.tick(args, @planets)
       @planetMap.checkPlanetSelect(args, @planets)
+    when :contextGalaxyMap
+      args.outputs.solid << [100, 100, 50, 50]
     when :contextPlanetMenu
       @planetMap.tick(args, @planets)
       @planetMenu.tick(args, @planetSelect)

@@ -36,6 +36,10 @@ class ContextPlanetMap < Context
       @staticOutput << planet.draw(args)
     end
   end
+
+  def destroyMap(args)
+    @staticOutput = []
+  end
   
   def tick (args, planets)
     @tickOutput = []
@@ -62,7 +66,6 @@ class ContextPlanetMap < Context
         $game.sceneMain.planetMenu.createMenu(args, planetSelect)
         $game.sceneMain.context = :contextPlanetMenu
       end
-
 
     elsif @shipMode = :Move
       if $game.sceneMain.planetSelect
