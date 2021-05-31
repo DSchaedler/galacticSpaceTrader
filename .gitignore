@@ -1,7 +1,9 @@
 .dragonruby
+debugtest
 docs
 exceptions
 logs
+mygame
 samples
 tmp
 CHANGELOG.txt
