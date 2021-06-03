@@ -92,7 +92,6 @@ class ContextPlanetMap < Context
 
     speed = 2
     distance = args.geometry.distance(@shipPos, destination)
-    puts distance
 
     if distance > speed
       shipDegree = args.geometry.angle_to(@shipPos, destination)

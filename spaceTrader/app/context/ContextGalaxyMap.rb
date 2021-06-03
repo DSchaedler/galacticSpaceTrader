@@ -30,9 +30,14 @@ class ContextGalaxyMap < Context
     @staticOutput << [@x, @y, @w, @h, @r, @g, @b, @a].solid # Draw a background color for the actual game area.
     @staticOutput << @stars
     
+    systemsArray = []
     for starSystem in systems
-      @staticOutput << starSystem.draw(args)
+      location = starSystem.draw(args)
+      sprite = {x: location[0], y: location[1], w: 28, h: 28, path: "sprites/PixelPlanets/shadowmap0.png", r: randr(0, 255), g: randr(0, 255), b: randr(0, 255), primitive_marker: :sprite}
+      @staticOutput << sprite
     end
+    puts @staticOutput
+    @staticOutput << systemsArray
   end
 
   def tick (args, systems)
@@ -40,5 +45,36 @@ class ContextGalaxyMap < Context
     @tickOutput << @staticOutput
 
     args.outputs.primitives << @tickOutput
+  end
+
+  def checkSystemSelect(args, systems)  
+    selectOutput = []
+    for eachSystem in systems
+
+      if $game.sceneMain.systemSelect
+        systemSelect = $game.sceneMain.systemSelect
+        
+        selectOutput << {x: systemSelect.x + 14, y: systemSelect.y - 4, text:systemSelect.name, r: 255, g:255, b:255, alignment_enum: 1, primitive_marker: :label}
+        selectOutput << {x: systemSelect.x - 2, y: systemSelect.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png',primitive_marker: :sprite}
+
+        dockButton = {x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: "sprites/dockButton.png", primitive_marker: :sprite}
+        selectOutput << dockButton
+        if args.inputs.mouse.click and args.inputs.mouse.intersect_rect? dockButton
+          $game.sceneMain.planetMap.createMap(args, $game.sceneMain.planets)
+          $game.sceneMain.context = :contextPlanetMap
+        end
+      end
+
+      if args.inputs.mouse.inside_rect? [eachSystem.x, eachSystem.y, 28, 28]
+        selectOutput << {x: eachSystem.x + 14, y: eachSystem.y - 4, text:eachSystem.name, r: 255, g:255, b:255, alignment_enum: 1, primitive_marker: :label}
+        selectOutput << {x: eachSystem.x - 2, y: eachSystem.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png',primitive_marker: :sprite}
+        if args.inputs.mouse.up
+          $game.sceneMain.systemSelect = eachSystem
+        end
+      end
+      
+    end
+
+    args.outputs.primitives << selectOutput
   end
 end

@@ -9,12 +9,12 @@ class ObjectPlanet < Object
   attr_accessor :image
   attr_accessor :materials
 
-  def initialize args
+  def initialize (args, planetName)
     # Generate unique planet information
     @x = randr(1, 38) * 32
     @y = randr(1, 21) * 32
     @type = PLANET_TYPE_STRINGS.sample()
-    @name = EXOPLANET_NAMES.sample()
+    @name = planetName
 
     # Randomly determine which planet image we should use.
     if @type == "Inferno" || "Toxic" # These two have fewer images available, so we treat them specially.

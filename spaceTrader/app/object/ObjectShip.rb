@@ -15,8 +15,6 @@ class ObjectShip < Object
       @materials[resource] = resourceInfo
       i += 1
     end
-    puts @materials
     @materials["Water"] = {:Stored => 0}
-    puts @materials
   end
 end
