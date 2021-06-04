@@ -49,6 +49,22 @@ class SceneMain < Scene
     else
       #
     end
+
+    ship = $game.sceneMain.ship
+    size = 3
+    height = args.gtk.calcstringbox("Sample", size)[1]
+    statusBar = {
+      x: 1280 / 2,
+      y: height,
+      text: "Money: #{ship.money} | Fuel: #{ship.fuel} | Cores: #{ship.cores} | System: #{@galaxyMap.systemName}",
+      r: 0,
+      g: 255,
+      b: 0,
+      size_enum: size,
+      alignment_enum: 1,
+      primitive_marker: :label}
+
+    args.outputs.primitives << statusBar
   end
 
   def cycle args

@@ -1,5 +1,8 @@
 class ContextGalaxyMap < Context
 
+  attr_accessor :currentSystem
+  attr_accessor :systemName
+
   def initialize (args, stars: 600, minStarSize: 1, maxStarSize: 6, x: 0, y: 0, w: 1280, h: 720, starSaturation: 127, r: 20, g: 24, b: 46, a: 255)
     @x = 0
     @y = 0
@@ -25,6 +28,9 @@ class ContextGalaxyMap < Context
 
     @shipMode = :Orbit
     @shipPos = [args.grid.center.w / 2, args.grid.center.h / 2]
+    @burnCore = false
+    @currentSystem = nil
+    @systemName = ""
   end
 
   def createMap(args, systems)
@@ -56,14 +62,6 @@ class ContextGalaxyMap < Context
         
         selectOutput << {x: systemSelect.x + 14, y: systemSelect.y - 4, text:systemSelect.name, r: 255, g:255, b:255, alignment_enum: 1, primitive_marker: :label}
         selectOutput << {x: systemSelect.x - 2, y: systemSelect.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png',primitive_marker: :sprite}
-
-        dockButton = {x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: "sprites/dockButton.png", primitive_marker: :sprite}
-        selectOutput << dockButton
-        if args.inputs.mouse.click and args.inputs.mouse.intersect_rect? dockButton
-          $game.sceneMain.planetMap = ContextPlanetMap.new(args)
-          $game.sceneMain.planetMap.createMap(args)
-          $game.sceneMain.context = :contextPlanetMap
-        end
       end
 
       if args.inputs.mouse.inside_rect? [eachSystem.x, eachSystem.y, 28, 28]
@@ -76,6 +74,25 @@ class ContextGalaxyMap < Context
       
     end
 
-    args.outputs.primitives << selectOutput
+  if $game.sceneMain.systemSelect
+
+    dockButton = []
+    dockButton << {x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: "sprites/buttonTemplate.png", primitive_marker: :sprite}
+    dockButton << {x: args.grid.w - 30, y: args.grid.h - 2, text: "Warp", size_enum: 3, alignment_enum: 1, primitive_marker: :label}
+
+    selectOutput << dockButton
+    if args.inputs.mouse.click and args.inputs.mouse.intersect_rect? dockButton[0]
+      if $game.sceneMain.systemSelect != @currentSystem
+        @currentSystem = $game.sceneMain.systemSelect
+        @systemName = @currentSystem.name
+        $game.sceneMain.ship.cores -= 1
+      end
+      $game.sceneMain.planetMap = ContextPlanetMap.new(args)
+      $game.sceneMain.planetMap.createMap(args)
+      $game.sceneMain.context = :contextPlanetMap
+    end
+  end
+
+  args.outputs.primitives << selectOutput
   end
 end
