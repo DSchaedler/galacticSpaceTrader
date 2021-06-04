@@ -45,7 +45,7 @@ class SceneMain < Scene
       @galaxyMap.checkSystemSelect(args, @solarSystems)
     when :contextPlanetMenu
       @planetMap.tick(args)
-      @planetMenu.tick(args, @planetSelect)
+      @planetMenu.tick(args)
     else
       #
     end

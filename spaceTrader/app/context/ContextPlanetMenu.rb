@@ -16,6 +16,7 @@ class ContextPlanetMenu < Context
     @originY = args.grid.top
 
     @staticOutput = []
+    @planet
   end
 
   def createMenu(args, planet)
@@ -27,13 +28,15 @@ class ContextPlanetMenu < Context
     @staticOutput << { x: @originX + @elementPadding, y: @originY - @imageHeight - @elementPadding - ( @textHeight * 1 ), text: planet.name, primitive_marker: :label}
     # Planet Type
     @staticOutput << { x: @originX + @elementPadding, y: @originY - @imageHeight - @elementPadding - ( @textHeight * 2 ), text: planet.type, primitive_marker: :label}
+
+    @planet = planet
   end
 
   def destroyMenu(args)
     @staticOutput = []
   end
 
-  def tick (args, planet)
+  def tick (args)
 
     args.outputs.primitives << @staticOutput
 
@@ -49,9 +52,9 @@ class ContextPlanetMenu < Context
     # Define the start location of the table
     listStart = @originY - @imageHeight - ( @textHeight * 4 )
     
-    printTable(args, table, buttons, planet, listStart)
+    printTable(args, table, buttons, @planet, listStart)
 
-    for button in buttons; button.tick(args, planet); end # Tick buttons
+    for button in buttons; button.tick(args, @planet); end # Tick buttons
 
     args.outputs.primitives << table # Make it so
 

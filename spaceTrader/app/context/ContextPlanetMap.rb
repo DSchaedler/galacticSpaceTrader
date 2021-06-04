@@ -12,8 +12,9 @@ class ContextPlanetMap < Context
     @b = 46
     @a = 255
     
-    @system = $game.sceneMain.systemSelect
+    @system = $game.sceneMain.systemSelect  
     @planets = []
+    @planets = @system.systemPlanets
     @planetSelect
 
     @stars = []
@@ -35,8 +36,6 @@ class ContextPlanetMap < Context
   def createMap(args)
     @staticOutput << [@x, @y, @w, @h, @r, @g, @b, @a].solid # Draw a background color for the actual game area.
     @staticOutput << @stars
-
-    @planets = @system.systemPlanets
     
     for planet in @planets
       @staticOutput << planet.draw(args)
@@ -48,6 +47,9 @@ class ContextPlanetMap < Context
   end
   
   def tick (args)
+    @system = $game.sceneMain.systemSelect  
+    @planets = @system.systemPlanets
+
     @tickOutput = []
     @tickOutput << @staticOutput
 
@@ -74,6 +76,7 @@ class ContextPlanetMap < Context
       dockButton = {x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: "sprites/dockButton.png", primitive_marker: :sprite}
       @tickOutput << dockButton
       if args.inputs.mouse.click and args.inputs.mouse.intersect_rect? dockButton
+        puts @planetSelect
         $game.sceneMain.planetMenu.createMenu(args, @planetSelect)
         $game.sceneMain.context = :contextPlanetMenu
       end
