@@ -44,3 +44,12 @@ def resetGameRandom
   $game = nil
   $gtk.reset seed: Time.new
 end
+
+def gaussian(mean, stddev, rand)
+  theta = 2 * Math::PI * rand()
+  rho = Math.sqrt(-2 * Math.log(1 - rand()))
+  scale = stddev * rho
+  x = mean + scale * Math.cos(theta)
+  y = mean + scale * Math.sin(theta)
+  return x, y
+end

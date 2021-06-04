@@ -41,7 +41,6 @@ class SceneMain < Scene
       if @planetMap
         @planetMap.destroyMap(args)
       end
-      args.outputs.solids << [300, 300, 50, 50, 255, 0, 0 ]
       @galaxyMap.tick(args, @solarSystems)
       @galaxyMap.checkSystemSelect(args, @solarSystems)
     when :contextPlanetMenu

@@ -1,6 +1,6 @@
 class ContextGalaxyMap < Context
 
-  def initialize (args, stars: 150, minStarSize: 1, maxStarSize: 6, x: 0, y: 0, w: 1280, h: 720, starSaturation: 127, r: 20, g: 24, b: 46, a: 255)
+  def initialize (args, stars: 600, minStarSize: 1, maxStarSize: 6, x: 0, y: 0, w: 1280, h: 720, starSaturation: 127, r: 20, g: 24, b: 46, a: 255)
     @x = 0
     @y = 0
     @w = args.grid.w
@@ -16,8 +16,9 @@ class ContextGalaxyMap < Context
 
       randomColor = [randr(starSaturation, 255), 255, starSaturation]
       randomColor = randomColor.shuffle
+      point = gaussian(0.5, 0.2, rand)
 
-      @stars << {x: randr(x, w), y: randr(y, h), w: randSize, h: randSize, r: randomColor[0], g: randomColor[1], b: randomColor[2]}.solid
+      @stars << {x: point[0] * 1280, y: point[1] * 720, w: randSize, h: randSize, r: randomColor[0], g: randomColor[1], b: randomColor[2]}.solid
     end
 
     @staticOutput = []
@@ -36,7 +37,6 @@ class ContextGalaxyMap < Context
       sprite = {x: location[0], y: location[1], w: 28, h: 28, path: "sprites/PixelPlanets/shadowmap0.png", r: randr(0, 255), g: randr(0, 255), b: randr(0, 255), primitive_marker: :sprite}
       @staticOutput << sprite
     end
-    puts @staticOutput
     @staticOutput << systemsArray
   end
 

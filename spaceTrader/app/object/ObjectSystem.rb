@@ -4,7 +4,7 @@ class ObjectSystem < Object
   attr_accessor :y
   attr_accessor :name
   def initialize (args, availablePlanetNames)
-    @planetCount = randr(1, 6)
+    @planetCount = randr(3, 6)
     @systemPlanets = []
     generationCount = @planetCount
     until generationCount == 0
