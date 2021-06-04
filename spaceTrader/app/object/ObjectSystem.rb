@@ -17,7 +17,7 @@ class ObjectSystem < Object
     @x = randr(0, args.grid.right)
     @y = randr(0, args.grid.top)
     
-    @name = "George"
+    @name = availablePlanetNames.sample()
 
   end
 

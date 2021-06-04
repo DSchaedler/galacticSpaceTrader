@@ -15,15 +15,9 @@ class SceneMain < Scene
     @availablePlanetNames = EXOPLANET_NAMES
 
     @solarSystems = []
-    @solarSystems << ObjectSystem.new(args, @availablePlanetNames)
     @systemSelect
-
-    @planets = []
-    @planetSelect
-    i = 0
-    until i > 10 do
-      @planets[i] = ObjectPlanet.new(args, "PLANETNAME")
-      i += 1
+    5.times do
+      @solarSystems << ObjectSystem.new(args, @availablePlanetNames)
     end
 
     @ship = ObjectShip.new(args)
@@ -34,9 +28,6 @@ class SceneMain < Scene
     @galaxyMap = ContextGalaxyMap.new(args)
     @galaxyMap.createMap(args, @solarSystems)
 
-    @planetMap = ContextPlanetMap.new(args)
-    @planetMap.createMap(args, @planets)
-
     @planetMenu = ContextPlanetMenu.new(args)
   end
 
@@ -44,28 +35,28 @@ class SceneMain < Scene
 
     case @context
     when :contextPlanetMap
-      @planetMap.tick(args, @planets)
-      @planetMap.checkPlanetSelect(args, @planets)
+      @planetMap.tick(args)
+      @planetMap.checkPlanetSelect(args)
     when :contextGalaxyMap
+      if @planetMap
+        @planetMap.destroyMap(args)
+      end
       args.outputs.solids << [300, 300, 50, 50, 255, 0, 0 ]
       @galaxyMap.tick(args, @solarSystems)
       @galaxyMap.checkSystemSelect(args, @solarSystems)
     when :contextPlanetMenu
-      @planetMap.tick(args, @planets)
+      @planetMap.tick(args)
       @planetMenu.tick(args, @planetSelect)
     else
       #
     end
-    
   end
 
   def cycle args
-    for planet in @planets
-
-      planet.cycle(args)
-
-      #Simulate a factory
-      #if planet.materials.
+    if @systemSelect #TODO update all systems at once, or only update when on planet and interpolate data.
+      for planet in @systemSelect.systemPlanets
+        planet.cycle(args)
+      end
     end
   end
   

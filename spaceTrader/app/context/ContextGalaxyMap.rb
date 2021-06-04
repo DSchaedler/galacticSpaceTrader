@@ -60,7 +60,8 @@ class ContextGalaxyMap < Context
         dockButton = {x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: "sprites/dockButton.png", primitive_marker: :sprite}
         selectOutput << dockButton
         if args.inputs.mouse.click and args.inputs.mouse.intersect_rect? dockButton
-          $game.sceneMain.planetMap.createMap(args, $game.sceneMain.planets)
+          $game.sceneMain.planetMap = ContextPlanetMap.new(args)
+          $game.sceneMain.planetMap.createMap(args)
           $game.sceneMain.context = :contextPlanetMap
         end
       end
