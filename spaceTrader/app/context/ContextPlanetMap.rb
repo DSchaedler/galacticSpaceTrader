@@ -25,7 +25,7 @@ class ContextPlanetMap < Context
     @staticOutput = []
 
     @shipMode = :Orbit
-    @shipPos = [args.grid.center.w / 2, args.grid.center.h / 2]
+    @shipPos = [1280 / 2, 720 / 2]
   end
 
   def createMap(args, planets)
@@ -100,7 +100,9 @@ class ContextPlanetMap < Context
       @shipPos[1] = (speed * Math.sin(shipDegree * DEGREES_TO_RADIANS)) + @shipPos[1]
     else
       shipDegree = args.geometry.angle_to(@shipPos, destination)
-      @shipPos = destination
+      if destination != nil || [0, 0]
+        @shipPos = destination
+      end
       @shipMode = :Orbit
     end
 
