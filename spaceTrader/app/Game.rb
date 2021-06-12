@@ -1,5 +1,3 @@
-
-
 class Game
   attr_gtk # Magic
 
@@ -17,9 +15,9 @@ class Game
     args.outputs.background_color = [0, 0, 0] # Set Engine background color to black. Makes Letterboxing Black.
     @sceneMain.tick(args)
 
-    if args.state.tick_count % 60 == 0
-      cycle(args)
-    end
+    return unless (args.state.tick_count % 60).zero?
+
+    cycle(args)
   end
 
   def cycle args

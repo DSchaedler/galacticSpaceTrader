@@ -8,6 +8,7 @@ logs
 mygame
 samples
 tmp
+.rubocop.yml
 CHANGELOG.txt
 console_history.txt
 console-logo.png

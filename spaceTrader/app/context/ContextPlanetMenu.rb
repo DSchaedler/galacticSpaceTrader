@@ -69,7 +69,7 @@ class ContextPlanetMenu < Context
         shipPaid = 0
       else
         shipPaid = $game.sceneMain.ship.materials[m][:Paid]
-        #shipPaid = ($game.sceneMain.ship.materials[m][:Paid] / $game.sceneMain.ship.materials[m][:Stored]).round(2)
+        # shipPaid = ($game.sceneMain.ship.materials[m][:Paid] / $game.sceneMain.ship.materials[m][:Stored]).round(2)
       end
       if shipPaid
         v[:ShipPaid] = $game.sceneMain.ship.materials[m][:Paid]

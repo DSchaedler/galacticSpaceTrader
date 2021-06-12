@@ -19,7 +19,7 @@ class ContextGalaxyMap < Context
 
       randomColor = [randr(starSaturation, 255), 255, starSaturation]
       randomColor = randomColor.shuffle
-      point = gaussian(0.5, 0.2, rand)
+      point = gaussian(0.5, 0.2)
 
       @stars << {x: point[0] * 1280, y: point[1] * 720, w: randSize, h: randSize, r: randomColor[0], g: randomColor[1], b: randomColor[2]}.solid
     end
