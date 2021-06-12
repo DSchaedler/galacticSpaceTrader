@@ -35,6 +35,7 @@ class ObjectPlanet < Object
     end
 
     @materials["Water"] = {:Rate => 0, :Stored => 0, :Price => 10}
+    @materials["Fuel"] = {:Rate => 0, :Stored => 0, :Price => 10}
   end
 
   def cycle args
@@ -59,6 +60,7 @@ class ObjectPlanet < Object
     consume(args, "Oxygen", 0.01)
 
     factory(args, [["Water", 3], ["Hydrogen", 2], ["Oxygen", 1]])
+    factory(args, [["Fuel", 5], ["Hydrogen", 1], ["Oxygen", 4]])
     
   end
 

@@ -7,7 +7,7 @@ class ContextPlanetMenu < Context
     @textHeight = @sampleText[1]
     @imageWidth = @columnWidth * 2
     @imageHeight = @imageWidth
-    @columnCount = 7
+    @columnCount = 8
     @columnSort = :Stored
 
     @width = (@columnWidth * @columnCount) + (@elementPadding * (@columnCount + 1))
@@ -64,6 +64,16 @@ class ContextPlanetMenu < Context
     materials = planet.materials
     materials.each {|m, v| # Append how much the ship is storing to the table
       v[:Ship] = $game.sceneMain.ship.materials[m][:Stored]
+      if $game.sceneMain.ship.materials[m][:Stored] <= 0
+        $game.sceneMain.ship.materials[m][:Paid] = 0
+        shipPaid = 0
+      else
+        shipPaid = $game.sceneMain.ship.materials[m][:Paid]
+        #shipPaid = ($game.sceneMain.ship.materials[m][:Paid] / $game.sceneMain.ship.materials[m][:Stored]).round(2)
+      end
+      if shipPaid
+        v[:ShipPaid] = $game.sceneMain.ship.materials[m][:Paid]
+      end
     }
 
     sortedMaterials = materials.sort_by {|material, values| -values[@columnSort]}
@@ -115,9 +125,9 @@ class ContextPlanetMenu < Context
     newButton = UIBuyButton.new(args, @originX + (@columnWidth * columnIndex) + (@elementPadding * (columnIndex + 1)), startY - ( @textHeight * rowIndex), "Buy", row)
     newButton.createButton(args)
     buttons << newButton
-    columnIndex += 1
+    #columnIndex += 1
 
-    newButton = UISellButton.new(args, @originX + (@columnWidth * columnIndex) + (@elementPadding * (columnIndex + 1)), startY - ( @textHeight * rowIndex), "Sell", row)
+    newButton = UISellButton.new(args, @originX + (@columnWidth * columnIndex) + (@elementPadding * (columnIndex + 1)) + newButton.w + @elementPadding, startY - ( @textHeight * rowIndex), "Sell", row)
     newButton.createButton(args)
     buttons << newButton
   end

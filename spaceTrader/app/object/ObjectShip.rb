@@ -16,9 +16,11 @@ class ObjectShip < Object
     for resource in RESOURCES
       resourceInfo = {}
       resourceInfo[:Stored] = 0
+      resourceInfo[:Paid] = 0
       @materials[resource] = resourceInfo
       i += 1
     end
-    @materials["Water"] = {:Stored => 0}
+    @materials["Water"] = {:Stored => 0, :Paid => 0}
+    @materials["Fuel"] = {:Stored => 100, :Paid => 0}
   end
 end

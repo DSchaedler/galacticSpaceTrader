@@ -12,12 +12,11 @@ class SceneMain < Scene
     @context = :contextGalaxyMap
 
     # Generate Planets
-    @availablePlanetNames = EXOPLANET_NAMES
 
     @solarSystems = []
     @systemSelect
     5.times do
-      @solarSystems << ObjectSystem.new(args, @availablePlanetNames)
+      @solarSystems << ObjectSystem.new(args)
     end
 
     @ship = ObjectShip.new(args)
@@ -56,7 +55,7 @@ class SceneMain < Scene
     statusBar = {
       x: 1280 / 2,
       y: height,
-      text: "Money: #{ship.money} | Fuel: #{ship.fuel} | Cores: #{ship.cores} | System: #{@galaxyMap.systemName}",
+      text: "Money: #{ship.money} | Fuel: #{ship.materials["Fuel"][:Stored]} | Cores: #{ship.cores} | System: #{@galaxyMap.systemName}",
       r: 0,
       g: 255,
       b: 0,
@@ -68,8 +67,8 @@ class SceneMain < Scene
   end
 
   def cycle args
-    if @systemSelect #TODO update all systems at once, or only update when on planet and interpolate data.
-      for planet in @systemSelect.systemPlanets
+    for curSystem in @solarSystems #TODO update all systems at once, or only update when on planet and interpolate data.
+      for planet in curSystem.systemPlanets
         planet.cycle(args)
       end
     end

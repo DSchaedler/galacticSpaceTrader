@@ -2,6 +2,9 @@ class UI
 end
 
 class UIButton < UI
+
+  attr_accessor :w
+
   def initialize (args, x, y, string, m)
     @string = string
     @material = m
@@ -40,12 +43,14 @@ class UIBuyButton < UIButton
     args.outputs.primitives << @staticOutput
     if args.inputs.mouse.click and args.inputs.mouse.click.inside_rect? @staticOutput[0]
       if planet.materials[@material][:Stored] >= 1 and $game.sceneMain.ship.money >= planet.materials[@material][:Price]
+        $game.sceneMain.ship.materials[@material][:Paid] += planet.materials[@material][:Price]
+        $game.sceneMain.ship.materials[@material][:Paid] = $game.sceneMain.ship.materials[@material][:Paid].round(2)
         $game.sceneMain.ship.materials[@material][:Stored] += 1
         $game.sceneMain.ship.materials[@material][:Stored] = $game.sceneMain.ship.materials[@material][:Stored].round(2)
         $game.sceneMain.ship.money -= planet.materials[@material][:Price]
         $game.sceneMain.ship.money = $game.sceneMain.ship.money.round(2)
         planet.materials[@material][:Stored] -= 1
-        planet.materials[@material][:Price] += 0.01
+        planet.materials[@material][:Price] += 0.05
         planet.materials[@material][:Price] = planet.materials[@material][:Price].round(2)
       end
     end
@@ -58,11 +63,13 @@ class UISellButton < UIButton
     if args.inputs.mouse.click and args.inputs.mouse.click.inside_rect? @staticOutput[0]
       if $game.sceneMain.ship.materials[@material][:Stored] >= 1
         $game.sceneMain.ship.materials[@material][:Stored] -= 1
+        $game.sceneMain.ship.materials[@material][:Paid] -= ($game.sceneMain.ship.materials[@material][:Paid] / $game.sceneMain.ship.materials[@material][:Stored]).round(2)
+        $game.sceneMain.ship.materials[@material][:Paid] = $game.sceneMain.ship.materials[@material][:Paid].round(2)
         $game.sceneMain.ship.materials[@material][:Stored] = $game.sceneMain.ship.materials[@material][:Stored].round(2)
         $game.sceneMain.ship.money += planet.materials[@material][:Price]
         $game.sceneMain.ship.money = $game.sceneMain.ship.money.round(2)
         planet.materials[@material][:Stored] += 1
-        planet.materials[@material][:Price] -= 0.01
+        planet.materials[@material][:Price] -= 0.05
         planet.materials[@material][:Price] = planet.materials[@material][:Price].round(2)
       end
     end

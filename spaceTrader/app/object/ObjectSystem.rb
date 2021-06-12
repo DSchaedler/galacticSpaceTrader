@@ -3,13 +3,13 @@ class ObjectSystem < Object
   attr_accessor :x
   attr_accessor :y
   attr_accessor :name
-  def initialize (args, availablePlanetNames)
+  def initialize (args)
     @planetCount = randr(3, 6)
     @systemPlanets = []
     generationCount = @planetCount
     until generationCount == 0
-      planetName = availablePlanetNames.sample()
-      availablePlanetNames.pop(planetName)
+      planetName = $availablePlanetNames.sample()
+      $availablePlanetNames.pop(planetName)
       @systemPlanets << ObjectPlanet.new(args, planetName)
       generationCount -= 1
     end
@@ -17,7 +17,8 @@ class ObjectSystem < Object
     @x = randr(0, args.grid.right)
     @y = randr(0, args.grid.top)
     
-    @name = availablePlanetNames.sample()
+    @name = $availablePlanetNames.sample()
+    $availablePlanetNames.pop(@name)
 
   end
 

@@ -89,8 +89,8 @@ class ContextPlanetMap < Context
       
         shipTarget = (distance * Math.cos(shipDegree * DEGREES_TO_RADIANS)) + @planetSelect.x, (distance * Math.sin(shipDegree * DEGREES_TO_RADIANS)) + @planetSelect.y
         shipDegree = moveShip(args, shipTarget)
-        $game.sceneMain.ship.fuel -= 0.01
-        $game.sceneMain.ship.fuel = $game.sceneMain.ship.fuel.round(2)
+        $game.sceneMain.ship.materials["Fuel"][:Stored] -= 0.01
+        $game.sceneMain.ship.materials["Fuel"][:Stored] = $game.sceneMain.ship.materials["Fuel"][:Stored].round(2)
       end
       @tickOutput << args.outputs.primitives << {x: @shipPos[0], y: @shipPos[1], w:32, h: 32, path: "sprites/spaceship#{shipFrame}.png", angle: shipDegree - 90, primitive_marker: :sprite}
     end

@@ -14,6 +14,8 @@ require 'app/textboxMaking.rb'
 # Engine loop. Creates the game instance, then immdiately routes tick to $game.tick.
 # Don't put anything else here, put it in $game.tick.
 def tick args
+  $availablePlanetNames ||= EXOPLANET_NAMES
+
   $game ||= Game.new(args)
   $game.tick(args)
 

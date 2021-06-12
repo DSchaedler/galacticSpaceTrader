@@ -7,6 +7,7 @@ class Game
 
   # Runs once when game instance created
   def initialize args
+
     @sceneMain = SceneMain.new(args)
     @scene = :main
   end
