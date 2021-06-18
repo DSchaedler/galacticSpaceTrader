@@ -1,5 +1,7 @@
-def textboxBackground ( args, x:, y:, w:, h:, segment: 32)
-  y = y - segment
+# frozen_string_literal: true
+
+def textboxBackground(_args, x:, y:, w:, h:, segment: 32)
+  y -= segment
 
   textbox = []
   textbox << [x, y, segment, segment, 'sprites/textbox/textbox0.png'].sprite
@@ -12,5 +14,5 @@ def textboxBackground ( args, x:, y:, w:, h:, segment: 32)
   textbox << [x + segment, y - h + segment, w - segment * 2, segment, 'sprites/textbox/textbox7.png'].sprite
   textbox << [x + w - segment, y - h + segment, segment, segment, 'sprites/textbox/textbox8.png'].sprite
 
-  return textbox
+  textbox
 end

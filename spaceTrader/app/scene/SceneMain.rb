@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SceneMain < Scene
   attr_accessor :planets
   attr_accessor :systems
@@ -8,7 +10,7 @@ class SceneMain < Scene
   attr_accessor :ship
   attr_accessor :context
 
-  def initialize args
+  def initialize(args)
     @context = :contextGalaxyMap
 
     # Generate Planets
@@ -30,48 +32,43 @@ class SceneMain < Scene
     @planetMenu = ContextPlanetMenu.new(args)
   end
 
-  def tick args
-
+  def tick(args)
     case @context
     when :contextPlanetMap
       @planetMap.tick(args)
       @planetMap.checkPlanetSelect(args)
     when :contextGalaxyMap
-      if @planetMap
-        @planetMap.destroyMap(args)
-      end
+      @planetMap&.destroyMap(args)
       @galaxyMap.tick(args, @solarSystems)
       @galaxyMap.checkSystemSelect(args, @solarSystems)
     when :contextPlanetMenu
       @planetMap.tick(args)
       @planetMenu.tick(args)
-    else
-      #
     end
 
     ship = $game.sceneMain.ship
     size = 3
-    height = args.gtk.calcstringbox("Sample", size)[1]
+    height = args.gtk.calcstringbox('Sample', size)[1]
     statusBar = {
       x: 1280 / 2,
       y: height,
-      text: "Money: #{ship.money} | Fuel: #{ship.materials["Fuel"][:Stored]} | Cores: #{ship.cores} | System: #{@galaxyMap.systemName}",
+      text: "Money: #{ship.money} | Fuel: #{ship.materials['Fuel'][:Stored]} | Cores: #{ship.cores} | System: #{@galaxyMap.systemName}",
       r: 0,
       g: 255,
       b: 0,
       size_enum: size,
       alignment_enum: 1,
-      primitive_marker: :label}
+      primitive_marker: :label
+    }
 
     args.outputs.primitives << statusBar
   end
 
-  def cycle args
-    for curSystem in @solarSystems #TODO update all systems at once, or only update when on planet and interpolate data.
-      for planet in curSystem.systemPlanets
+  def cycle(args)
+    @solarSystems.each do |curSystem| # TODO: update all systems at once, or only update when on planet and interpolate data.
+      curSystem.systemPlanets.each do |planet|
         planet.cycle(args)
       end
     end
   end
-  
 end

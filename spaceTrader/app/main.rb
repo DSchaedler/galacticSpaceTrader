@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Require our various files.
 # Lib
 require 'lib/di_lib.rb'
@@ -25,13 +27,13 @@ end
 # Engine methods - Not associated with any game logic, these are useful shortcuts to have.
 
 # Produces random number in range min through max.
-def randr(min, max) 
+def randr(min, max)
   rand(max - min) + min
 end
 
 # Converts a string for a hexidecimal color value to an array of RGB values.
-def hex_to_rgb (hexstring)
-  hexstring.gsub("#", "").split('').each_slice(2).map { |e| e.join.to_i(16) }
+def hex_to_rgb(hexstring)
+  hexstring.gsub('#', '').split('').each_slice(2).map { |e| e.join.to_i(16) }
 end
 
 # Resets the game object, effectively making a clean reset.

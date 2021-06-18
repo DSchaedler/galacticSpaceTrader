@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class Game
   attr_gtk # Magic
 
   attr_accessor :sceneMain
 
   # Runs once when game instance created
-  def initialize args
+  def initialize(args)
     @pregeneration = false
     @sceneMain = SceneMain.new(args)
     @scene = :main
@@ -26,7 +28,7 @@ class Game
     cycle(args)
   end
 
-  def cycle args
+  def cycle(args)
     @sceneMain.cycle(args)
   end
 
