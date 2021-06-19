@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 
+# Runs the main scene of the game, travelling to planets and trading cargo.
 class SceneMain < Scene
   attr_accessor :planets
   attr_accessor :systems
   attr_accessor :system_select
-  attr_accessor :planetSelect
-  attr_accessor :planetMap
-  attr_accessor :planetMenu
+  attr_accessor :planet_select
+  attr_accessor :planet_map
+  attr_accessor :planet_menu
   attr_accessor :ship
   attr_accessor :context
 
   def initialize(args)
-    @context = :contextGalaxyMap
+    @context = :context_galaxy_map
 
     # Generate Planets
     @solar_systems = []
@@ -23,32 +24,32 @@ class SceneMain < Scene
     @systems = []
 
     # Background
-    @galaxyMap = ContextGalaxyMap.new(args)
-    @galaxyMap.createMap(args, @solar_systems)
+    @galaxy_map = ContextGalaxyMap.new(args)
+    @galaxy_map.create_map(args, @solar_systems)
 
-    @planetMenu = ContextPlanetMenu.new(args)
+    @planet_menu = ContextPlanetMenu.new(args)
   end
 
   def tick(args)
     case @context
-    when :contextPlanetMap
-      @planetMap.tick(args)
-      @planetMap.checkPlanetSelect(args)
-    when :contextGalaxyMap
-      @planetMap&.destroyMap(args)
-      @galaxyMap.tick(args, @solar_systems)
-      @galaxyMap.check_system_select(args, @solar_systems)
-    when :contextPlanetMenu
-      @planetMap.tick(args)
-      @planetMenu.tick(args)
+    when :context_planet_map
+      @planet_map.tick(args)
+      @planet_map.checkPlanetSelect(args)
+    when :context_galaxy_map
+      @planet_map&.destroyMap()
+      @galaxy_map.tick(args, @solar_systems)
+      @galaxy_map.check_system_select(args, @solar_systems)
+    when :context_planet_menu
+      @planet_map.tick(args)
+      @planet_menu.tick(args)
     end
 
     size = 3
     height = args.gtk.calcstringbox('Sample', size)[1]
-    statusBar = {
+    status_bar = {
       x: 1280 / 2,
       y: height,
-      text: "Money: #{@ship.money} | Fuel: #{@ship.materials['Fuel'][:Stored]} | Cores: #{@ship.cores} | System: #{@galaxyMap.systemName}",
+      text: "Money: #{@ship.money} | Fuel: #{@ship.materials['Fuel'][:Stored]} | Cores: #{@ship.cores} | System: #{@galaxy_map.system_name}",
       r: 0,
       g: 255,
       b: 0,
@@ -57,11 +58,11 @@ class SceneMain < Scene
       primitive_marker: :label
     }
 
-    args.outputs.primitives << statusBar
+    args.outputs.primitives << status_bar
   end
 
   def cycle(args)
-    @solar_systems.each do |cur_system| # TODO: update all systems at once, or only update when on planet and interpolate data.
+    @solar_systems.each do |cur_system|
       cur_system.systemPlanets.each do |planet|
         planet.cycle(args)
       end

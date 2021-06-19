@@ -36,7 +36,7 @@ class ContextPlanetMap < Context
     @shipPos = [1280 / 2, 720 / 2]
   end
 
-  def createMap(args)
+  def create_map(args)
     @staticOutput << [@x, @y, @w, @h, @r, @g, @b, @a].solid # Draw a background color for the actual game area.
     @staticOutput << @stars
 
@@ -76,8 +76,8 @@ class ContextPlanetMap < Context
       @tickOutput << dockButton
       if args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dockButton)
         puts @planetSelect
-        $game.scene_main.planetMenu.create_menu(@planetSelect)
-        $game.scene_main.context = :contextPlanetMenu
+        $game.scene_main.planet_menu.create_menu(@planetSelect)
+        $game.scene_main.context = :context_planet_menu
       end
 
     elsif @shipMode == :Move
@@ -130,8 +130,8 @@ class ContextPlanetMap < Context
       selectOutput << { x: planet.x - 2, y: planet.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png', primitive_marker: :sprite }
       next unless args.inputs.mouse.up
 
-      $game.scene_main.planetMenu.destroyMenu(args)
-      @shipMode = :Move if planet != $game.scene_main.planetSelect
+      $game.scene_main.planet_menu.destroyMenu()
+      @shipMode = :Move if planet != $game.scene_main.planet_select
       @planetSelect = planet
     end
 
