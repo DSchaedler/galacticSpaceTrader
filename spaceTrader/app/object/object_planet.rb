@@ -5,11 +5,7 @@ class ObjectPlanet < Object
   # Creates attribute accessors for instance variables.
   # Just pretend that you have to declare instance variables and it will be fine.
   attr_accessor :x
-  attr_accessor :y
-  attr_accessor :type
-  attr_accessor :name
-  attr_accessor :image
-  attr_accessor :materials
+  attr_accessor :y, :type, :name, :image, :materials
 
   def initialize(planet_name)
     # Generate unique planet information

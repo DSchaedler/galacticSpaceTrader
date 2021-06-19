@@ -2,10 +2,8 @@
 
 # Instance class of the systems in the galaxy
 class ObjectSystem < Object
-  attr_accessor :system_planets
-  attr_accessor :x
-  attr_accessor :y
-  attr_accessor :name
+  attr_accessor :system_planets, :x, :y, :name
+
   def initialize(args)
     @planet_count = randr(3, 6)
     @system_planets = []
@@ -23,7 +21,6 @@ class ObjectSystem < Object
   end
 
   def draw(_args)
-    location = [@x, @y]
-    location
+    [@x, @y]
   end
 end

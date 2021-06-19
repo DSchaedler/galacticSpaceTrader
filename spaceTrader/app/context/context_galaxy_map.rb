@@ -2,8 +2,7 @@
 
 # Handles calculations and drawing of the galaxy map.
 class ContextGalaxyMap < Context
-  attr_accessor :current_system
-  attr_accessor :system_name
+  attr_accessor :current_system, :system_name
 
   def initialize(args, stars: 600, min_star_size: 1, max_star_size: 6, star_saturation: 127)
     @x = 0

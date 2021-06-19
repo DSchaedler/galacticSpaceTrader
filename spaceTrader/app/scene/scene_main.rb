@@ -2,16 +2,10 @@
 
 # Runs the main scene of the game, travelling to planets and trading cargo.
 class SceneMain < Scene
-  attr_accessor :planets
-  attr_accessor :systems
-  attr_accessor :system_select
-  attr_accessor :planet_select
-  attr_accessor :planet_map
-  attr_accessor :planet_menu
-  attr_accessor :ship
-  attr_accessor :context
+  attr_accessor :planets, :systems, :system_select, :planet_select, :planet_map, :planet_menu, :ship, :context
 
   def initialize(args)
+    super
     @context = :context_galaxy_map
 
     # Generate Planets

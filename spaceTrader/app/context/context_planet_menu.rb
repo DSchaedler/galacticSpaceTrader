@@ -124,23 +124,27 @@ class ContextPlanetMenu < Context
     columnIndex = 0
 
     # Put the element name at the beginning of the row
-    table << { x: @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)), y: startY - (@text_height * rowIndex), text: row, primitive_marker: :label }
+    table << { x: @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)),
+               y: startY - (@text_height * rowIndex), text: row, primitive_marker: :label }
     columnIndex += 1
 
     # Iterate through remaining columns and print
     contents.each do |_column, value|
       # OUTPUT CODE
-      table << { x: @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)), y: startY - (@text_height * rowIndex), text: value, primitive_marker: :label }
+      table << { x: @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)),
+                 y: startY - (@text_height * rowIndex), text: value, primitive_marker: :label }
       columnIndex += 1
     end
 
     # And add buy and sell buttons at the end of each row
-    newButton = UIBuyButton.new(args, @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)), startY - (@text_height * rowIndex), 'Buy', row)
+    newButton = UIBuyButton.new(args,
+                                @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)), startY - (@text_height * rowIndex), 'Buy', row)
     newButton.createButton(args)
     buttons << newButton
     # columnIndex += 1
 
-    newButton = UISellButton.new(args, @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)) + newButton.w + @element_padding, startY - (@text_height * rowIndex), 'Sell', row)
+    newButton = UISellButton.new(args,
+                                 @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)) + newButton.w + @element_padding, startY - (@text_height * rowIndex), 'Sell', row)
     newButton.createButton(args)
     buttons << newButton
   end

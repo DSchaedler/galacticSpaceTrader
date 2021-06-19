@@ -2,11 +2,7 @@
 
 # Instance class of the player ship.
 class ObjectShip < Object
-  attr_accessor :name
-  attr_accessor :money
-  attr_accessor :fuel
-  attr_accessor :cores
-  attr_accessor :materials
+  attr_accessor :name, :money, :fuel, :cores, :materials
 
   def initialize
     @name = 'Ship'
