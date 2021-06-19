@@ -12,7 +12,7 @@ class ContextPlanetMap < Context
     @b = 46
     @a = 255
     
-    @system = $game.sceneMain.systemSelect  
+    @system = $game.sceneMain.system_select  
     @planets = []
     @planets = @system.systemPlanets
     @planetSelect
@@ -47,7 +47,7 @@ class ContextPlanetMap < Context
   end
   
   def tick (args)
-    @system = $game.sceneMain.systemSelect  
+    @system = $game.sceneMain.system_select  
     @planets = @system.systemPlanets
 
     @tickOutput = []

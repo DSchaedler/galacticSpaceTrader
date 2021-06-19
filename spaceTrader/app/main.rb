@@ -16,7 +16,7 @@ require 'app/textboxMaking.rb'
 # Engine loop. Creates the game instance, then immdiately routes tick to $game.tick.
 # Don't put anything else here, put it in $game.tick.
 def tick(args)
-  $availablePlanetNames ||= EXOPLANET_NAMES
+  $availablePlanetNames ||= ['Abol', 'Agouto', 'Albmi', 'Alef', 'Amateru', 'Arber', 'Arion', 'Arkas', 'Asye', 'Aumatex', 'Awasis', 'Babylonia', 'Bagan', 'Baiduri', 'Bambaruush[6]', 'Barajeel', 'Beirut', 'Bendida', 'Bocaprins', 'Boinayel', 'Brahe', 'Bran', 'Buru', 'Caleuche', 'Cayahuanca', 'Chura', 'Cruinlagh', 'Cuptor', 'Dagon', 'Dimidium', 'Dopere', 'Draugr', 'Drukyul', 'Dulcinea', 'Eburonia', 'Eiger', 'Equiano', 'Eyeke', 'Finlay', 'Fold', 'Fortitudo', 'Galileo', 'Ganja', 'Guarani', 'Haik', 'Hairu', 'Halla', 'Harriot', 'Hiisi', 'Hypatia', 'Independance', 'Iolaus', 'Isagel', 'Isli', 'Iztok', 'Janssen', 'Jebus', 'Kavian', 'Khomsa', "Koyopa'", 'Krotoa', 'Laligurans', 'Leklsullun', 'Lete', 'Lipperhey', 'Madalitso', 'Madriu', 'Maeping', 'Magor', 'Majriti', 'Makropulos', 'Mastika', 'Meztli', 'Mintome', 'Mulchatna', 'Nachtwacht', 'Naron', 'Negoiu', 'Neri', 'Noifasui', 'Onasilos', 'Orbitar', 'Peitruss', 'Perwana', 'Phobetor', 'Pipitea', 'Pirx', 'Pollera', 'Poltergeist', 'Quijote', 'Ramajay', 'Riosar', 'Rocinante', 'Saffar', 'Samagiya', 'Samh', 'Sancho', 'Santamasa', 'Sazum', 'Sissi', 'Smertrios', 'Spe', 'Staburags', 'Sumajmajta', 'Surt', 'Tadmor', 'Tanzanite', 'Taphao Kaew', 'Taphao Thong', 'Tassili', 'Teberda', 'Thestias', 'Toge', 'Tondra', 'Trimobe', 'Tryzub', 'Tumearandu', 'Ugarit', 'Veles', 'Victoriapeak', 'Viculus', 'Viriato', 'Vlasina', 'Vytis', 'Wadirum', 'Wangshu', 'Xolotlan', 'Yanyan', 'Yvaga']
 
   $game ||= Game.new(args)
   $game.tick(args)

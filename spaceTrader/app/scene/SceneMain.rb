@@ -3,7 +3,7 @@
 class SceneMain < Scene
   attr_accessor :planets
   attr_accessor :systems
-  attr_accessor :systemSelect
+  attr_accessor :system_select
   attr_accessor :planetSelect
   attr_accessor :planetMap
   attr_accessor :planetMenu
@@ -14,12 +14,9 @@ class SceneMain < Scene
     @context = :contextGalaxyMap
 
     # Generate Planets
-
-    @solarSystems = []
-    @systemSelect
-    5.times do
-      @solarSystems << ObjectSystem.new(args)
-    end
+    @solar_systems = []
+    @system_select
+    5.times { ; @solar_systems << ObjectSystem.new(args); }
 
     @ship = ObjectShip.new(args)
 
@@ -27,7 +24,7 @@ class SceneMain < Scene
 
     # Background
     @galaxyMap = ContextGalaxyMap.new(args)
-    @galaxyMap.createMap(args, @solarSystems)
+    @galaxyMap.createMap(args, @solar_systems)
 
     @planetMenu = ContextPlanetMenu.new(args)
   end
@@ -39,8 +36,8 @@ class SceneMain < Scene
       @planetMap.checkPlanetSelect(args)
     when :contextGalaxyMap
       @planetMap&.destroyMap(args)
-      @galaxyMap.tick(args, @solarSystems)
-      @galaxyMap.checkSystemSelect(args, @solarSystems)
+      @galaxyMap.tick(args, @solar_systems)
+      @galaxyMap.check_system_select(args, @solar_systems)
     when :contextPlanetMenu
       @planetMap.tick(args)
       @planetMenu.tick(args)
@@ -65,7 +62,7 @@ class SceneMain < Scene
   end
 
   def cycle(args)
-    @solarSystems.each do |curSystem| # TODO: update all systems at once, or only update when on planet and interpolate data.
+    @solar_systems.each do |curSystem| # TODO: update all systems at once, or only update when on planet and interpolate data.
       curSystem.systemPlanets.each do |planet|
         planet.cycle(args)
       end

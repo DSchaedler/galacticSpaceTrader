@@ -54,24 +54,24 @@ class ContextGalaxyMap < Context
     args.outputs.primitives << @tickOutput
   end
 
-  def checkSystemSelect(args, systems)
+  def check_system_select(args, systems)
     selectOutput = []
     systems.each do |eachSystem|
-      if $game.sceneMain.systemSelect
-        systemSelect = $game.sceneMain.systemSelect
+      if $game.sceneMain.system_select
+        system_select = $game.sceneMain.system_select
 
-        selectOutput << { x: systemSelect.x + 14, y: systemSelect.y - 4, text: systemSelect.name, r: 255, g: 255, b: 255, alignment_enum: 1, primitive_marker: :label }
-        selectOutput << { x: systemSelect.x - 2, y: systemSelect.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png', primitive_marker: :sprite }
+        selectOutput << { x: system_select.x + 14, y: system_select.y - 4, text: system_select.name, r: 255, g: 255, b: 255, alignment_enum: 1, primitive_marker: :label }
+        selectOutput << { x: system_select.x - 2, y: system_select.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png', primitive_marker: :sprite }
       end
 
       next unless args.inputs.mouse.inside_rect? [eachSystem.x, eachSystem.y, 28, 28]
 
       selectOutput << { x: eachSystem.x + 14, y: eachSystem.y - 4, text: eachSystem.name, r: 255, g: 255, b: 255, alignment_enum: 1, primitive_marker: :label }
       selectOutput << { x: eachSystem.x - 2, y: eachSystem.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png', primitive_marker: :sprite }
-      $game.sceneMain.systemSelect = eachSystem if args.inputs.mouse.up
+      $game.sceneMain.system_select = eachSystem if args.inputs.mouse.up
     end
 
-    if $game.sceneMain.systemSelect
+    if $game.sceneMain.system_select
 
       dockButton = []
       dockButton << { x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: 'sprites/buttonTemplate.png', primitive_marker: :sprite }
@@ -79,8 +79,8 @@ class ContextGalaxyMap < Context
 
       selectOutput << dockButton
       if args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dockButton[0])
-        if $game.sceneMain.systemSelect != @currentSystem
-          @currentSystem = $game.sceneMain.systemSelect
+        if $game.sceneMain.system_select != @currentSystem
+          @currentSystem = $game.sceneMain.system_select
           @systemName = @currentSystem.name
           $game.sceneMain.ship.cores -= 1
         end
