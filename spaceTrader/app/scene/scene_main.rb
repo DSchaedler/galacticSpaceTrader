@@ -5,7 +5,6 @@ class SceneMain < Scene
   attr_accessor :planets, :systems, :system_select, :planet_select, :planet_map, :planet_menu, :ship, :context
 
   def initialize(args)
-    
     @context = :context_galaxy_map
 
     # Generate Planets

@@ -37,7 +37,7 @@ class ContextPlanetMap < Context
     @ship_pos = [1280 / 2, 720 / 2]
   end
 
-  def create_map(args)
+  def create_map(_args)
     @static_output << [@x, @y, @w, @h, @r, @g, @b, @a].solid # Draw a background color for the actual game area.
     @static_output << @stars
 
@@ -74,7 +74,8 @@ class ContextPlanetMap < Context
       @tick_output << { x: @ship_pos[0], y: @ship_pos[1], w: 32, h: 32, path: "sprites/spaceship#{ship_frame}.png",
                         angle: ship_degree, primitive_marker: :sprite }
 
-      dock_button = { x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: 'sprites/dockButton.png', primitive_marker: :sprite }
+      dock_button = { x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: 'sprites/dockButton.png',
+                      primitive_marker: :sprite }
       @tick_output << dock_button
       if args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dock_button)
         puts @planet_select
