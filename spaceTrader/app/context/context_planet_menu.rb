@@ -3,6 +3,7 @@
 # Handles calculations and drawing of the planet data screens.
 class ContextPlanetMenu < Context
   def initialize(args)
+    super
     @element_padding = 10
     @sample_text = args.gtk.calcstringbox('Manganese')
     @column_width = @sample_text[0]
@@ -14,45 +15,45 @@ class ContextPlanetMenu < Context
 
     @width = (@column_width * @column_count) + (@element_padding * (@column_count + 1))
     @height = args.grid.h
-    @originX = (args.grid.w / 2) - (@width / 2)
-    @originY = args.grid.top
+    @origin_x = (args.grid.w / 2) - (@width / 2)
+    @origin_y = args.grid.top
 
-    @staticOutput = []
+    @static_output = []
     @planet = nil
   end
 
   def create_menu(planet)
     # Textbox
-    @staticOutput << textbox_background(x: @originX,
-                                        y: @originY,
-                                        w: @column_width * @column_count + @element_padding * 4,
-                                        h: @height)
+    @static_output << textbox_background(x: @origin_x,
+                                         y: @origin_y,
+                                         w: @column_width * @column_count + @element_padding * 4,
+                                         h: @height)
     # Planet Image
-    @staticOutput << { x: @originX + (@width / 2) - (@image_width / 2) - @element_padding,
-                       y: @originY - @image_height - @element_padding,
-                       w: @image_width,
-                       h: @image_height,
-                       path: planet.image,
-                       primitive_marker: :sprite }
+    @static_output << { x: @origin_x + (@width / 2) - (@image_width / 2) - @element_padding,
+                        y: @origin_y - @image_height - @element_padding,
+                        w: @image_width,
+                        h: @image_height,
+                        path: planet.image,
+                        primitive_marker: :sprite }
     # Planet Name
-    @staticOutput << { x: @originX + @element_padding,
-                       y: @originY - @image_height - @element_padding - (@text_height * 1),
-                       text: planet.name,
-                       primitive_marker: :label }
+    @static_output << { x: @origin_x + @element_padding,
+                        y: @origin_y - @image_height - @element_padding - (@text_height * 1),
+                        text: planet.name,
+                        primitive_marker: :label }
     # Planet Type
-    @staticOutput << { x: @originX + @element_padding,
-                       y: @originY - @image_height - @element_padding - (@text_height * 2),
-                       text: planet.type, primitive_marker: :label }
+    @static_output << { x: @origin_x + @element_padding,
+                        y: @origin_y - @image_height - @element_padding - (@text_height * 2),
+                        text: planet.type, primitive_marker: :label }
 
     @planet = planet
   end
 
-  def destroyMenu
-    @staticOutput = []
+  def destroy_menu
+    @static_output = []
   end
 
   def tick(args)
-    args.outputs.primitives << @staticOutput
+    args.outputs.primitives << @static_output
 
     if args.inputs.keyboard.key_up.escape
       destroyMenu(args)
@@ -64,88 +65,90 @@ class ContextPlanetMenu < Context
     buttons = []
 
     # Define the start location of the table
-    listStart = @originY - @image_height - (@text_height * 4)
+    list_start = @origin_y - @image_height - (@text_height * 4)
 
-    printTable(args, table, buttons, @planet, listStart)
+    print_table(args, table, buttons, @planet, list_start)
 
     buttons.each { |button|; button.tick(args, @planet); } # Tick buttons
 
     args.outputs.primitives << table # Make it so
   end
 
-  def printTable(args, table, buttons, planet, startY)
+  def print_table(args, table, buttons, planet, start_y)
     materials = planet.materials
     materials.each do |m, v| # Append how much the ship is storing to the table
       v[:Ship] = $game.scene_main.ship.materials[m][:Stored]
       if $game.scene_main.ship.materials[m][:Stored] <= 0
         $game.scene_main.ship.materials[m][:Paid] = 0
-        shipPaid = 0
+        ship_paid = 0
       else
-        shipPaid = $game.scene_main.ship.materials[m][:Paid]
-        # shipPaid = ($game.scene_main.ship.materials[m][:Paid] / $game.scene_main.ship.materials[m][:Stored]).round(2)
+        ship_paid = $game.scene_main.ship.materials[m][:Paid]
+        # ship_paid = ($game.scene_main.ship.materials[m][:Paid] / $game.scene_main.ship.materials[m][:Stored]).round(2)
       end
-      v[:ShipPaid] = $game.scene_main.ship.materials[m][:Paid] if shipPaid
+      v[:ShipPaid] = $game.scene_main.ship.materials[m][:Paid] if ship_paid
     end
 
-    sortedMaterials = materials.sort_by { |_material, values| -values[@column_sort] }
+    sorted_materials = materials.sort_by { |_material, values| -values[@column_sort] }
 
     # Draw the column headers for the table
-    columnHeaders(args, table, startY, sortedMaterials[0][1])
-    startY -= @text_height
+    column_headers(args, table, start_y, sorted_materials[0][1])
+    start_y -= @text_height
 
-    rowIndex = 0
-    sortedMaterials.each do |row, value| # For each row of materials in the table
-      printColumns(args, table, buttons, rowIndex, row, value, startY) # Print all of the columns for that row.
-      rowIndex += 1
+    row_index = 0
+    sorted_materials.each do |row, value| # For each row of materials in the table
+      print_columns(args, table, buttons, row_index, row, value, start_y) # Print all of the columns for that row.
+      row_index += 1
     end
   end
 
-  def columnHeaders(args, table, startY, hash)
-    columnIndex = 1
+  def column_headers(args, table, start_y, hash)
+    column_index = 1
     hash.each do |key, _value|
-      labelHash = { x: @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)),
-                    y: startY,
-                    text: key,
-                    primitive_marker: :label }
-      table << labelHash
-      columnIndex += 1
+      label_hash = { x: @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)),
+                     y: start_y,
+                     text: key,
+                     primitive_marker: :label }
+      table << label_hash
+      column_index += 1
 
       # Allows rows to be sorted by column values
       # Click the column header to sort
       next unless args.inputs.mouse.click
 
-      if args.inputs.mouse.intersect_rect? [labelHash[:x], labelHash[:y] - @text_height, @column_width, @text_height]
+      if args.inputs.mouse.intersect_rect? [label_hash[:x], label_hash[:y] - @text_height, @column_width, @text_height]
         @column_sort = key
       end
     end
   end
 
-  def printColumns(args, table, buttons, rowIndex, row, contents, startY)
-    columnIndex = 0
+  def print_columns(table, buttons, row_index, row, contents, start_y)
+    column_index = 0
 
     # Put the element name at the beginning of the row
-    table << { x: @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)),
-               y: startY - (@text_height * rowIndex), text: row, primitive_marker: :label }
-    columnIndex += 1
+    table << { x: @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)),
+               y: start_y - (@text_height * row_index), text: row, primitive_marker: :label }
+    column_index += 1
 
     # Iterate through remaining columns and print
     contents.each do |_column, value|
       # OUTPUT CODE
-      table << { x: @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)),
-                 y: startY - (@text_height * rowIndex), text: value, primitive_marker: :label }
-      columnIndex += 1
+      table << { x: @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)),
+                 y: start_y - (@text_height * row_index), text: value, primitive_marker: :label }
+      column_index += 1
     end
 
     # And add buy and sell buttons at the end of each row
-    newButton = UIBuyButton.new(args,
-                                @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)), startY - (@text_height * rowIndex), 'Buy', row)
-    newButton.createButton(args)
-    buttons << newButton
-    # columnIndex += 1
+    new_button = UIBuyButton.new(args,
+                                 @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)),
+                                 start_y - (@text_height * row_index), 'Buy', row)
+    new_button.createButton(args)
+    buttons << new_button
+    # column_index += 1
 
-    newButton = UISellButton.new(args,
-                                 @originX + (@column_width * columnIndex) + (@element_padding * (columnIndex + 1)) + newButton.w + @element_padding, startY - (@text_height * rowIndex), 'Sell', row)
-    newButton.createButton(args)
-    buttons << newButton
+    new_button = UISellButton.new(args,
+                                  @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)) + new_button.w + @element_padding, # rubocop:disable Metrics/LineLength
+                                  start_y - (@text_height * row_index), 'Sell', row)
+    new_button.createButton(args)
+    buttons << new_button
   end
 end

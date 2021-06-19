@@ -1,4 +1,0 @@
-Style/GlobalVars:
-  AllowedVariables:
-    - $game
-    - $available_planet_names

@@ -9,6 +9,7 @@ class UIButton < UI
   attr_accessor :w
 
   def initialize(args, x_pos, y_pos, string, mat)
+    super
     @string = string
     @material = mat
 
@@ -46,6 +47,7 @@ end
 
 # Buy button on Planet Menus
 class UIBuyButton < UIButton
+  super
   def tick(args, planet)
     args.outputs.primitives << @static_output
     return unless args.inputs.mouse.click&.inside_rect?(@static_output[0])
@@ -66,6 +68,7 @@ end
 
 # Sell button on Planet Menus
 class UISellButton < UIButton
+  super
   def tick(args, planet)
     args.outputs.primitives << @static_output
     return unless args.inputs.mouse.click&.inside_rect? @static_output[0]
