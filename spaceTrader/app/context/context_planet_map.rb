@@ -130,7 +130,7 @@ class ContextPlanetMap < Context
       selectOutput << { x: planet.x - 2, y: planet.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png', primitive_marker: :sprite }
       next unless args.inputs.mouse.up
 
-      $game.scene_main.planet_menu.destroyMenu()
+      $game.scene_main.planet_menu.destroyMenu
       @shipMode = :Move if planet != $game.scene_main.planet_select
       @planetSelect = planet
     end

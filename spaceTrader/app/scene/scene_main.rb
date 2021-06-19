@@ -49,7 +49,7 @@ class SceneMain < Scene
     status_bar = {
       x: 1280 / 2,
       y: height,
-      text: "Money: #{@ship.money} | Fuel: #{@ship.materials['Fuel'][:Stored]} | Cores: #{@ship.cores} | System: #{@galaxy_map.system_name}",
+      text: "Money: #{@ship.money} | Fuel: #{@ship.materials['Fuel'][:Stored]} | Cores: #{@ship.cores} | System: #{@galaxy_map.system_name}", # rubocop:disable Layout/LineLength
       r: 0,
       g: 255,
       b: 0,

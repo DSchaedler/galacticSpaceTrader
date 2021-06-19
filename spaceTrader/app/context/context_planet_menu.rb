@@ -47,7 +47,7 @@ class ContextPlanetMenu < Context
     @planet = planet
   end
 
-  def destroyMenu()
+  def destroyMenu
     @staticOutput = []
   end
 
