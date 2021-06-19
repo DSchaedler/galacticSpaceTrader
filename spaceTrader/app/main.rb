@@ -7,7 +7,7 @@ require 'app/constants.rb'
 require 'app/game.rb'
 require 'app/context/context.rb'
 require 'app/scene/scene.rb'
-require 'app/object/Object.rb'
+require 'app/object/object.rb'
 require 'app/ui/UI.rb'
 require 'app/textbox_making.rb'
 

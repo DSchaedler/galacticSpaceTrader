@@ -2,7 +2,7 @@
 
 require 'app/context/context_planet_map.rb'
 require 'app/context/context_planet_menu.rb'
-require 'app/context/ContextGalaxyMap.rb'
+require 'app/context/context_galaxy_map.rb'
 
 class Context
   def initialize

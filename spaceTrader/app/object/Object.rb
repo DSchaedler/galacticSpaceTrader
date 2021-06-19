@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'app/object/ObjectSystem.rb'
-require 'app/object/ObjectPlanet.rb'
-require 'app/object/ObjectShip.rb'
+require 'app/object/object_system.rb'
+require 'app/object/object_planet.rb'
+require 'app/object/object_ship.rb'
 
 class Object
 end
