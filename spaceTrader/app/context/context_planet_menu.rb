@@ -3,7 +3,6 @@
 # Handles calculations and drawing of the planet data screens.
 class ContextPlanetMenu < Context
   def initialize(args)
-    super
     @element_padding = 10
     @sample_text = args.gtk.calcstringbox('Manganese')
     @column_width = @sample_text[0]
@@ -24,10 +23,10 @@ class ContextPlanetMenu < Context
 
   def create_menu(planet)
     # Textbox
-    @static_output << textbox_background(x: @origin_x,
-                                         y: @origin_y,
-                                         w: @column_width * @column_count + @element_padding * 4,
-                                         h: @height)
+    @static_output << textbox_background(x_pos: @origin_x,
+                                         y_pos: @origin_y,
+                                         width: @column_width * @column_count + @element_padding * 4,
+                                         height: @height)
     # Planet Image
     @static_output << { x: @origin_x + (@width / 2) - (@image_width / 2) - @element_padding,
                         y: @origin_y - @image_height - @element_padding,
@@ -56,7 +55,7 @@ class ContextPlanetMenu < Context
     args.outputs.primitives << @static_output
 
     if args.inputs.keyboard.key_up.escape
-      destroyMenu(args)
+      destroy_menu
       $game.scene_main.context = :context_planet_map
     end
 
@@ -121,7 +120,7 @@ class ContextPlanetMenu < Context
     end
   end
 
-  def print_columns(table, buttons, row_index, row, contents, start_y)
+  def print_columns(args, table, buttons, row_index, row, contents, start_y) # rubocop:disable Metrics/ParameterLists
     column_index = 0
 
     # Put the element name at the beginning of the row
@@ -138,17 +137,13 @@ class ContextPlanetMenu < Context
     end
 
     # And add buy and sell buttons at the end of each row
-    new_button = UIBuyButton.new(args,
-                                 @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)),
-                                 start_y - (@text_height * row_index), 'Buy', row)
-    new_button.createButton(args)
+    new_button = UIBuyButton.new(args, @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)), start_y - (@text_height * row_index), 'Buy', row)
+    new_button.create_button
     buttons << new_button
     # column_index += 1
 
-    new_button = UISellButton.new(args,
-                                  @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)) + new_button.w + @element_padding, # rubocop:disable Metrics/LineLength
-                                  start_y - (@text_height * row_index), 'Sell', row)
-    new_button.createButton(args)
+    new_button = UISellButton.new(args, @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)) + new_button.w + @element_padding, start_y - (@text_height * row_index), 'Sell', row)
+    new_button.create_button
     buttons << new_button
   end
 end

@@ -5,7 +5,7 @@ class SceneMain < Scene
   attr_accessor :planets, :systems, :system_select, :planet_select, :planet_map, :planet_menu, :ship, :context
 
   def initialize(args)
-    super
+    
     @context = :context_galaxy_map
 
     # Generate Planets
@@ -28,9 +28,9 @@ class SceneMain < Scene
     case @context
     when :context_planet_map
       @planet_map.tick(args)
-      @planet_map.checkPlanetSelect(args)
+      @planet_map.check_planet_select(args)
     when :context_galaxy_map
-      @planet_map&.destroyMap()
+      @planet_map&.destroy_map()
       @galaxy_map.tick(args, @solar_systems)
       @galaxy_map.check_system_select(args, @solar_systems)
     when :context_planet_menu

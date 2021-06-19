@@ -82,7 +82,7 @@ class ObjectPlanet < Object
       sum_cost += @materials[i[0]][:Price] * i[1]
     end
 
-    next unless product_cost > sum_cost
+    return unless product_cost > sum_cost
 
     # Request Materials
     have_materials = []

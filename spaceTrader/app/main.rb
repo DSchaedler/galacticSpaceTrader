@@ -2,14 +2,14 @@
 
 # Require our various files.
 # Clustered Data
-require 'app/constants'
+require 'app/constants.rb'
 # Classes
-require 'app/game'
-require 'app/context/context'
-require 'app/scene/scene'
-require 'app/object/object'
-require 'app/ui/ui'
-require 'app/textbox_making'
+require 'app/game.rb'
+require 'app/context/context.rb'
+require 'app/scene/scene.rb'
+require 'app/object/object.rb'
+require 'app/ui/ui.rb'
+require 'app/textbox_making.rb'
 
 DEGREES_TO_RADIANS = Math::PI / 180
 

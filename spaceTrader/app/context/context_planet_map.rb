@@ -6,7 +6,6 @@ PLAYFIELD = [0, 8, 1280, 716].freeze
 # Handles calculations and drawing of the solar system maps.
 class ContextPlanetMap < Context
   def initialize(stars: 150, min_star_size: 1, max_star_size: 6, star_saturation: 127)
-    super
     @x = 0
     @y = 0
     @w = 1280
@@ -18,7 +17,7 @@ class ContextPlanetMap < Context
 
     @system = $game.scene_main.system_select
     @planets = []
-    @planets = @system.systemPlanets
+    @planets = @system.system_planets
     @planet_select = nil
 
     @stars = []
@@ -28,7 +27,7 @@ class ContextPlanetMap < Context
       random_color = [randr(star_saturation, 255), 255, star_saturation]
       random_color = random_color.shuffle
 
-      @stars << { x: randr(x, w), y: randr(y, h), w: rand_size, h: rand_size, r: random_color[0], g: random_color[1],
+      @stars << { x: randr(@x, @w), y: randr(@y, @h), w: rand_size, h: rand_size, r: random_color[0], g: random_color[1],
                   b: random_color[2] }.solid
     end
 
@@ -43,7 +42,7 @@ class ContextPlanetMap < Context
     @static_output << @stars
 
     @planets.each do |planet|
-      @static_output << planet.draw(args)
+      @static_output << planet.draw
     end
   end
 
@@ -53,13 +52,13 @@ class ContextPlanetMap < Context
 
   def tick(args)
     @system = $game.scene_main.system_select
-    @planets = @system.systemPlanets
+    @planets = @system.system_planets
 
     @tick_output = []
     @tick_output << @static_output
 
-    if args.inputs.keyboard.key_up.escape && ($game.scene_main.context == :contextPlanetMap)
-      $game.scene_main.context = :contextGalaxyMap
+    if args.inputs.keyboard.key_up.escape && ($game.scene_main.context == :context_planet_map)
+      $game.scene_main.context = :context_galaxy_map
     end
 
     ship_frame = args.state.tick_count.idiv(5).mod(3)
@@ -75,8 +74,7 @@ class ContextPlanetMap < Context
       @tick_output << { x: @ship_pos[0], y: @ship_pos[1], w: 32, h: 32, path: "sprites/spaceship#{ship_frame}.png",
                         angle: ship_degree, primitive_marker: :sprite }
 
-      dock_button = { x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: 'sprites/dock_button.png',
-                      primitive_marker: :sprite }
+      dock_button = { x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: 'sprites/dockButton.png', primitive_marker: :sprite }
       @tick_output << dock_button
       if args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dock_button)
         puts @planet_select
@@ -141,7 +139,7 @@ class ContextPlanetMap < Context
 
       next unless args.inputs.mouse.up
 
-      $game.scene_main.planet_menu.destroyMenu
+      $game.scene_main.planet_menu.destroy_menu
       @ship_mode = :Move if planet != $game.scene_main.planet_select
       @planet_select = planet
     end
