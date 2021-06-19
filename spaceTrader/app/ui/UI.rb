@@ -1,71 +1,78 @@
 # frozen_string_literal: true
 
+# super class for UI Elements
 class UI
 end
 
+# Buy button on Planet Menus
 class UIButton < UI
   attr_accessor :w
 
-  def initialize(args, x, y, string, m)
+  def initialize(args, x_pos, y_pos, string, mat)
     @string = string
-    @material = m
+    @material = mat
 
-    @stringBox = args.gtk.calcstringbox(@string)
+    @string_box = args.gtk.calcstringbox(@string)
 
-    @x = x
-    @y = y
-    @w = @stringBox[0]
-    @h = @stringBox[1]
+    @x = x_pos
+    @y = y_pos
+    @w = @string_box[0]
+    @h = @string_box[1]
 
-    @buttonBox = [@x, @y + @h, @stringBox[0], @stringBox[1]]
+    @button_box = [@x, @y + @h, @string_box[0], @string_box[1]]
 
-    @stringSize = args.gtk.calcstringbox(@string, -1)
-    @stringPadding = @stringBox[0] - @stringSize[0]
+    @string_size = args.gtk.calcstringbox(@string, -1)
+    @string_padding = @string_box[0] - @string_size[0]
 
-    @staticOutput = []
+    @static_output = []
   end
 
-  def createButton(_args)
-    @staticOutput << { x: @x, y: @y - @h, w: @w, h: @h, r: 0, g: 0, b: 0, primitive_marker: :border }
+  def create_button
+    @static_output << { x: @x, y: @y - @h, w: @w, h: @h, r: 0, g: 0, b: 0, primitive_marker: :border }
 
-    @staticOutput << { x: @x + @stringPadding, y: @y - @stringPadding, text: @string, size_enum: -1, primitive_marker: :label }
+    @static_output << { x: @x + @string_padding,
+                        y: @y - @string_padding,
+                        text: @string,
+                        size_enum: -1,
+                        primitive_marker: :label }
   end
 
-  def destroyButton(_args)
-    @staticOutput = []
+  def destroy_button
+    @static_output = []
   end
 
-  def tick(args); end
+  def tick; end
 end
 
+# Buy button on Planet Menus
 class UIBuyButton < UIButton
   def tick(args, planet)
-    args.outputs.primitives << @staticOutput
-    if args.inputs.mouse.click&.inside_rect?(@staticOutput[0])
-      if (planet.materials[@material][:Stored] >= 1) && ($game.scene_main.ship.money >= planet.materials[@material][:Price])
-        $game.scene_main.ship.materials[@material][:Paid] += planet.materials[@material][:Price]
-        $game.scene_main.ship.materials[@material][:Paid] = $game.scene_main.ship.materials[@material][:Paid].round(2)
-        $game.scene_main.ship.materials[@material][:Stored] += 1
-        $game.scene_main.ship.materials[@material][:Stored] = $game.scene_main.ship.materials[@material][:Stored].round(2)
-        $game.scene_main.ship.money -= planet.materials[@material][:Price]
-        $game.scene_main.ship.money = $game.scene_main.ship.money.round(2)
-        planet.materials[@material][:Stored] -= 1
-        planet.materials[@material][:Price] += 0.05
-        planet.materials[@material][:Price] = planet.materials[@material][:Price].round(2)
-      end
-    end
+    args.outputs.primitives << @static_output
+    return unless args.inputs.mouse.click&.inside_rect?(@static_output[0])
+    return unless planet.materials[@material][:Stored] >= 1
+    return unless $game.scene_main.ship.money >= planet.materials[@material][:Price]
+
+    $game.scene_main.ship.materials[@material][:Paid] += planet.materials[@material][:Price]
+    $game.scene_main.ship.materials[@material][:Paid] = $game.scene_main.ship.materials[@material][:Paid].round(2)
+    $game.scene_main.ship.materials[@material][:Stored] += 1
+    $game.scene_main.ship.materials[@material][:Stored] = $game.scene_main.ship.materials[@material][:Stored].round(2)
+    $game.scene_main.ship.money -= planet.materials[@material][:Price]
+    $game.scene_main.ship.money = $game.scene_main.ship.money.round(2)
+    planet.materials[@material][:Stored] -= 1
+    planet.materials[@material][:Price] += 0.05
+    planet.materials[@material][:Price] = planet.materials[@material][:Price].round(2)
   end
 end
 
+# Sell button on Planet Menus
 class UISellButton < UIButton
   def tick(args, planet)
-    args.outputs.primitives << @staticOutput
-    return unless args.inputs.mouse.click&.inside_rect? @staticOutput[0]
-
+    args.outputs.primitives << @static_output
+    return unless args.inputs.mouse.click&.inside_rect? @static_output[0]
     return unless $game.scene_main.ship.materials[@material][:Stored] >= 1
 
     $game.scene_main.ship.materials[@material][:Stored] -= 1
-    $game.scene_main.ship.materials[@material][:Paid] -= ($game.scene_main.ship.materials[@material][:Paid] / $game.scene_main.ship.materials[@material][:Stored]).round(2)
+    $game.scene_main.ship.materials[@material][:Paid] -= ($game.scene_main.ship.materials[@material][:Paid] / $game.scene_main.ship.materials[@material][:Stored]).round(2) # rubocop:disable Layout/LineLength
     $game.scene_main.ship.materials[@material][:Paid] = $game.scene_main.ship.materials[@material][:Paid].round(2)
     $game.scene_main.ship.materials[@material][:Stored] = $game.scene_main.ship.materials[@material][:Stored].round(2)
     $game.scene_main.ship.money += planet.materials[@material][:Price]

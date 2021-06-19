@@ -8,7 +8,7 @@ require 'app/game.rb'
 require 'app/context/context.rb'
 require 'app/scene/scene.rb'
 require 'app/object/object.rb'
-require 'app/ui/UI.rb'
+require 'app/ui/ui.rb'
 require 'app/textbox_making.rb'
 
 DEGREES_TO_RADIANS = Math::PI / 180

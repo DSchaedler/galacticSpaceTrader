@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Instance class for every planet
 class ObjectPlanet < Object
   # Creates attribute accessors for instance variables.
   # Just pretend that you have to declare instance variables and it will be fine.
@@ -10,15 +11,16 @@ class ObjectPlanet < Object
   attr_accessor :image
   attr_accessor :materials
 
-  def initialize(_args, planetName)
+  def initialize(planet_name)
     # Generate unique planet information
     @x = randr(1, 38) * 32
     @y = randr(1, 21) * 32
     @type = PLANET_TYPE_STRINGS.sample
-    @name = planetName
+    @name = planet_name
 
     # Randomly determine which planet image we should use.
-    @image = if @type == 'Inferno' || 'Toxic' # These two have fewer images available, so we treat them specially.
+    # These two have fewer images available, so we treat them specially.
+    @image = if @type == 'Inferno' || @type == 'Toxic'
                "sprites/PixelPlanets/#{@type.downcase}#{randr(0, 3)}.png"
              else
                "sprites/PixelPlanets/#{@type.downcase}#{randr(0, 5)}.png"
@@ -27,11 +29,11 @@ class ObjectPlanet < Object
     i = 0
     @materials = {}
     RESOURCES.each do |resource|
-      resourceInfo = {}
-      resourceInfo[:Rate] = randr(0.01, 1).round(2)
-      resourceInfo[:Stored] = 0
-      resourceInfo[:Price] = 10
-      @materials[resource] = resourceInfo
+      resource_info = {}
+      resource_info[:Rate] = randr(0.01, 1).round(2)
+      resource_info[:Stored] = 0
+      resource_info[:Price] = 10
+      @materials[resource] = resource_info
       i += 1
     end
 
@@ -40,13 +42,13 @@ class ObjectPlanet < Object
   end
 
   def cycle(args)
-    totalStored = 0
+    total_stored = 0
 
     @materials.each do |_material, values|
-      totalStored += values[:Stored]
+      total_stored += values[:Stored]
     end
 
-    if totalStored < 1000
+    if total_stored < 1000
       @materials.each do |_material, values|
         values[:Stored] += values[:Rate]
         values[:Stored] = values[:Stored].round(2)
@@ -72,47 +74,42 @@ class ObjectPlanet < Object
     end
   end
 
-  def factory(_args, recipe) # recipe = [[product, int], [ingredient, int], [...]]
+  def factory(_args, recipe)
+    # recipe = [[product, int], [ingredient, int], [...]]
     product = recipe[0]
     recipe.shift
 
-    productCost = @materials[product[0]][:Price] * product[1]
+    product_cost = @materials[product[0]][:Price] * product[1]
 
-    sumCost = 0
+    sum_cost = 0
     recipe.each do |i|
-      sumCost += @materials[i[0]][:Price] * i[1]
+      sum_cost += @materials[i[0]][:Price] * i[1]
     end
 
-    if productCost > sumCost
-      # Request Materials
-      haveMaterials = []
-      recipe.each do |i|
-        if @materials[i[0]][:Stored] <= i[1] # If we don't have enough materials
-          haveMaterials << false
-          @materials[i[0]][:Price] = (@materials[i[0]][:Price] + 0.01).round(2) # Increase the price with increased deman
-        else
-          haveMaterials << true
-        end
-      end
+    next unless product_cost > sum_cost
 
-      unless haveMaterials.include? false # Don't craft if we're missing materials
-        recipe.each do |i|
-          @materials[i[0]][:Stored] = (@materials[i[0]][:Stored] - i[1]).round(2)
-        end
-        @materials[product[0]][:Stored] = (@materials[product[0]][:Stored] + product[1]).round(2)
-        @materials[product[0]][:Price] -= 0.1
-        @materials[product[0]][:Price] = @materials[product[0]][:Price].round(2)
+    # Request Materials
+    have_materials = []
+    recipe.each do |i|
+      if @materials[i[0]][:Stored] <= i[1] # If we don't have enough materials
+        have_materials << false
+        @materials[i[0]][:Price] = (@materials[i[0]][:Price] + 0.01).round(2) # Increase the price with increased deman
+      else
+        have_materials << true
       end
-
-    else
-      #
-      # recipe.each { |i|
-      #  @materials[i[0]][:Price] = (@materials[i[0]][:Price] - 0.01).round(2)
-      # }
     end
+
+    return unless have_materials.include? false # Don't craft if we're missing materials
+
+    recipe.each do |i|
+      @materials[i[0]][:Stored] = (@materials[i[0]][:Stored] - i[1]).round(2)
+    end
+    @materials[product[0]][:Stored] = (@materials[product[0]][:Stored] + product[1]).round(2)
+    @materials[product[0]][:Price] -= 0.1
+    @materials[product[0]][:Price] = @materials[product[0]][:Price].round(2)
   end
 
-  def draw(_args)
+  def draw
     { x: @x, y: @y, w: 28, h: 28, path: @image, primitive_marker: :sprite }
   end
 end

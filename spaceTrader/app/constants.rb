@@ -19,22 +19,22 @@ ELEMENT_SYMBOLS = %w[H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V 
                      Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm Bk Cf Es Fm Md No Lr Rf
                      Db Sg Bh Hs Mt Ds Rg Cn Nh Fl Mc Lv Ts Og].freeze
 
-$availablePlanetNames = ['Abol', 'Agouto', 'Albmi', 'Alef', 'Amateru', 'Arber', 'Arion', 'Arkas', 'Asye', 'Aumatex', # rubocop:disable Style/GlobalVars
-                         'Awasis', 'Babylonia', 'Bagan', 'Baiduri', 'Bambaruush[6]', 'Barajeel', 'Beirut', 'Bendida',
-                         'Bocaprins', 'Boinayel', 'Brahe', 'Bran', 'Buru', 'Caleuche', 'Cayahuanca', 'Chura',
-                         'Cruinlagh', 'Cuptor', 'Dagon', 'Dimidium', 'Dopere', 'Draugr', 'Drukyul', 'Dulcinea',
-                         'Eburonia', 'Eiger', 'Equiano', 'Eyeke', 'Finlay', 'Fold', 'Fortitudo', 'Galileo', 'Ganja',
-                         'Guarani', 'Haik', 'Hairu', 'Halla', 'Harriot', 'Hiisi', 'Hypatia', 'Independance', 'Iolaus',
-                         'Isagel', 'Isli', 'Iztok', 'Janssen', 'Jebus', 'Kavian', 'Khomsa', "Koyopa'", 'Krotoa',
-                         'Laligurans', 'Leklsullun', 'Lete', 'Lipperhey', 'Madalitso', 'Madriu', 'Maeping', 'Magor',
-                         'Majriti', 'Makropulos', 'Mastika', 'Meztli', 'Mintome', 'Mulchatna', 'Nachtwacht', 'Naron',
-                         'Negoiu', 'Neri', 'Noifasui', 'Onasilos', 'Orbitar', 'Peitruss', 'Perwana', 'Phobetor',
-                         'Pipitea', 'Pirx', 'Pollera', 'Poltergeist', 'Quijote', 'Ramajay', 'Riosar', 'Rocinante',
-                         'Saffar', 'Samagiya', 'Samh', 'Sancho', 'Santamasa', 'Sazum', 'Sissi', 'Smertrios', 'Spe',
-                         'Staburags', 'Sumajmajta', 'Surt', 'Tadmor', 'Tanzanite', 'Taphao Kaew', 'Taphao Thong',
-                         'Tassili', 'Teberda', 'Thestias', 'Toge', 'Tondra', 'Trimobe', 'Tryzub', 'Tumearandu',
-                         'Ugarit', 'Veles', 'Victoriapeak', 'Viculus', 'Viriato', 'Vlasina', 'Vytis', 'Wadirum',
-                         'Wangshu', 'Xolotlan', 'Yanyan', 'Yvaga']
+$available_planet_names = ['Abol', 'Agouto', 'Albmi', 'Alef', 'Amateru', 'Arber', 'Arion', 'Arkas', 'Asye', 'Aumatex',
+                           'Awasis', 'Babylonia', 'Bagan', 'Baiduri', 'Bambaruush[6]', 'Barajeel', 'Beirut', 'Bendida',
+                           'Bocaprins', 'Boinayel', 'Brahe', 'Bran', 'Buru', 'Caleuche', 'Cayahuanca', 'Chura',
+                           'Cruinlagh', 'Cuptor', 'Dagon', 'Dimidium', 'Dopere', 'Draugr', 'Drukyul', 'Dulcinea',
+                           'Eburonia', 'Eiger', 'Equiano', 'Eyeke', 'Finlay', 'Fold', 'Fortitudo', 'Galileo', 'Ganja',
+                           'Guarani', 'Haik', 'Hairu', 'Halla', 'Harriot', 'Hiisi', 'Hypatia', 'Independance', 'Iolaus',
+                           'Isagel', 'Isli', 'Iztok', 'Janssen', 'Jebus', 'Kavian', 'Khomsa', "Koyopa'", 'Krotoa',
+                           'Laligurans', 'Leklsullun', 'Lete', 'Lipperhey', 'Madalitso', 'Madriu', 'Maeping', 'Magor',
+                           'Majriti', 'Makropulos', 'Mastika', 'Meztli', 'Mintome', 'Mulchatna', 'Nachtwacht', 'Naron',
+                           'Negoiu', 'Neri', 'Noifasui', 'Onasilos', 'Orbitar', 'Peitruss', 'Perwana', 'Phobetor',
+                           'Pipitea', 'Pirx', 'Pollera', 'Poltergeist', 'Quijote', 'Ramajay', 'Riosar', 'Rocinante',
+                           'Saffar', 'Samagiya', 'Samh', 'Sancho', 'Santamasa', 'Sazum', 'Sissi', 'Smertrios', 'Spe',
+                           'Staburags', 'Sumajmajta', 'Surt', 'Tadmor', 'Tanzanite', 'Taphao Kaew', 'Taphao Thong',
+                           'Tassili', 'Teberda', 'Thestias', 'Toge', 'Tondra', 'Trimobe', 'Tryzub', 'Tumearandu',
+                           'Ugarit', 'Veles', 'Victoriapeak', 'Viculus', 'Viriato', 'Vlasina', 'Vytis', 'Wadirum',
+                           'Wangshu', 'Xolotlan', 'Yanyan', 'Yvaga']
 
 PLANET_TYPE_STRINGS = %w[Terran Jungle Rock Ocean Desert Arctic Gas Inferno Toxic].freeze
 

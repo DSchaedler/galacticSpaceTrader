@@ -19,7 +19,7 @@ class SceneMain < Scene
     @system_select = nil
     5.times { ; @solar_systems << ObjectSystem.new(args); }
 
-    @ship = ObjectShip.new(args)
+    @ship = ObjectShip.new
 
     @systems = []
 
@@ -63,7 +63,7 @@ class SceneMain < Scene
 
   def cycle(args)
     @solar_systems.each do |cur_system|
-      cur_system.systemPlanets.each do |planet|
+      cur_system.system_planets.each do |planet|
         planet.cycle(args)
       end
     end

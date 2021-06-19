@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Instance class of the player ship.
 class ObjectShip < Object
   attr_accessor :name
   attr_accessor :money
@@ -7,7 +8,7 @@ class ObjectShip < Object
   attr_accessor :cores
   attr_accessor :materials
 
-  def initialize(_args)
+  def initialize
     @name = 'Ship'
     @money = 1000.00
     @fuel = 100.00
@@ -16,10 +17,10 @@ class ObjectShip < Object
     i = 0
     @materials = {}
     RESOURCES.each do |resource|
-      resourceInfo = {}
-      resourceInfo[:Stored] = 0
-      resourceInfo[:Paid] = 0
-      @materials[resource] = resourceInfo
+      resource_info = {}
+      resource_info[:Stored] = 0
+      resource_info[:Paid] = 0
+      @materials[resource] = resource_info
       i += 1
     end
     @materials['Water'] = { Stored: 0, Paid: 0 }
