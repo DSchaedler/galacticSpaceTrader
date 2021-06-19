@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-def textboxBackground(_args, x:, y:, w:, h:, segment: 32)
+def textbox_background(x:, y:, w:, h:, segment: 32)
   y -= segment
 
   textbox = []

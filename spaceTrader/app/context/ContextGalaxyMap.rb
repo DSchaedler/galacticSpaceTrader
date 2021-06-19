@@ -4,7 +4,7 @@ class ContextGalaxyMap < Context
   attr_accessor :currentSystem
   attr_accessor :systemName
 
-  def initialize(args, stars: 600, minStarSize: 1, maxStarSize: 6, x: 0, y: 0, w: 1280, h: 720, starSaturation: 127, r: 20, g: 24, b: 46, a: 255)
+  def initialize(args, stars: 600, minStarSize: 1, maxStarSize: 6, starSaturation: 127)
     @x = 0
     @y = 0
     @w = args.grid.w
@@ -57,8 +57,8 @@ class ContextGalaxyMap < Context
   def check_system_select(args, systems)
     selectOutput = []
     systems.each do |eachSystem|
-      if $game.sceneMain.system_select
-        system_select = $game.sceneMain.system_select
+      if $game.scene_main.system_select
+        system_select = $game.scene_main.system_select
 
         selectOutput << { x: system_select.x + 14, y: system_select.y - 4, text: system_select.name, r: 255, g: 255, b: 255, alignment_enum: 1, primitive_marker: :label }
         selectOutput << { x: system_select.x - 2, y: system_select.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png', primitive_marker: :sprite }
@@ -68,10 +68,10 @@ class ContextGalaxyMap < Context
 
       selectOutput << { x: eachSystem.x + 14, y: eachSystem.y - 4, text: eachSystem.name, r: 255, g: 255, b: 255, alignment_enum: 1, primitive_marker: :label }
       selectOutput << { x: eachSystem.x - 2, y: eachSystem.y - 2, w: 32, h: 32, path: 'sprites/selectionCursor.png', primitive_marker: :sprite }
-      $game.sceneMain.system_select = eachSystem if args.inputs.mouse.up
+      $game.scene_main.system_select = eachSystem if args.inputs.mouse.up
     end
 
-    if $game.sceneMain.system_select
+    if $game.scene_main.system_select
 
       dockButton = []
       dockButton << { x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: 'sprites/buttonTemplate.png', primitive_marker: :sprite }
@@ -79,14 +79,14 @@ class ContextGalaxyMap < Context
 
       selectOutput << dockButton
       if args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dockButton[0])
-        if $game.sceneMain.system_select != @currentSystem
-          @currentSystem = $game.sceneMain.system_select
+        if $game.scene_main.system_select != @currentSystem
+          @currentSystem = $game.scene_main.system_select
           @systemName = @currentSystem.name
-          $game.sceneMain.ship.cores -= 1
+          $game.scene_main.ship.cores -= 1
         end
-        $game.sceneMain.planetMap = ContextPlanetMap.new(args)
-        $game.sceneMain.planetMap.createMap(args)
-        $game.sceneMain.context = :contextPlanetMap
+        $game.scene_main.planetMap = ContextPlanetMap.new
+        $game.scene_main.planetMap.createMap(args)
+        $game.scene_main.context = :contextPlanetMap
       end
     end
 

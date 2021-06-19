@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'app/context/ContextPlanetMap.rb'
-require 'app/context/ContextPlanetMenu.rb'
+require 'app/context/context_planet_map.rb'
+require 'app/context/context_planet_menu.rb'
 require 'app/context/ContextGalaxyMap.rb'
 
 class Context

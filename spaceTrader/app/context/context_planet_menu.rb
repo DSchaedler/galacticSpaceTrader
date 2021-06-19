@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Handles calculations and drawing of the planet data screens.
 class ContextPlanetMenu < Context
   def initialize(args)
     @elementPadding = 10
@@ -17,18 +18,31 @@ class ContextPlanetMenu < Context
     @originY = args.grid.top
 
     @staticOutput = []
-    @planet
+    @planet = nil
   end
 
-  def createMenu(args, planet)
+  def create_menu(planet)
     # Textbox
-    @staticOutput << textboxBackground(args, x: @originX, y: @originY, w: @columnWidth * @columnCount + @elementPadding * 4, h: @height)
+    @staticOutput << textbox_background(x: @originX,
+                                        y: @originY,
+                                        w: @columnWidth * @columnCount + @elementPadding * 4,
+                                        h: @height)
     # Planet Image
-    @staticOutput << { x: @originX + (@width / 2) - (@imageWidth / 2) - @elementPadding, y: @originY - @imageHeight - @elementPadding, w: @imageWidth, h: @imageHeight, path: planet.image, primitive_marker: :sprite }
+    @staticOutput << { x: @originX + (@width / 2) - (@imageWidth / 2) - @elementPadding,
+                       y: @originY - @imageHeight - @elementPadding,
+                       w: @imageWidth,
+                       h: @imageHeight,
+                       path: planet.image,
+                       primitive_marker: :sprite }
     # Planet Name
-    @staticOutput << { x: @originX + @elementPadding, y: @originY - @imageHeight - @elementPadding - (@textHeight * 1), text: planet.name, primitive_marker: :label }
+    @staticOutput << { x: @originX + @elementPadding,
+                       y: @originY - @imageHeight - @elementPadding - (@textHeight * 1),
+                       text: planet.name,
+                       primitive_marker: :label }
     # Planet Type
-    @staticOutput << { x: @originX + @elementPadding, y: @originY - @imageHeight - @elementPadding - (@textHeight * 2), text: planet.type, primitive_marker: :label }
+    @staticOutput << { x: @originX + @elementPadding,
+                       y: @originY - @imageHeight - @elementPadding - (@textHeight * 2),
+                       text: planet.type, primitive_marker: :label }
 
     @planet = planet
   end
@@ -42,7 +56,7 @@ class ContextPlanetMenu < Context
 
     if args.inputs.keyboard.key_up.escape
       destroyMenu(args)
-      $game.sceneMain.context = :contextPlanetMap
+      $game.scene_main.context = :contextPlanetMap
     end
 
     # Start Table
@@ -62,15 +76,15 @@ class ContextPlanetMenu < Context
   def printTable(args, table, buttons, planet, startY)
     materials = planet.materials
     materials.each do |m, v| # Append how much the ship is storing to the table
-      v[:Ship] = $game.sceneMain.ship.materials[m][:Stored]
-      if $game.sceneMain.ship.materials[m][:Stored] <= 0
-        $game.sceneMain.ship.materials[m][:Paid] = 0
+      v[:Ship] = $game.scene_main.ship.materials[m][:Stored]
+      if $game.scene_main.ship.materials[m][:Stored] <= 0
+        $game.scene_main.ship.materials[m][:Paid] = 0
         shipPaid = 0
       else
-        shipPaid = $game.sceneMain.ship.materials[m][:Paid]
-        # shipPaid = ($game.sceneMain.ship.materials[m][:Paid] / $game.sceneMain.ship.materials[m][:Stored]).round(2)
+        shipPaid = $game.scene_main.ship.materials[m][:Paid]
+        # shipPaid = ($game.scene_main.ship.materials[m][:Paid] / $game.scene_main.ship.materials[m][:Stored]).round(2)
       end
-      v[:ShipPaid] = $game.sceneMain.ship.materials[m][:Paid] if shipPaid
+      v[:ShipPaid] = $game.scene_main.ship.materials[m][:Paid] if shipPaid
     end
 
     sortedMaterials = materials.sort_by { |_material, values| -values[@columnSort] }
@@ -89,7 +103,10 @@ class ContextPlanetMenu < Context
   def columnHeaders(args, table, startY, hash)
     columnIndex = 1
     hash.each do |key, _value|
-      labelHash = { x: @originX + (@columnWidth * columnIndex) + (@elementPadding * (columnIndex + 1)), y: startY, text: key, primitive_marker: :label }
+      labelHash = { x: @originX + (@columnWidth * columnIndex) + (@elementPadding * (columnIndex + 1)),
+                    y: startY,
+                    text: key,
+                    primitive_marker: :label }
       table << labelHash
       columnIndex += 1
 
@@ -103,7 +120,7 @@ class ContextPlanetMenu < Context
     end
   end
 
-  def printColumns(args, table, buttons, rowIndex, row, value, startY)
+  def printColumns(args, table, buttons, rowIndex, row, contents, startY)
     columnIndex = 0
 
     # Put the element name at the beginning of the row
@@ -111,7 +128,7 @@ class ContextPlanetMenu < Context
     columnIndex += 1
 
     # Iterate through remaining columns and print
-    value.each do |_column, value|
+    contents.each do |_column, value|
       # OUTPUT CODE
       table << { x: @originX + (@columnWidth * columnIndex) + (@elementPadding * (columnIndex + 1)), y: startY - (@textHeight * rowIndex), text: value, primitive_marker: :label }
       columnIndex += 1

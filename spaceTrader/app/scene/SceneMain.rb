@@ -15,7 +15,7 @@ class SceneMain < Scene
 
     # Generate Planets
     @solar_systems = []
-    @system_select
+    @system_select = nil
     5.times { ; @solar_systems << ObjectSystem.new(args); }
 
     @ship = ObjectShip.new(args)
@@ -43,13 +43,12 @@ class SceneMain < Scene
       @planetMenu.tick(args)
     end
 
-    ship = $game.sceneMain.ship
     size = 3
     height = args.gtk.calcstringbox('Sample', size)[1]
     statusBar = {
       x: 1280 / 2,
       y: height,
-      text: "Money: #{ship.money} | Fuel: #{ship.materials['Fuel'][:Stored]} | Cores: #{ship.cores} | System: #{@galaxyMap.systemName}",
+      text: "Money: #{@ship.money} | Fuel: #{@ship.materials['Fuel'][:Stored]} | Cores: #{@ship.cores} | System: #{@galaxyMap.systemName}",
       r: 0,
       g: 255,
       b: 0,
@@ -62,8 +61,8 @@ class SceneMain < Scene
   end
 
   def cycle(args)
-    @solar_systems.each do |curSystem| # TODO: update all systems at once, or only update when on planet and interpolate data.
-      curSystem.systemPlanets.each do |planet|
+    @solar_systems.each do |cur_system| # TODO: update all systems at once, or only update when on planet and interpolate data.
+      cur_system.systemPlanets.each do |planet|
         planet.cycle(args)
       end
     end
