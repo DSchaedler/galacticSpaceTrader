@@ -27,7 +27,7 @@ class ContextPlanetMap < Context
       random_color = [randr(star_saturation, 255), 255, star_saturation]
       random_color = random_color.shuffle
 
-      @stars << { x: randr(@x, @w), y: randr(@y, @h), w: rand_size, h: rand_size, r: random_color[0], g: random_color[1],
+      @stars << { x: randr(@x, @w), y: randr(@y + 32, @h), w: rand_size, h: rand_size, r: random_color[0], g: random_color[1],
                   b: random_color[2] }.solid
     end
 
@@ -38,7 +38,6 @@ class ContextPlanetMap < Context
   end
 
   def create_map(_args)
-    @static_output << [@x, @y, @w, @h, @r, @g, @b, @a].solid # Draw a background color for the actual game area.
     @static_output << @stars
 
     @planets.each do |planet|
@@ -74,7 +73,11 @@ class ContextPlanetMap < Context
       @tick_output << { x: @ship_pos[0], y: @ship_pos[1], w: 32, h: 32, path: "sprites/spaceship#{ship_frame}.png",
                         angle: ship_degree, primitive_marker: :sprite }
 
-      dock_button = { x: args.grid.w - 64, y: args.grid.h - 32, w: 64, h: 32, path: 'sprites/dockButton.png',
+      dock_button = { x: 608,
+                      y: 32,
+                      w: 64,
+                      h: 32,
+                      path: 'sprites/dockButton.png',
                       primitive_marker: :sprite }
       @tick_output << dock_button
       if args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dock_button)

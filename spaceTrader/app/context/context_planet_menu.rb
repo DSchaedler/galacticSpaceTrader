@@ -26,7 +26,7 @@ class ContextPlanetMenu < Context
     @static_output << textbox_background(x_pos: @origin_x,
                                          y_pos: @origin_y,
                                          width: @column_width * @column_count + @element_padding * 4,
-                                         height: @height)
+                                         height: @height - 32)
     # Planet Image
     @static_output << { x: @origin_x + (@width / 2) - (@image_width / 2) - @element_padding,
                         y: @origin_y - @image_height - @element_padding,

@@ -23,7 +23,7 @@ class ContextGalaxyMap < Context
       point = gaussian(0.5, 0.2)
 
       @stars << { x: point[0] * 1280,
-                  y: point[1] * 720,
+                  y: point[1] * 720 + 32,
                   w: rand_size,
                   h: rand_size,
                   r: random_color[0],
@@ -41,7 +41,6 @@ class ContextGalaxyMap < Context
   end
 
   def create_map(args, systems)
-    @static_output << [@x, @y, @w, @h, @r, @g, @b, @a].solid # Draw a background color for the actual game area.
     @static_output << @stars
 
     systems_array = []
@@ -112,14 +111,14 @@ class ContextGalaxyMap < Context
     if $game.scene_main.system_select
 
       dock_button = []
-      dock_button << { x: args.grid.w - 64,
-                       y: args.grid.h - 32,
+      dock_button << { x: 608,
+                       y: 32,
                        w: 64,
                        h: 32,
                        path: 'sprites/buttonTemplate.png',
                        primitive_marker: :sprite }
-      dock_button << { x: args.grid.w - 30,
-                       y: args.grid.h - 2,
+      dock_button << { x: 642,
+                       y: 60,
                        text: 'Warp',
                        size_enum: 3,
                        alignment_enum: 1,

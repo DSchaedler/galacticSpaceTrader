@@ -24,6 +24,9 @@ class SceneMain < Scene
   end
 
   def tick(args)
+    args.outputs.primitives << [0, 0, 1280, 720, 20, 24, 46, 255].solid # Draw a background color for the actual game area.
+    status_bar(args)
+    
     case @context
     when :context_planet_map
       @planet_map.tick(args)
@@ -36,29 +39,51 @@ class SceneMain < Scene
       @planet_map.tick(args)
       @planet_menu.tick(args)
     end
-
-    size = 3
-    height = args.gtk.calcstringbox('Sample', size)[1]
-    status_bar = {
-      x: 1280 / 2,
-      y: height,
-      text: "Money: #{@ship.money} | Fuel: #{@ship.materials['Fuel'][:Stored]} | Cores: #{@ship.cores} | System: #{@galaxy_map.system_name}", # rubocop:disable Layout/LineLength
-      r: 0,
-      g: 255,
-      b: 0,
-      size_enum: size,
-      alignment_enum: 1,
-      primitive_marker: :label
-    }
-
-    args.outputs.primitives << status_bar
   end
-
+  
   def cycle(args)
     @solar_systems.each do |cur_system|
       cur_system.system_planets.each do |planet|
         planet.cycle(args)
       end
     end
+  end
+
+  def status_bar(args)
+    size = 3
+    height = args.gtk.calcstringbox('Sample', size)[1]
+    status_bar = []
+    
+    status_bar << {
+      x: 0,
+      y: 0,
+      w: 1280,
+      h: 32,
+      path: "sprites/statusbar.png",
+      primitive_marker: :sprite
+    }
+    
+    status_bar << {
+      x: 576,
+      y: 32,
+      w: 128,
+      h: 32,
+      path: "sprites/statusbarJut.png",
+      primitive_marker: :sprite
+    }
+    
+    status_bar << {
+      x: 1280 / 2,
+      y: height,
+      text: "Money: #{@ship.money} | Fuel: #{@ship.materials['Fuel'][:Stored]} | Cores: #{@ship.cores} | System: #{@galaxy_map.system_name}", # rubocop:disable Layout/LineLength
+      r: 0,
+      g: 0,
+      b: 0,
+      size_enum: size,
+      alignment_enum: 1,
+      primitive_marker: :label
+    }
+    
+    args.outputs.primitives << status_bar
   end
 end

@@ -13,8 +13,8 @@ class ObjectSystem < Object
       @system_planets << ObjectPlanet.new(planet_name)
     end
 
-    @x = randr(0, args.grid.right)
-    @y = randr(0, args.grid.top)
+    @x = randr(0, args.grid.right - 32)
+    @y = randr(64, args.grid.top)
 
     @name = $available_planet_names.sample
     $available_planet_names.pop(@name)

@@ -9,8 +9,8 @@ class ObjectPlanet < Object
 
   def initialize(planet_name)
     # Generate unique planet information
-    @x = randr(1, 38) * 32
-    @y = randr(1, 21) * 32
+    @x = randr(1, 37) * 32
+    @y = randr(3, 21) * 32
     @type = PLANET_TYPE_STRINGS.sample
     @name = planet_name
 
