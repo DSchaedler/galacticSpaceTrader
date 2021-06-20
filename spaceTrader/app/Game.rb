@@ -24,9 +24,13 @@ class Game
     args.outputs.background_color = [0, 0, 0] # Set Engine background color to black. Makes Letterboxing Black.
     @scene_main.tick(args)
 
-    return unless (args.state.tick_count % 60).zero?
+    cycle(args) if (args.state.tick_count % 60).zero?
 
-    cycle(args)
+    return unless args.inputs.keyboard.key_up.delete
+
+    puts '[Screenshot Saving]'
+    system_time = Time.new.to_i
+    args.outputs.screenshots << { x: 0, y: 0, w: 1280, h: 720, path: "#{system_time}.png" }
   end
 
   def cycle(args)
