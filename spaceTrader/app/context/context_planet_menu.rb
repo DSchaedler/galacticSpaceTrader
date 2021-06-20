@@ -9,7 +9,7 @@ class ContextPlanetMenu < Context
     @text_height = @sample_text[1]
     @image_width = @column_width * 2
     @image_height = @image_width
-    @column_count = 8
+    @column_count = 7
     @column_sort = :Stored
 
     @width = (@column_width * @column_count) + (@element_padding * (@column_count + 1))
@@ -25,7 +25,7 @@ class ContextPlanetMenu < Context
     # Textbox
     @static_output << textbox_background(x_pos: @origin_x,
                                          y_pos: @origin_y,
-                                         width: @column_width * @column_count + @element_padding * 4,
+                                         width: @width,
                                          height: @height - 32)
     # Planet Image
     @static_output << { x: @origin_x + (@width / 2) - (@image_width / 2) - @element_padding,

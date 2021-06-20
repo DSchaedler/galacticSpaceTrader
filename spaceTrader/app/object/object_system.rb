@@ -9,7 +9,7 @@ class ObjectSystem < Object
     @system_planets = []
     @planet_count.times do
       planet_name = $available_planet_names.sample
-      $available_planet_names.pop(planet_name)
+      $available_planet_names.delete(planet_name)
       @system_planets << ObjectPlanet.new(planet_name)
     end
 
@@ -17,7 +17,7 @@ class ObjectSystem < Object
     @y = randr(64, args.grid.top)
 
     @name = $available_planet_names.sample
-    $available_planet_names.pop(@name)
+    $available_planet_names.delete(@name)
   end
 
   def draw(_args)

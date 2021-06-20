@@ -26,7 +26,7 @@ class SceneMain < Scene
   def tick(args)
     args.outputs.primitives << [0, 0, 1280, 720, 20, 24, 46, 255].solid # Draw a background color for the actual game area.
     status_bar(args)
-    
+
     case @context
     when :context_planet_map
       @planet_map.tick(args)
@@ -40,7 +40,7 @@ class SceneMain < Scene
       @planet_menu.tick(args)
     end
   end
-  
+
   def cycle(args)
     @solar_systems.each do |cur_system|
       cur_system.system_planets.each do |planet|
@@ -53,25 +53,25 @@ class SceneMain < Scene
     size = 3
     height = args.gtk.calcstringbox('Sample', size)[1]
     status_bar = []
-    
+
     status_bar << {
       x: 0,
       y: 0,
       w: 1280,
       h: 32,
-      path: "sprites/statusbar.png",
+      path: 'sprites/statusbar.png',
       primitive_marker: :sprite
     }
-    
+
     status_bar << {
       x: 576,
       y: 32,
       w: 128,
       h: 32,
-      path: "sprites/statusbarJut.png",
+      path: 'sprites/statusbarJut.png',
       primitive_marker: :sprite
     }
-    
+
     status_bar << {
       x: 1280 / 2,
       y: height,
@@ -83,7 +83,7 @@ class SceneMain < Scene
       alignment_enum: 1,
       primitive_marker: :label
     }
-    
+
     args.outputs.primitives << status_bar
   end
 end

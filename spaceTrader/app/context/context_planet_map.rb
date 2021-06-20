@@ -80,7 +80,7 @@ class ContextPlanetMap < Context
                       path: 'sprites/dockButton.png',
                       primitive_marker: :sprite }
       @tick_output << dock_button
-      if args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dock_button)
+      if $game.scene_main.context != :context_planet_menu && args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dock_button)
         puts @planet_select
         $game.scene_main.planet_menu.create_menu(@planet_select)
         $game.scene_main.context = :context_planet_menu
