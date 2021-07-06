@@ -2,7 +2,7 @@
 
 def textbox_background(x_pos:, y_pos:, width:, height:, segment: 32)
   y_pos -= segment
-  alpha = 255
+  alpha = 200
   r = 168
   g = 181
   b = 178

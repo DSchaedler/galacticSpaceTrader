@@ -6,6 +6,7 @@ class SceneMain < Scene
 
   def initialize(args)
     @context = :context_galaxy_map
+    @pregeneration = false
 
     # Generate Planets
     @solar_systems = []
@@ -13,7 +14,6 @@ class SceneMain < Scene
     5.times { ; @solar_systems << ObjectSystem.new(args); }
 
     @ship = ObjectShip.new
-
     @systems = []
 
     # Background
@@ -24,15 +24,14 @@ class SceneMain < Scene
   end
 
   def tick(args)
-    args.outputs.primitives << [0, 0, 1280, 720, 20, 24, 46, 255].solid # Draw a background color for the actual game area.
-    status_bar(args)
-
+    pregeneration(args) if @pregeneration == false
+    ui(args)
     case @context
     when :context_planet_map
       @planet_map.tick(args)
       @planet_map.check_planet_select(args)
     when :context_galaxy_map
-      @planet_map&.destroy_map()
+      @planet_map.destroy_map() if @planet_map
       @galaxy_map.tick(args, @solar_systems)
       @galaxy_map.check_system_select(args, @solar_systems)
     when :context_planet_menu
@@ -47,6 +46,11 @@ class SceneMain < Scene
         planet.cycle(args)
       end
     end
+  end
+
+  def ui(args)
+    args.outputs.primitives << [0, 0, 1280, 720, 20, 24, 46, 255].solid # Draw a background color for the actual game area.
+    status_bar(args)
   end
 
   def status_bar(args)
@@ -85,5 +89,14 @@ class SceneMain < Scene
     }
 
     args.outputs.primitives << status_bar
+  end
+
+  def pregeneration(args)
+    puts 'Beginning Pregeneration...'
+    200.times do
+      cycle(args)
+    end
+    @pregeneration = true
+    puts 'Pregeneration Complete.'
   end
 end
