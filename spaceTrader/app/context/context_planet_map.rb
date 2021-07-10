@@ -35,6 +35,7 @@ class ContextPlanetMap < Context
 
     @ship_mode = :Orbit
     @ship_pos = [1280 / 2, 720 / 2]
+    @fuel_ticker = 30
   end
 
   def create_map(_args)
@@ -94,8 +95,10 @@ class ContextPlanetMap < Context
         ship_target = (distance * Math.cos(ship_degree * DEGREES_TO_RADIANS)) + @planet_select.x,
                       (distance * Math.sin(ship_degree * DEGREES_TO_RADIANS)) + @planet_select.y
         ship_degree = move_ship(args, ship_target)
-        $game.scene_main.ship.materials['Fuel'][:Stored] -= 0.01
-        $game.scene_main.ship.materials['Fuel'][:Stored] = $game.scene_main.ship.materials['Fuel'][:Stored].round(2)
+        if args.state.tick_count % @fuel_ticker == 0
+          $game.scene_main.ship.materials['Fuel'][:Stored] -= 1
+          @fuel_ticker = 0
+        end
       end
       @tick_output << args.outputs.primitives << { x: @ship_pos[0], y: @ship_pos[1], w: 32, h: 32,
                                                    path: "sprites/spaceship#{ship_frame}.png", angle: ship_degree - 90,

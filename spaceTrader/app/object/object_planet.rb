@@ -22,19 +22,17 @@ class ObjectPlanet < Object
                "sprites/PixelPlanets/#{@type.downcase}#{randr(0, 5)}.png"
              end
 
-    i = 0
     @materials = {}
     RESOURCES.each do |resource|
       resource_info = {}
-      resource_info[:Rate] = randr(0.01, 1).round(2)
+      resource_info[:Rate] = randr(1, 10)
       resource_info[:Stored] = 0
-      resource_info[:Price] = 10
+      resource_info[:Price] = 100
       @materials[resource] = resource_info
-      i += 1
     end
 
-    @materials['Water'] = { Rate: 0, Stored: 0, Price: 10 }
-    @materials['Fuel'] = { Rate: 0, Stored: 0, Price: 10 }
+    @materials['Water'] = { Rate: 0, Stored: 0, Price: 100 }
+    @materials['Fuel'] = { Rate: 0, Stored: 0, Price: 100 }
   end
 
   def cycle(args)
@@ -44,29 +42,25 @@ class ObjectPlanet < Object
       total_stored += values[:Stored]
     end
 
-    if total_stored < 1000
+    if total_stored < 500
       @materials.each do |_material, values|
-        values[:Stored] += values[:Rate]
-        values[:Stored] = values[:Stored].round(2)
-        if (values[:Rate]).positive?
-          values[:Price] -= 0.01
-          values[:Price] = values[:Price].round(2)
+        if values[:Price].positive?
+          values[:Stored] += values[:Rate]
+          if values[:Rate].positive?
+            values[:Price] -= 1
+          end
         end
       end
+      factory(args, [['Water', 3], ['Hydrogen', 2], ['Oxygen', 1]])
+      factory(args, [['Fuel', 5], ['Hydrogen', 1], ['Oxygen', 4]])
     end
-
-    consume(args, 'Water', 0.01)
-    consume(args, 'Oxygen', 0.01)
-
-    factory(args, [['Water', 3], ['Hydrogen', 2], ['Oxygen', 1]])
-    factory(args, [['Fuel', 5], ['Hydrogen', 1], ['Oxygen', 4]])
   end
 
   def consume(_args, material, quantity)
     if @materials[material][:Stored] >= quantity
-      @materials[material][:Stored] = (@materials[material][:Stored] - quantity).round(2)
+      @materials[material][:Stored] = (@materials[material][:Stored] - quantity)
     else
-      @materials[material][:Price] = (@materials[material][:Price] + (0.01 * quantity)).round(2)
+      @materials[material][:Price] = (@materials[material][:Price] + (1 * quantity))
     end
   end
 
@@ -87,22 +81,22 @@ class ObjectPlanet < Object
     # Request Materials
     have_materials = []
     recipe.each do |i|
-      if @materials[i[0]][:Stored] <= i[1] # If we don't have enough materials
+      if @materials[i[0]][:Stored] < i[1] # If we don't have enough materials
         have_materials << false
-        @materials[i[0]][:Price] = (@materials[i[0]][:Price] + 0.01).round(2) # Increase the price with increased deman
+        @materials[i[0]][:Price] = (@materials[i[0]][:Price] + 1) # Increase the price with increased deman
       else
         have_materials << true
       end
     end
 
-    return unless have_materials.include? false # Don't craft if we're missing materials
+    return if have_materials.include? false # Don't craft if we're missing materials
 
     recipe.each do |i|
-      @materials[i[0]][:Stored] = (@materials[i[0]][:Stored] - i[1]).round(2)
+      @materials[i[0]][:Stored] = (@materials[i[0]][:Stored] - i[1])
     end
-    @materials[product[0]][:Stored] = (@materials[product[0]][:Stored] + product[1]).round(2)
-    @materials[product[0]][:Price] -= 0.1
-    @materials[product[0]][:Price] = @materials[product[0]][:Price].round(2)
+    @materials[product[0]][:Stored] = (@materials[product[0]][:Stored] + product[1])
+    @materials[product[0]][:Price] -= 1
+    @materials[product[0]][:Price] = @materials[product[0]][:Price]
   end
 
   def draw

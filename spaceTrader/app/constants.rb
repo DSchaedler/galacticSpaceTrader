@@ -38,6 +38,7 @@ $available_planet_names = ['Abol', 'Agouto', 'Albmi', 'Alef', 'Amateru', 'Arber'
 
 PLANET_TYPE_STRINGS = %w[Terran Jungle Rock Ocean Desert Arctic Gas Inferno Toxic].freeze
 
-RESOURCES = %w[Silicon Oxygen Copper Iron Carbon Manganese Nickel Aluminum Nitrogen Hydrogen Zinc].freeze
+# RESOURCES = %w[Silicon Oxygen Copper Iron Carbon Manganese Nickel Aluminum Nitrogen Hydrogen Zinc].freeze
+RESOURCES = %w[Oxygen Hydrogen].freeze
 COMMODITIES = ['Silica', 'Stone', 'Sand', 'Glass', 'Wire', 'Steel', 'Machine Part', 'Solar Panel', 'Factory',
                'Space Station', 'Food', 'Water', 'Battery', 'Charged Battery', 'Computer', 'Energy'].freeze

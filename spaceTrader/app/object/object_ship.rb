@@ -6,8 +6,8 @@ class ObjectShip < Object
 
   def initialize
     @name = 'Ship'
-    @money = 1000.00
-    @fuel = 100.00
+    @money = 1000
+    @fuel = 1000
     @cores = 10
 
     i = 0
@@ -20,6 +20,6 @@ class ObjectShip < Object
       i += 1
     end
     @materials['Water'] = { Stored: 0, Paid: 0 }
-    @materials['Fuel'] = { Stored: 100, Paid: 0 }
+    @materials['Fuel'] = { Stored: 1000, Paid: 0 }
   end
 end

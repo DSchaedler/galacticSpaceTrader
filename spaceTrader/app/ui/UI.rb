@@ -53,14 +53,10 @@ class UIBuyButton < UIButton
     return unless $game.scene_main.ship.money >= planet.materials[@material][:Price]
 
     $game.scene_main.ship.materials[@material][:Paid] += planet.materials[@material][:Price]
-    $game.scene_main.ship.materials[@material][:Paid] = $game.scene_main.ship.materials[@material][:Paid].round(2)
     $game.scene_main.ship.materials[@material][:Stored] += 1
-    $game.scene_main.ship.materials[@material][:Stored] = $game.scene_main.ship.materials[@material][:Stored].round(2)
     $game.scene_main.ship.money -= planet.materials[@material][:Price]
-    $game.scene_main.ship.money = $game.scene_main.ship.money.round(2)
     planet.materials[@material][:Stored] -= 1
-    planet.materials[@material][:Price] += 0.05
-    planet.materials[@material][:Price] = planet.materials[@material][:Price].round(2)
+    planet.materials[@material][:Price] += 1
   end
 end
 
@@ -72,13 +68,9 @@ class UISellButton < UIButton
     return unless $game.scene_main.ship.materials[@material][:Stored] >= 1
 
     $game.scene_main.ship.materials[@material][:Stored] -= 1
-    $game.scene_main.ship.materials[@material][:Paid] -= ($game.scene_main.ship.materials[@material][:Paid] / $game.scene_main.ship.materials[@material][:Stored]).round(2) # rubocop:disable Layout/LineLength
-    $game.scene_main.ship.materials[@material][:Paid] = $game.scene_main.ship.materials[@material][:Paid].round(2)
-    $game.scene_main.ship.materials[@material][:Stored] = $game.scene_main.ship.materials[@material][:Stored].round(2)
+    $game.scene_main.ship.materials[@material][:Paid] -= ($game.scene_main.ship.materials[@material][:Paid] / $game.scene_main.ship.materials[@material][:Stored])
     $game.scene_main.ship.money += planet.materials[@material][:Price]
-    $game.scene_main.ship.money = $game.scene_main.ship.money.round(2)
     planet.materials[@material][:Stored] += 1
-    planet.materials[@material][:Price] -= 0.05
-    planet.materials[@material][:Price] = planet.materials[@material][:Price].round(2)
+    planet.materials[@material][:Price] -= 1
   end
 end

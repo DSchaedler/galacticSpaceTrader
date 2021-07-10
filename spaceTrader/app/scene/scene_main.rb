@@ -26,6 +26,7 @@ class SceneMain < Scene
   def tick(args)
     pregeneration(args) if @pregeneration == false
     ui(args)
+
     case @context
     when :context_planet_map
       @planet_map.tick(args)
@@ -93,7 +94,7 @@ class SceneMain < Scene
 
   def pregeneration(args)
     puts 'Beginning Pregeneration...'
-    200.times do
+    50.times do
       cycle(args)
     end
     @pregeneration = true

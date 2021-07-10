@@ -81,10 +81,9 @@ class ContextPlanetMenu < Context
         $game.scene_main.ship.materials[m][:Paid] = 0
         ship_paid = 0
       else
-        ship_paid = $game.scene_main.ship.materials[m][:Paid]
-        # ship_paid = ($game.scene_main.ship.materials[m][:Paid] / $game.scene_main.ship.materials[m][:Stored]).round(2)
+        ship_paid = ($game.scene_main.ship.materials[m][:Paid] / $game.scene_main.ship.materials[m][:Stored]).round(2)
       end
-      v[:ShipPaid] = $game.scene_main.ship.materials[m][:Paid] if ship_paid
+      v[:ShipPaid] = ship_paid if ship_paid
     end
 
     sorted_materials = materials.sort_by { |_material, values| -values[@column_sort] }
