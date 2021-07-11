@@ -31,7 +31,8 @@ class ObjectPlanet < Object
       @materials[resource] = resource_info
     end
 
-    @materials['Water'] = { Rate: 0, Stored: 0, Price: 100 }
+    #@materials['Water'] = { Rate: 0, Stored: 0, Price: 100 }
+    @materials['Cores'] = { Rate: 0, Stored: randr(0, 1), Price: 300}
     @materials['Fuel'] = { Rate: 0, Stored: 0, Price: 100 }
   end
 
@@ -51,7 +52,7 @@ class ObjectPlanet < Object
           end
         end
       end
-      factory(args, [['Water', 3], ['Hydrogen', 2], ['Oxygen', 1]])
+      #factory(args, [['Water', 3], ['Hydrogen', 2], ['Oxygen', 1]])
       factory(args, [['Fuel', 5], ['Hydrogen', 1], ['Oxygen', 4]])
     end
   end

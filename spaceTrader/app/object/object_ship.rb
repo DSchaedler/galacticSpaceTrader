@@ -8,7 +8,6 @@ class ObjectShip < Object
     @name = 'Ship'
     @money = 1000
     @fuel = 1000
-    @cores = 10
 
     i = 0
     @materials = {}
@@ -19,7 +18,8 @@ class ObjectShip < Object
       @materials[resource] = resource_info
       i += 1
     end
-    @materials['Water'] = { Stored: 0, Paid: 0 }
+    #@materials['Water'] = { Stored: 0, Paid: 0 }
+    @materials['Cores'] = { Stored: 10, Paid: 0 }
     @materials['Fuel'] = { Stored: 1000, Paid: 0 }
   end
 end

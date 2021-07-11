@@ -97,7 +97,6 @@ class ContextPlanetMap < Context
         ship_degree = move_ship(args, ship_target)
         if args.state.tick_count % @fuel_ticker == 0
           $game.scene_main.ship.materials['Fuel'][:Stored] -= 1
-          @fuel_ticker = 0
         end
       end
       @tick_output << args.outputs.primitives << { x: @ship_pos[0], y: @ship_pos[1], w: 32, h: 32,

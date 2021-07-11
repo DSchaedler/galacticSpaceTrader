@@ -19,8 +19,6 @@ class UIButton < UI
     @w = @string_box[0]
     @h = @string_box[1]
 
-    @button_box = [@x, @y + @h, @string_box[0], @string_box[1]]
-
     @string_size = args.gtk.calcstringbox(@string, -1)
     @string_padding = @string_box[0] - @string_size[0]
 
@@ -46,14 +44,18 @@ end
 
 # Buy button on Planet Menus
 class UIBuyButton < UIButton
-  def tick(args, planet)
+  def tick(args, planet) # rubocop:disable Metrics/AbcSize
     args.outputs.primitives << @static_output
     return unless args.inputs.mouse.click&.inside_rect?(@static_output[0])
     return unless planet.materials[@material][:Stored] >= 1
     return unless $game.scene_main.ship.money >= planet.materials[@material][:Price]
 
     $game.scene_main.ship.materials[@material][:Paid] += planet.materials[@material][:Price]
-    $game.scene_main.ship.materials[@material][:Stored] += 1
+    if @material == 'Fuel'
+      $game.scene_main.ship.materials[@material][:Stored] += 5
+    else
+      $game.scene_main.ship.materials[@material][:Stored] += 1
+    end
     $game.scene_main.ship.money -= planet.materials[@material][:Price]
     planet.materials[@material][:Stored] -= 1
     planet.materials[@material][:Price] += 1
@@ -62,15 +64,18 @@ end
 
 # Sell button on Planet Menus
 class UISellButton < UIButton
-  def tick(args, planet)
+  def tick(args, planet) # rubocop:disable Metrics/AbcSize
     args.outputs.primitives << @static_output
     return unless args.inputs.mouse.click&.inside_rect? @static_output[0]
-    return unless $game.scene_main.ship.materials[@material][:Stored] >= 1
 
-    $game.scene_main.ship.materials[@material][:Stored] -= 1
-    $game.scene_main.ship.materials[@material][:Paid] -= ($game.scene_main.ship.materials[@material][:Paid] / $game.scene_main.ship.materials[@material][:Stored])
-    $game.scene_main.ship.money += planet.materials[@material][:Price]
+    ship = $game.scene_main.ship
+    return unless ship.materials[@material][:Stored] >= 1
+
+    ship.materials[@material][:Paid] -= (ship.materials[@material][:Paid] / ship.materials[@material][:Stored]).round(2)
+    ship.materials[@material][:Stored] -= 1
+    ship.money += planet.materials[@material][:Price]
     planet.materials[@material][:Stored] += 1
     planet.materials[@material][:Price] -= 1
+    $game.scene_main.ship = ship
   end
 end

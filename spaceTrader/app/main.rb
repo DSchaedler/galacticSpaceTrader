@@ -26,7 +26,7 @@ end
 
 # Produces random number in range min through max.
 def randr(min, max)
-  rand(max - min) + min
+  rand(max - min + 1) + min
 end
 
 # Converts a string for a hexidecimal color value to an array of RGB values.
@@ -43,7 +43,7 @@ end
 # Resets the game object, using the system time as a seed.
 def reset_game_random
   $game = nil
-  $gtk.reset seed: Time.new # rubocop:disable Style/GlobalVars
+  $gtk.reset seed: Time.new.to_i # rubocop:disable Style/GlobalVars
 end
 
 def gaussian(mean, stddev)

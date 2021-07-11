@@ -129,7 +129,7 @@ class ContextGalaxyMap < Context
         if $game.scene_main.system_select != @current_system
           @current_system = $game.scene_main.system_select
           @system_name = @current_system.name
-          $game.scene_main.ship.cores -= 1
+          $game.scene_main.ship.materials['Cores'][:Stored] -= 1
         end
         $game.scene_main.planet_map = ContextPlanetMap.new
         $game.scene_main.planet_map.create_map(args)
