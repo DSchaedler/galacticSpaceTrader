@@ -22,13 +22,16 @@ class ContextGalaxyMap < Context
       random_color = random_color.shuffle
       point = gaussian(0.5, 0.2)
 
-      @stars << { x: point[0] * 1280,
-                  y: point[1] * 720 + 32,
-                  w: rand_size,
-                  h: rand_size,
-                  r: random_color[0],
-                  g: random_color[1],
-                  b: random_color[2] }.solid
+      @stars << [point[0] * 1280,
+                  point[1] * 720 + 32,
+                  rand_size,
+                  rand_size,
+                  random_color[0],
+                  random_color[1],
+                  random_color[2] ]
+    end
+    @stars.each do |i|
+      args.render_target(:galaxy_stars).solids << i
     end
 
     @static_output = []
@@ -38,10 +41,17 @@ class ContextGalaxyMap < Context
     @burn_core = false
     @current_system = nil
     @system_name = ''
+    @render_stars = false
+  end
+
+  def render_stars(args)
   end
 
   def create_map(args, systems)
-    @static_output << @stars
+    @static_output << {
+      x: 0, y: 0, w: args.grid.right, h: args.grid.top, path: :galaxy_stars,
+      source_x: 0, source_y: 0, source_w: args.grid.right, source_h: args.grid.top
+    }
 
     systems_array = []
     systems.each do |star_system|
@@ -131,7 +141,7 @@ class ContextGalaxyMap < Context
           @system_name = @current_system.name
           $game.scene_main.ship.materials['Cores'][:Stored] -= 1
         end
-        $game.scene_main.planet_map = ContextPlanetMap.new
+        $game.scene_main.planet_map = ContextPlanetMap.new(args)
         $game.scene_main.planet_map.create_map(args)
         $game.scene_main.context = :context_planet_map
       end

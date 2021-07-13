@@ -5,7 +5,7 @@ PLAYFIELD = [0, 8, 1280, 716].freeze
 
 # Handles calculations and drawing of the solar system maps.
 class ContextPlanetMap < Context
-  def initialize(stars: 150, min_star_size: 1, max_star_size: 6, star_saturation: 127)
+  def initialize(args, stars: 150, min_star_size: 1, max_star_size: 6, star_saturation: 127)
     @x = 0
     @y = 0
     @w = 1280
@@ -31,6 +31,10 @@ class ContextPlanetMap < Context
                   b: random_color[2] }.solid
     end
 
+    @stars.each do |i|
+      args.render_target(:system_stars).solids << i
+    end
+
     @static_output = []
 
     @ship_mode = :Orbit
@@ -38,8 +42,11 @@ class ContextPlanetMap < Context
     @fuel_ticker = 30
   end
 
-  def create_map(_args)
-    @static_output << @stars
+  def create_map(args)
+    @static_output << {
+      x: 0, y: 0, w: args.grid.right, h: args.grid.top, path: :system_stars,
+      source_x: 0, source_y: 0, source_w: args.grid.right, source_h: args.grid.top
+    }
 
     @planets.each do |planet|
       @static_output << planet.draw
