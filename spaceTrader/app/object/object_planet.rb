@@ -7,10 +7,10 @@ class ObjectPlanet < Object
   attr_accessor :x
   attr_accessor :y, :type, :name, :image, :materials
 
-  def initialize(planet_name)
+  def initialize(args, planet_name)
     # Generate unique planet information
-    @x = randr(1, 37) * 32
-    @y = randr(3, 21) * 32
+    @x = randr(64, args.grid.right - 64)
+    @y = randr(64, args.grid.top - 64)
     @type = PLANET_TYPE_STRINGS.sample
     @name = planet_name
 

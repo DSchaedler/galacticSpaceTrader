@@ -10,11 +10,11 @@ class ObjectSystem < Object
     @planet_count.times do
       planet_name = $available_planet_names.sample
       $available_planet_names.delete(planet_name)
-      @system_planets << ObjectPlanet.new(planet_name)
+      @system_planets << ObjectPlanet.new(args, planet_name)
     end
 
-    @x = randr(0, args.grid.right - 32)
-    @y = randr(64, args.grid.top)
+    @x = randr(64, args.grid.right - 64)
+    @y = randr(64, args.grid.top - 64)
 
     @name = $available_planet_names.sample
     $available_planet_names.delete(@name)
