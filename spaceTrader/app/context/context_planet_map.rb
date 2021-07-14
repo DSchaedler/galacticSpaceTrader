@@ -6,33 +6,19 @@ PLAYFIELD = [0, 8, 1280, 716].freeze
 # Handles calculations and drawing of the solar system maps.
 class ContextPlanetMap < Context
   def initialize(args, stars: 150, min_star_size: 1, max_star_size: 6, star_saturation: 127)
-    @x = 0
-    @y = 0
-    @w = 1280
-    @h = 720
-    @r = 20
-    @g = 24
-    @b = 46
-    @a = 255
-
     @system = $game.scene_main.system_select
     @planets = []
     @planets = @system.system_planets
     @planet_select = nil
 
-    @stars = []
-    until @stars.length >= stars
+    stars.times do
       rand_size = randr(min_star_size, max_star_size)
 
       random_color = [randr(star_saturation, 255), 255, star_saturation]
       random_color = random_color.shuffle
 
-      @stars << { x: randr(@x, @w), y: randr(@y + 32, @h), w: rand_size, h: rand_size, r: random_color[0], g: random_color[1],
+      args.render_target(:system_stars).solids << { x: randr(0, 1280), y: randr(0 + 32, 720), w: rand_size, h: rand_size, r: random_color[0], g: random_color[1],
                   b: random_color[2] }.solid
-    end
-
-    @stars.each do |i|
-      args.render_target(:system_stars).solids << i
     end
 
     @static_output = []

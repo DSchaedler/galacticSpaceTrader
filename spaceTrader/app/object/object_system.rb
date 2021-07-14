@@ -5,9 +5,9 @@ class ObjectSystem < Object
   attr_accessor :system_planets, :x, :y, :name
 
   def initialize(args)
-    @planet_count = randr(3, 6)
+    planet_count = randr(3, 6)
     @system_planets = []
-    @planet_count.times do
+    planet_count.times do
       planet_name = $available_planet_names.sample
       $available_planet_names.delete(planet_name)
       @system_planets << ObjectPlanet.new(args, planet_name)
