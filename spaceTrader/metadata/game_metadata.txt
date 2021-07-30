@@ -1,6 +1,0 @@
-devid=deeschaedler
-devtitle=Dee Schaedler
-gameid=galactic-space-trader
-gametitle=Galactic Space Trader
-version=0.1
-icon=metadata/ocean5.png
