@@ -141,7 +141,7 @@ class ContextGalaxyMap < Context
           @system_name = @current_system.name
           $game.scene_main.ship.materials['Cores'][:Stored] -= 1
         end
-        $game.scene_main.planet_map = ContextPlanetMap.new(args)
+        $game.scene_main.planet_map = @current_system.star_map
         $game.scene_main.planet_map.create_map(args)
         $game.scene_main.context = :context_planet_map
       end

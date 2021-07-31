@@ -2,7 +2,7 @@
 
 # Instance class of the systems in the galaxy
 class ObjectSystem < Object
-  attr_accessor :system_planets, :x, :y, :name
+  attr_accessor :system_planets, :x, :y, :name, :star_map
 
   def initialize(args)
     planet_count = randr(3, 6)
@@ -17,6 +17,7 @@ class ObjectSystem < Object
     @y = randr(64, args.grid.top - 64)
 
     @name = $available_planet_names.sample
+    @star_map = ContextPlanetMap.new(args, system_planets: @system_planets)
     $available_planet_names.delete(@name)
   end
 

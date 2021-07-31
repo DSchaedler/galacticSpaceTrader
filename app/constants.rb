@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ALPHANUM = (('A'..'Z').to_a + (0..9).to_a) # Creates an array containing A-Z + 0-9
+ALPHANUM = (('A'..'Z').to_a + (0..9).to_a) # Creates an array of alphanum characters
 
 ELEMENT_NAMES = %w[Hydrogen Helium Lithium Beryllium Boron Carbon Nitrogen Oxygen Fluorine Neon Sodium Magnesium
                    Aluminium Silicon Phosphorus Sulfur Chlorine Argon Potassium Calcium Scandium Titanium Vanadium
