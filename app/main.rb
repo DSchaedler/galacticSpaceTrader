@@ -34,7 +34,7 @@ end
 
 # Converts a string for a hexidecimal color value to an array of RGB values.
 def hex_to_rgb(hexstring)
-  hexstring.gsub('#', '').split('').each_slice(2).map { |e| e.join.to_i(16) }
+  hexstring.delete('#').split('').each_slice(2).map { |e| e.join.to_i(16) }
 end
 
 # Resets the game object, effectively making a clean reset.

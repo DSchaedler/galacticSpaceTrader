@@ -44,7 +44,7 @@ end
 
 # Buy button on Planet Menus
 class UIBuyButton < UIButton
-  def tick(args, planet) # rubocop:disable Metrics/AbcSize
+  def tick(args, planet)
     args.outputs.primitives << @static_output
     return unless args.inputs.mouse.click&.inside_rect?(@static_output[0])
     return unless planet.materials[@material][:Stored] >= 1
@@ -64,7 +64,7 @@ end
 
 # Sell button on Planet Menus
 class UISellButton < UIButton
-  def tick(args, planet) # rubocop:disable Metrics/AbcSize
+  def tick(args, planet)
     args.outputs.primitives << @static_output
     return unless args.inputs.mouse.click&.inside_rect? @static_output[0]
 

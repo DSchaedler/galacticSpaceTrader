@@ -16,7 +16,7 @@ class ObjectShip < Object
       resource_info[:Paid] = 0
       @materials[resource] = resource_info
     end
-    #@materials['Water'] = { Stored: 0, Paid: 0 }
+    # @materials['Water'] = { Stored: 0, Paid: 0 }
     @materials['Cores'] = { Stored: 10, Paid: 0 }
     @materials['Fuel'] = { Stored: 1000, Paid: 0 }
   end

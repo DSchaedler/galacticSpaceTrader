@@ -31,8 +31,8 @@ class ObjectPlanet < Object
       @materials[resource] = resource_info
     end
 
-    #@materials['Water'] = { Rate: 0, Stored: 0, Price: 100 }
-    @materials['Cores'] = { Rate: 0, Stored: randr(0, 1), Price: 300}
+    # @materials['Water'] = { Rate: 0, Stored: 0, Price: 100 }
+    @materials['Cores'] = { Rate: 0, Stored: randr(0, 1), Price: 300 }
     @materials['Fuel'] = { Rate: 0, Stored: 0, Price: 100 }
   end
 
@@ -47,12 +47,10 @@ class ObjectPlanet < Object
       @materials.each do |_material, values|
         if values[:Price].positive?
           values[:Stored] += values[:Rate]
-          if values[:Rate].positive?
-            values[:Price] -= 1
-          end
+          values[:Price] -= 1 if values[:Rate].positive?
         end
       end
-      #factory(args, [['Water', 3], ['Hydrogen', 2], ['Oxygen', 1]])
+      # factory(args, [['Water', 3], ['Hydrogen', 2], ['Oxygen', 1]])
       factory(args, [['Fuel', 5], ['Hydrogen', 1], ['Oxygen', 4]])
     end
   end

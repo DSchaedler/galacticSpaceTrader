@@ -18,7 +18,7 @@ class ContextPlanetMap < Context
       random_color = random_color.shuffle
 
       args.render_target(:system_stars).solids << { x: randr(0, 1280), y: randr(0 + 32, 720), w: rand_size, h: rand_size, r: random_color[0], g: random_color[1],
-                  b: random_color[2] }.solid
+                                                    b: random_color[2] }.solid
     end
 
     @static_output = []
