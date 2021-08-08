@@ -22,13 +22,13 @@ class ContextGalaxyMap < Context
       random_color = random_color.shuffle
       point = gaussian(0.5, 0.2)
 
-      @stars << [point[0] * 1280,
-                  point[1] * 720 + 32,
-                  rand_size,
-                  rand_size,
-                  random_color[0],
-                  random_color[1],
-                  random_color[2] ]
+      @stars << { x: point[0] * 1280,
+                  y: point[1] * 720 + 32,
+                  w: rand_size,
+                  h: rand_size,
+                  r: random_color[0],
+                  g: random_color[1],
+                  b: random_color[2] }.solid!
     end
     @stars.each do |i|
       args.render_target(:galaxy_stars).solids << i
@@ -44,8 +44,7 @@ class ContextGalaxyMap < Context
     @render_stars = false
   end
 
-  def render_stars(args)
-  end
+  def render_stars(args); end
 
   def create_map(args, systems)
     @static_output << {
