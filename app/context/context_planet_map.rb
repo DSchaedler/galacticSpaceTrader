@@ -92,7 +92,7 @@ class ContextPlanetMap < Context
           $game.scene_main.ship.materials['Fuel'][:Stored] -= 1
         end
       end
-      @tick_output << args.outputs.primitives << { x: @ship_pos[0], y: @ship_pos[1], w: 32, h: 32,
+      @tick_output << { x: @ship_pos[0], y: @ship_pos[1], w: 32, h: 32,
                                                    path: "sprites/spaceship#{ship_frame}.png", angle: ship_degree - 90,
                                                    primitive_marker: :sprite }
     end
@@ -143,6 +143,6 @@ class ContextPlanetMap < Context
       @planet_select = planet
     end
 
-    args.outputs.primitives << select_output
+    args.outputs.primitives << select_output if select_output != []
   end
 end
