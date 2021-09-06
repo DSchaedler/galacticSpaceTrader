@@ -101,7 +101,7 @@ class ContextPlanetMenu < Context
 
   def column_headers(args, table, start_y, hash)
     column_index = 1
-    hash.each do |key, _value|
+    hash.each_key do |key|
       label_hash = { x: @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)),
                      y: start_y,
                      text: key,
@@ -136,14 +136,22 @@ class ContextPlanetMenu < Context
     end
 
     # And add buy and sell buttons at the end of each row
-    new_button = UIBuyButton.new(args,
-                                 @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)), start_y - (@text_height * row_index), 'Buy', row)
+    new_button = UIBuyButton.new(
+      args, @origin_x + (@column_width * column_index) +
+      (@element_padding * (column_index + 1)),
+      start_y - (@text_height * row_index), 'Buy', row
+    )
+
     new_button.create_button
     buttons << new_button
     # column_index += 1
 
-    new_button = UISellButton.new(args,
-                                  @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)) + new_button.w + @element_padding, start_y - (@text_height * row_index), 'Sell', row)
+    new_button = UISellButton.new(
+      args, @origin_x + (@column_width * column_index) +
+      (@element_padding * (column_index + 1)) +
+      new_button.w + @element_padding,
+      start_y - (@text_height * row_index), 'Sell', row
+    )
     new_button.create_button
     buttons << new_button
   end

@@ -75,7 +75,6 @@ class ContextPlanetMap < Context
                       primitive_marker: :sprite }
       @tick_output << dock_button
       if $game.scene_main.context != :context_planet_menu && args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dock_button)
-        puts @planet_select
         $game.scene_main.planet_menu.create_menu(@planet_select)
         $game.scene_main.context = :context_planet_menu
       end
@@ -88,13 +87,13 @@ class ContextPlanetMap < Context
         ship_target = (distance * Math.cos(ship_degree * DEGREES_TO_RADIANS)) + @planet_select.x,
                       (distance * Math.sin(ship_degree * DEGREES_TO_RADIANS)) + @planet_select.y
         ship_degree = move_ship(args, ship_target)
-        if args.state.tick_count % @fuel_ticker == 0
+        if (args.state.tick_count % @fuel_ticker).zero?
           $game.scene_main.ship.materials['Fuel'][:Stored] -= 1
         end
       end
       @tick_output << { x: @ship_pos[0], y: @ship_pos[1], w: 32, h: 32,
-                                                   path: "sprites/spaceship#{ship_frame}.png", angle: ship_degree - 90,
-                                                   primitive_marker: :sprite }
+                        path: "sprites/spaceship#{ship_frame}.png",
+                        angle: ship_degree - 90, primitive_marker: :sprite }
     end
 
     args.outputs.primitives << @tick_output
