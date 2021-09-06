@@ -39,12 +39,12 @@ class ObjectPlanet < Object
   def cycle(args)
     total_stored = 0
 
-    @materials.each do |_material, values|
+    @materials.each_value do |values|
       total_stored += values[:Stored]
     end
 
     if total_stored < 500
-      @materials.each do |_material, values|
+      @materials.each_value do |values|
         if values[:Price].positive?
           values[:Stored] += values[:Rate]
           values[:Price] -= 1 if values[:Rate].positive?

@@ -4,14 +4,13 @@
 # Clustered Data
 require 'app/constants.rb'
 # Classes
+require 'app/engine.rb'
 require 'app/game.rb'
 require 'app/context/context.rb'
 require 'app/scene/scene.rb'
 require 'app/object/object.rb'
 require 'app/ui/ui.rb'
 require 'app/textbox_making.rb'
-
-require 'lib/delta.rb'
 
 DEGREES_TO_RADIANS = Math::PI / 180
 
@@ -20,7 +19,6 @@ DEGREES_TO_RADIANS = Math::PI / 180
 def tick(args)
   $game ||= Game.new(args)
   $game.tick(args)
-  Delta.mark
 
   $debug ||= false
 
@@ -43,13 +41,13 @@ end
 # Resets the game object, effectively making a clean reset.
 def reset_game
   $game = nil
-  $gtk.reset # rubocop:disable Style/GlobalVars
+  $gtk.reset
 end
 
 # Resets the game object, using the system time as a seed.
 def reset_game_random
   $game = nil
-  $gtk.reset seed: Time.new.to_i # rubocop:disable Style/GlobalVars
+  $gtk.reset seed: Time.new.to_i
 end
 
 def gaussian(mean, stddev)

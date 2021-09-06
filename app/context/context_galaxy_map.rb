@@ -48,8 +48,9 @@ class ContextGalaxyMap < Context
 
   def create_map(args, systems)
     @static_output << {
-      x: 0, y: 0, w: args.grid.right, h: args.grid.top, path: :galaxy_stars,
-      source_x: 0, source_y: 0, source_w: args.grid.right, source_h: args.grid.top
+      x: 0, y: 0, w: args.grid.right, h: args.grid.top,
+      path: :galaxy_stars, source_x: 0, source_y: 0,
+      source_w: args.grid.right, source_h: args.grid.top
     }
 
     systems_array = []
