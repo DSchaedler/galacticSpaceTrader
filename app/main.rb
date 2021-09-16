@@ -19,6 +19,8 @@ DEGREES_TO_RADIANS = Math::PI / 180
 # Engine loop. Creates the game instance, then immdiately routes tick to $game.tick.
 # Don't put anything else here, put it in $game.tick.
 def tick(args)
+  args.gtk.log_level = :off
+
   $game ||= Game.new(args)
   $game.tick(args)
 
