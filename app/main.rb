@@ -25,7 +25,7 @@ def tick(args)
   $debug ||= false
 
   $debug = !$debug if args.inputs.keyboard.key_up.tab
-  args.outputs.debug << args.gtk.framerate_diagnostics_primitives if $debug
+  $game.draw.debug_layer << args.gtk.framerate_diagnostics_primitives if $debug
 end
 
 # Engine methods - Not associated with any game logic, these are useful shortcuts to have.

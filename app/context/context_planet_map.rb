@@ -17,13 +17,16 @@ class ContextPlanetMap < Context
       random_color = [randr(star_saturation, 255), 255, star_saturation]
       random_color = random_color.shuffle
 
-      args.render_target(:system_stars).solids << { x: randr(0, 1280), y: randr(0 + 32, 720), w: rand_size, h: rand_size, r: random_color[0], g: random_color[1],
-                                                    b: random_color[2] }.solid!
+      args.render_target(:system_stars).solids << {
+        x: randr(0, 1280), y: randr(0 + 32, 720), w: rand_size, h: rand_size,
+        r: random_color[0], g: random_color[1], b: random_color[2],
+        a: randr(85, 255)
+      }.solid!
     end
 
     @static_output = []
 
-    @ship_mode = :Orbit
+    @ship_mode = :Idle
     @ship_pos = [1280 / 2, 720 / 2]
     @fuel_ticker = 30
   end
@@ -94,6 +97,11 @@ class ContextPlanetMap < Context
       @tick_output << { x: @ship_pos[0], y: @ship_pos[1], w: 32, h: 32,
                         path: "sprites/spaceship#{ship_frame}.png",
                         angle: ship_degree - 90, primitive_marker: :sprite }
+    elsif @ship_mode == :Idle
+      @tick_output << { x: @ship_pos[0], y: @ship_pos[1], w: 32, h: 32,
+                        path: "sprites/spaceship#{ship_frame}.png",
+                        angle: - 90, primitive_marker: :sprite }
+
     end
 
     $game.draw.layers[2] << @tick_output

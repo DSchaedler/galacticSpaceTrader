@@ -4,12 +4,12 @@ name = "galacticSpaceTrader"
 # The game's title. This will show up in the tile bar of your executable.
 title = "galacticSpaceTrader"
 version = "0.1.0"
-authors = ["TODO: My Name <todo@example.com>"]
+authors = ["Dee Schaedler"]
 icon = "metadata/icon.png"
-compile_ruby = false
+compile_ruby = true
 
 [dragonruby]
-version = "2.24"
+version = "2.26"
 edition = "standard"
 
 [dependencies]
@@ -17,6 +17,6 @@ edition = "standard"
 [itch]
 # The Project URL you set when you created the game on Itch.io. https://my-username.itch.io/my-game.
 # This will also be the name of your build files, so fill it out even if you aren't uploading to Itch.io.
-url = "todo-change-me"
+url = "https://deeschaedler.itch.io/galactic-space-trader"
 # Your username on Itch.io.
-username = "todo-change-me"
+username = "deeschaedler"
