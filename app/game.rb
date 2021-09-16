@@ -4,12 +4,15 @@
 class Game
   attr_gtk # Magic
 
-  attr_accessor :scene_main
+  attr_accessor :scene_main, :draw
 
   # Runs once when game instance created
   def initialize(args)
     @scene_main = SceneMain.new(args)
     @scene = :main
+
+    @draw = Draw.new(args)
+    @draw.layers = [[], [], [], []]
   end
 
   # Main loop
@@ -18,6 +21,8 @@ class Game
     @scene_main.tick(args)
 
     @scene_main.cycle(args) if (args.state.tick_count % 60).zero?
+
+    @draw.tick(args)
 
     return unless args.inputs.keyboard.key_up.delete
 

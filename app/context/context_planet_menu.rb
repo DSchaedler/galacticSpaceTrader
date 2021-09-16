@@ -52,7 +52,7 @@ class ContextPlanetMenu < Context
   end
 
   def tick(args)
-    args.outputs.primitives << @static_output
+    $game.draw.layers[3] << @static_output
 
     if args.inputs.keyboard.key_up.escape
       destroy_menu
@@ -70,7 +70,7 @@ class ContextPlanetMenu < Context
 
     buttons.each { |button|; button.tick(args, @planet); } # Tick buttons
 
-    args.outputs.primitives << table # Make it so
+    $game.draw.layers[3] << table # Make it so
   end
 
   def print_table(args, table, buttons, planet, start_y)
@@ -128,7 +128,7 @@ class ContextPlanetMenu < Context
     column_index += 1
 
     # Iterate through remaining columns and print
-    contents.each do |_column, value|
+    contents.each_value do |value|
       # OUTPUT CODE
       table << { x: @origin_x + (@column_width * column_index) + (@element_padding * (column_index + 1)),
                  y: start_y - (@text_height * row_index), text: value, primitive_marker: :label }

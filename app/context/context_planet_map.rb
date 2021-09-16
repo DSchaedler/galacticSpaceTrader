@@ -73,7 +73,7 @@ class ContextPlanetMap < Context
                       h: 32,
                       path: 'sprites/dockButton.png',
                       primitive_marker: :sprite }
-      @tick_output << dock_button
+      $game.draw.layers[3] << dock_button
       if $game.scene_main.context != :context_planet_menu && args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dock_button)
         $game.scene_main.planet_menu.create_menu(@planet_select)
         $game.scene_main.context = :context_planet_menu
@@ -96,7 +96,7 @@ class ContextPlanetMap < Context
                         angle: ship_degree - 90, primitive_marker: :sprite }
     end
 
-    args.outputs.primitives << @tick_output
+    $game.draw.layers[2] << @tick_output
   end
 
   def move_ship(args, ship_target)
@@ -142,6 +142,6 @@ class ContextPlanetMap < Context
       @planet_select = planet
     end
 
-    args.outputs.primitives << select_output if select_output != []
+    $game.draw.layers[3] << select_output if select_output != []
   end
 end

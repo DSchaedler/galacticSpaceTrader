@@ -6,6 +6,8 @@ require 'app/constants.rb'
 # Classes
 require 'app/engine.rb'
 require 'app/game.rb'
+require 'app/draw.rb'
+
 require 'app/context/context.rb'
 require 'app/scene/scene.rb'
 require 'app/object/object.rb'
@@ -28,26 +30,9 @@ end
 
 # Engine methods - Not associated with any game logic, these are useful shortcuts to have.
 
-# Produces random number in range min through max.
-def randr(min, max)
-  rand(max - min + 1) + min
-end
-
 # Converts a string for a hexidecimal color value to an array of RGB values.
 def hex_to_rgb(hexstring)
   hexstring.delete('#').split('').each_slice(2).map { |e| e.join.to_i(16) }
-end
-
-# Resets the game object, effectively making a clean reset.
-def reset_game
-  $game = nil
-  $gtk.reset
-end
-
-# Resets the game object, using the system time as a seed.
-def reset_game_random
-  $game = nil
-  $gtk.reset seed: Time.new.to_i
 end
 
 def gaussian(mean, stddev)

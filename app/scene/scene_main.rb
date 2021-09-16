@@ -50,7 +50,7 @@ class SceneMain < Scene
   end
 
   def ui(args)
-    args.outputs.primitives << [0, 0, 1280, 720, 20, 24, 46, 255].solid # Draw a background color for the actual game area.
+    $game.draw.layers[0] << [0, 0, 1280, 720, 20, 24, 46, 255].solid # Draw a background color for the actual game area.
     status_bar(args)
   end
 
@@ -92,7 +92,7 @@ class SceneMain < Scene
       primitive_marker: :label
     }
 
-    args.outputs.primitives << status_bar
+    $game.draw.layers[3] << status_bar
   end
 
   def pregeneration(args)

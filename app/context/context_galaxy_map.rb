@@ -70,11 +70,11 @@ class ContextGalaxyMap < Context
     @static_output << systems_array
   end
 
-  def tick(args, _systems)
+  def tick(_args, _systems)
     @tick_output = []
     @tick_output << @static_output
 
-    args.outputs.primitives << @tick_output
+    $game.draw.layers[1] << @tick_output
   end
 
   def check_system_select(args, systems)
@@ -147,6 +147,6 @@ class ContextGalaxyMap < Context
       end
     end
 
-    args.outputs.primitives << select_output
+    $game.draw.layers[3] << select_output
   end
 end

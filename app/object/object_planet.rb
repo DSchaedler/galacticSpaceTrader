@@ -43,16 +43,16 @@ class ObjectPlanet < Object
       total_stored += values[:Stored]
     end
 
-    if total_stored < 500
-      @materials.each_value do |values|
-        if values[:Price].positive?
-          values[:Stored] += values[:Rate]
-          values[:Price] -= 1 if values[:Rate].positive?
-        end
+    return unless total_stored < 500
+
+    @materials.each_value do |values|
+      if values[:Price].positive?
+        values[:Stored] += values[:Rate]
+        values[:Price] -= 1 if values[:Rate].positive?
       end
-      # factory(args, [['Water', 3], ['Hydrogen', 2], ['Oxygen', 1]])
-      factory(args, [['Fuel', 5], ['Hydrogen', 1], ['Oxygen', 4]])
     end
+    # factory(args, [['Water', 3], ['Hydrogen', 2], ['Oxygen', 1]])
+    factory(args, [['Fuel', 5], ['Hydrogen', 1], ['Oxygen', 4]])
   end
 
   def consume(_args, material, quantity)
