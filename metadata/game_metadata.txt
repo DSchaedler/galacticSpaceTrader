@@ -3,8 +3,8 @@
 
 devid=deeschaedler
 devtitle=Dee Schaedler
-gameid=galacticSpaceTrader
-gametitle=galacticSpaceTrader
+gameid=galactic-space-trader
+gametitle=Galactic Space Trader
 version=0.1.0
 icon=metadata/icon.png
 compile_ruby=true

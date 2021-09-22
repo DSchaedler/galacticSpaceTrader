@@ -45,6 +45,7 @@ class ContextPlanetMenu < Context
                         text: planet.type, primitive_marker: :label }
 
     @planet = planet
+
   end
 
   def destroy_menu
@@ -52,6 +53,9 @@ class ContextPlanetMenu < Context
   end
 
   def tick(args)
+
+    exit_button(args)
+
     $game.draw.layers[3] << @static_output
 
     if args.inputs.keyboard.key_up.escape
@@ -71,6 +75,20 @@ class ContextPlanetMenu < Context
     buttons.each { |button|; button.tick(args, @planet); } # Tick buttons
 
     $game.draw.layers[3] << table # Make it so
+  end
+
+  def exit_button(args)
+    color = {a: 200, r: 168, g: 181, b: 178}
+    box = {x: @origin_x + @width, y: @origin_y - 32, w: 32, h: 32}
+    button_sprite = { path: 'sprites/rounded_x_box.png' }.merge(color)
+    button_sprite = button_sprite.merge(box)
+
+    $game.draw.layers[3] << button_sprite
+
+
+    return unless args.inputs.mouse.click&.inside_rect?(box)
+    destroy_menu
+    $game.scene_main.context = :context_planet_map
   end
 
   def print_table(args, table, buttons, planet, start_y)

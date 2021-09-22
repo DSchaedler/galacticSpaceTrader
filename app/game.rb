@@ -28,7 +28,10 @@ class Game
 
     puts '[Screenshot Saving]'
     system_time = Time.new.to_i
-    args.outputs.screenshots << { x: 0, y: 0, w: 1280, h: 720, path: "#{system_time}.png" }
+    args.outputs.screenshots << {
+      x: 0, y: 0, w: 1280, h: 720,
+      path: "#{system_time}.png"
+    }
   end
 
   # Other game instance methods
