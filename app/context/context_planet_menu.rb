@@ -137,7 +137,7 @@ class ContextPlanetMenu < Context
     end
   end
 
-  def print_columns(args, table, buttons, row_index, row, contents, start_y) # rubocop:disable Metrics/ParameterLists
+  def print_columns(args, table, buttons, row_index, row, contents, start_y)
     column_index = 0
 
     # Put the element name at the beginning of the row

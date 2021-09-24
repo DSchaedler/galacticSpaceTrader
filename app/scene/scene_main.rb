@@ -2,7 +2,7 @@
 
 # Runs the main scene of the game, travelling to planets and trading cargo.
 class SceneMain < Scene
-  attr_accessor :planets, :systems, :system_select, :planet_select, :planet_map, :planet_menu, :ship, :context
+  attr_accessor :planets, :systems, :system_select, :planet_select, :planet_map, :planet_menu, :ship, :context, :ship_inventory
 
   def initialize(args)
     @context = :context_galaxy_map
@@ -21,6 +21,7 @@ class SceneMain < Scene
     @galaxy_map.create_map(args, @solar_systems)
 
     @planet_menu = ContextPlanetMenu.new(args)
+    @ship_inventory = ContextShipInventory.new(args)
   end
 
   def tick(args)
@@ -38,6 +39,9 @@ class SceneMain < Scene
     when :context_planet_menu
       @planet_map.tick(args)
       @planet_menu.tick(args)
+    when :context_ship_inventory
+      @planet_map.tick(args)
+      @ship_inventory.tick(args)
     end
   end
 
@@ -70,6 +74,22 @@ class SceneMain < Scene
 
     status_bar << {
       x: 576,
+      y: 32,
+      w: 128,
+      h: 32,
+      path: 'sprites/statusbarJut.png',
+      primitive_marker: :sprite
+    }
+    status_bar << {
+      x: 448,
+      y: 32,
+      w: 128,
+      h: 32,
+      path: 'sprites/statusbarJut.png',
+      primitive_marker: :sprite
+    }
+    status_bar << {
+      x: 704,
       y: 32,
       w: 128,
       h: 32,

@@ -66,23 +66,6 @@ class ContextGalaxyMap < Context
   def check_system_select(args, systems)
     select_output = []
     systems.each do |each_system|
-      if $game.scene_main.system_select
-        system_select = $game.scene_main.system_select
-
-        select_output << {
-          x: system_select.x + 14, y: system_select.y - 4,
-          text: system_select.name,
-          r: 255, g: 255, b: 255,
-          alignment_enum: 1, primitive_marker: :label
-        }
-        select_output << {
-          x: system_select.x - 2, y: system_select.y - 2,
-          w: 32, h: 32,
-          path: 'sprites/selectionCursor.png',
-          primitive_marker: :sprite
-        }
-      end
-
       next unless args.inputs.mouse.inside_rect? [each_system.x, each_system.y, 28, 28]
 
       select_output << {
@@ -102,6 +85,21 @@ class ContextGalaxyMap < Context
     end
 
     if $game.scene_main.system_select
+
+      system_select = $game.scene_main.system_select
+
+      select_output << {
+        x: system_select.x + 14, y: system_select.y - 4,
+        text: system_select.name,
+        r: 255, g: 255, b: 255,
+        alignment_enum: 1, primitive_marker: :label
+      }
+      select_output << {
+        x: system_select.x - 2, y: system_select.y - 2,
+        w: 32, h: 32,
+        path: 'sprites/selectionCursor.png',
+        primitive_marker: :sprite
+      }
 
       dock_button = []
       dock_button << {

@@ -104,7 +104,59 @@ class ContextPlanetMap < Context
 
     end
 
+    do_warp_button(args)
+    do_inventory_button(args)
+
     $game.draw.layers[2] << @tick_output
+  end
+
+  def do_warp_button(args)
+    warp_button = []
+    warp_button << {
+      x: 464, y: 32, w: 96, h: 32,
+      path: 'sprites/buttonTemplate.png',
+      primitive_marker: :sprite
+    }
+    warp_button << {
+      x: 514, y: 60,
+      text: 'Galaxy',
+      size_enum: 3,
+      alignment_enum: 1,
+      primitive_marker: :label
+    }
+
+    if args.inputs.mouse.up
+      if args.inputs.mouse.inside_rect? [464, 32, 96, 32]
+        if $game.scene_main.context == :context_planet_map
+          $game.scene_main.context = :context_galaxy_map
+        end
+      end
+    end
+
+    $game.draw.layers[3] << warp_button
+  end
+
+  def do_inventory_button(args)
+    inventory_button = []
+    inventory_button << {
+      x: 704, y: 32, w: 128, h: 32,
+      path: 'sprites/buttonTemplate.png',
+      primitive_marker: :sprite
+    }
+    inventory_button << {
+      x: 770, y: 60,
+      text: 'Inventory',
+      size_enum: 3,
+      alignment_enum: 1,
+      primitive_marker: :label
+    }
+
+    if $game.scene_main.context != :context_ship_inventory && args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(inventory_button[0])
+      $game.scene_main.ship_inventory.create_menu
+      $game.scene_main.context = :context_ship_inventory
+    end
+
+    $game.draw.layers[3] << inventory_button
   end
 
   def move_ship(args, ship_target)
@@ -128,14 +180,6 @@ class ContextPlanetMap < Context
   def check_planet_select(args)
     select_output = []
     @planets.each do |planet|
-      if @planet_select
-
-        select_output << { x: @planet_select.x + 14, y: @planet_select.y - 4, text: @planet_select.name, r: 255, g: 255,
-                           b: 255, alignment_enum: 1, primitive_marker: :label }
-        select_output << { x: @planet_select.x - 2, y: @planet_select.y - 2, w: 32, h: 32,
-                           path: 'sprites/selectionCursor.png', primitive_marker: :sprite }
-      end
-
       next unless args.inputs.mouse.inside_rect? [planet.x, planet.y, 28, 28]
 
       select_output << { x: planet.x + 14, y: planet.y - 4, text: planet.name, r: 255, g: 255, b: 255,
@@ -148,6 +192,17 @@ class ContextPlanetMap < Context
       $game.scene_main.planet_menu.destroy_menu
       @ship_mode = :Move if planet != $game.scene_main.planet_select
       @planet_select = planet
+    end
+
+    if @planet_select
+
+      select_output << { x: @planet_select.x + 14, y: @planet_select.y - 4,
+                         text: @planet_select.name,
+                         r: 255, g: 255, b: 255,
+                         alignment_enum: 1, primitive_marker: :label }
+      select_output << { x: @planet_select.x - 2, y: @planet_select.y - 2,
+                         w: 32, h: 32, path: 'sprites/selectionCursor.png',
+                         primitive_marker: :sprite }
     end
 
     $game.draw.layers[3] << select_output if select_output != []
