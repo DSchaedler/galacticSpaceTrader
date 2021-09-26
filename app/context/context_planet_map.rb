@@ -37,6 +37,8 @@ class ContextPlanetMap < Context
       source_x: 0, source_y: 0, source_w: args.grid.right, source_h: args.grid.top
     }
 
+    puts @planets
+
     @planets.each do |planet|
       @static_output << planet.draw
     end

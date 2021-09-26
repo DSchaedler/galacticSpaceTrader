@@ -11,6 +11,11 @@ class SceneMain < Scene
     # Generate Planets
     @solar_systems = []
     @system_select = nil
+    # 5.times do
+    #   x = randr(64, args.grid.right - 64)
+    #   y = randr(64, args.grid.top - 64)
+    #   @solar_systems.each
+    # end
     5.times { ; @solar_systems << ObjectSystem.new(args); }
 
     @ship = ObjectShip.new

@@ -25,7 +25,7 @@ class ObjectPlanet < Object
     @materials = {}
     RESOURCES.each do |resource|
       resource_info = {}
-      resource_info[:Rate] = randr(1, 10)
+      resource_info[:Rate] = randr(0, 10)
       resource_info[:Stored] = 0
       resource_info[:Price] = 100
       @materials[resource] = resource_info
