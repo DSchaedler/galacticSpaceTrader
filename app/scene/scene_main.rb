@@ -27,6 +27,8 @@ class SceneMain < Scene
 
     @planet_menu = ContextPlanetMenu.new(args)
     @ship_inventory = ContextShipInventory.new(args)
+
+    @event_trigger = nil
   end
 
   def tick(args)
@@ -48,6 +50,8 @@ class SceneMain < Scene
       @planet_map.tick(args)
       @ship_inventory.tick(args)
     end
+
+    random_event(args) if (args.state.tick_count % 18000).zero?
   end
 
   def cycle(args)
@@ -127,5 +131,21 @@ class SceneMain < Scene
     end
     @pregeneration = true
     puts 'Pregeneration Complete.'
+  end
+
+  def random_event(args)
+    event = [
+      :pirate_attack,
+      :supply_crash,
+      :supply_hike
+    ].sample
+
+    case event
+    when :supply_crash
+      select_system = @systems.sample
+      select_planet = select_system.system_planets.sample
+      select_material = select_planet.materials.sample
+      puts select_material
+    end
   end
 end
