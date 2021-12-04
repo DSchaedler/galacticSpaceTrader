@@ -80,7 +80,7 @@ class ContextPlanetMap < Context
                       primitive_marker: :sprite }
       $game.draw.layers[3] << dock_button
       if $game.scene_main.context != :context_planet_menu && args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dock_button)
-        $game.scene_main.planet_menu.create_menu(@planet_select)
+        $game.scene_main.planet_menu.create_menu(args, @planet_select)
         $game.scene_main.context = :context_planet_menu
       end
 

@@ -21,9 +21,9 @@ class ContextPlanetMenu < Context
     @planet = nil
   end
 
-  def create_menu(planet)
+  def create_menu(args, planet)
 
-    $game.args.render_target(:planet_menu).clear_before_render = true
+    args.render_target(:planet_menu).clear_before_render = true
     # Textbox
     @static_output << textbox_background(x_pos: @origin_x,
                                          y_pos: @origin_y,
@@ -46,7 +46,7 @@ class ContextPlanetMenu < Context
                         y: @origin_y - @image_height - @element_padding - (@text_height * 2),
                         text: planet.type, primitive_marker: :label }
 
-    $game.args.render_target(:planet_menu).primitives << @static_output
+    args.render_target(:planet_menu).primitives << @static_output
 
     @planet = planet
 
@@ -54,7 +54,7 @@ class ContextPlanetMenu < Context
 
   def destroy_menu
     @static_output = []
-    $game.args.render_target(:planet_menu).clear_before_render = true
+    args.render_target(:planet_menu).clear_before_render = true
   end
 
   def tick(args)
