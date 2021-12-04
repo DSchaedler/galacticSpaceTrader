@@ -49,6 +49,7 @@ class ContextPlanetMenu < Context
     args.render_target(:planet_menu).primitives << @static_output
 
     @planet = planet
+    @table = []
 
   end
 
@@ -79,7 +80,13 @@ class ContextPlanetMenu < Context
 
     buttons.each { |button|; button.tick(args, @planet); } # Tick buttons
 
-    $game.draw.layers[3] << table # Make it so
+    if table != @table
+      args.render_target(:table_values).clear_before_render = true
+      args.render_target(:table_values).primitives << table
+      @table = table
+    end
+
+    $game.draw.layers[3] << {x: 0, y: 0, w: 1280, h: 820, path: :table_values, primitive_marker: :sprite}
   end
 
   def exit_button(args)
