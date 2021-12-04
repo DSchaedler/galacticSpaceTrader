@@ -22,6 +22,8 @@ class ContextPlanetMenu < Context
   end
 
   def create_menu(planet)
+
+    $game.args.render_target(:planet_menu).clear_before_render = true
     # Textbox
     @static_output << textbox_background(x_pos: @origin_x,
                                          y_pos: @origin_y,
@@ -44,19 +46,22 @@ class ContextPlanetMenu < Context
                         y: @origin_y - @image_height - @element_padding - (@text_height * 2),
                         text: planet.type, primitive_marker: :label }
 
+    $game.args.render_target(:planet_menu).primitives << @static_output
+
     @planet = planet
 
   end
 
   def destroy_menu
     @static_output = []
+    $game.args.render_target(:planet_menu).clear_before_render = true
   end
 
   def tick(args)
 
     exit_button(args)
 
-    $game.draw.layers[3] << @static_output
+    $game.draw.layers[3] << {x: 0, y: 0, w: 1280, h: 720, path: :planet_menu, primitive_marker: :sprite}
 
     if args.inputs.keyboard.key_up.escape
       destroy_menu
