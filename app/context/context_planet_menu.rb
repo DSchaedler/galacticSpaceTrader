@@ -65,7 +65,7 @@ class ContextPlanetMenu < Context
     $game.draw.layers[3] << {x: 0, y: 0, w: 1280, h: 720, path: :planet_menu, primitive_marker: :sprite}
 
     if args.inputs.keyboard.key_up.escape
-      destroy_menu
+      destroy_menu(args)
       $game.scene_main.context = :context_planet_map
     end
 
