@@ -42,18 +42,21 @@ class ContextPlanetMap < Context
     @planets.each do |planet|
       @static_output << planet.draw
     end
+    args.render_target(:planet_map).primitives << @static_output
   end
 
   def destroy_map
     @static_output = []
+    args.render_target(:planet_map).clear_before_render = true
   end
 
   def tick(args)
     @system = $game.scene_main.system_select
     @planets = @system.system_planets
 
+    $game.draw[2] << {x: 0, y: 0, w: 1280, h: 720, path: :planet_map, primitive_marker: :sprite}
+
     @tick_output = []
-    @tick_output << @static_output
 
     if args.inputs.keyboard.key_up.escape && ($game.scene_main.context == :context_planet_map)
       $game.scene_main.context = :context_galaxy_map
