@@ -86,7 +86,7 @@ class ContextPlanetMenu < Context
       @table = table
     end
 
-    $game.draw.layers[3] << {x: 0, y: 0, w: 1280, h: 820, path: :table_values, primitive_marker: :sprite}
+    $game.draw.layers[3] << {x: 0, y: 0, w: 1280, h: 720, path: :table_values, primitive_marker: :sprite}
   end
 
   def exit_button(args)
