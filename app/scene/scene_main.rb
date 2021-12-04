@@ -40,7 +40,7 @@ class SceneMain < Scene
       @planet_map.tick(args)
       @planet_map.check_planet_select(args)
     when :context_galaxy_map
-      @planet_map.destroy_map if @planet_map
+      @planet_map.destroy_map(args) if @planet_map
       @galaxy_map.tick(args, @solar_systems)
       @galaxy_map.check_system_select(args, @solar_systems)
     when :context_planet_menu

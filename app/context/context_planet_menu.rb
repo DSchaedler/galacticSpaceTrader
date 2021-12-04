@@ -52,7 +52,7 @@ class ContextPlanetMenu < Context
 
   end
 
-  def destroy_menu
+  def destroy_menu(args)
     @static_output = []
     args.render_target(:planet_menu).clear_before_render = true
   end

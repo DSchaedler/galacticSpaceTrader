@@ -191,7 +191,7 @@ class ContextPlanetMap < Context
 
       next unless args.inputs.mouse.up
 
-      $game.scene_main.planet_menu.destroy_menu
+      $game.scene_main.planet_menu.destroy_menu(args)
       @ship_mode = :Move if planet != $game.scene_main.planet_select
       @planet_select = planet
     end
