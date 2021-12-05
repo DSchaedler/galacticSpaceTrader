@@ -134,11 +134,14 @@ class SceneMain < Scene
   end
 
   def random_event(args)
+    puts "Random Event Triggered"
     event = [
       :pirate_attack,
       :supply_crash,
       :supply_hike
     ].sample
+
+    puts event
 
     case event
     when :supply_crash
