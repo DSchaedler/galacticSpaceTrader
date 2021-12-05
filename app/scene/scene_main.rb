@@ -137,14 +137,13 @@ class SceneMain < Scene
   end
 
   def random_event(args)
-    puts "Random Event Triggered"
     event = [
       :pirate_attack,
       :supply_crash,
       :supply_hike
     ].sample
 
-    puts event
+    puts "Random Event: " + event
 
     case event
     when :supply_crash
@@ -152,13 +151,13 @@ class SceneMain < Scene
       select_planet = select_system.system_planets.sample
       select_material = RESOURCES.sample
       select_planet.materials[select_material][:Stored] = (select_planet.materials[select_material][:Stored] * 0.8).ceil
-      puts select_system.name + select_planet.name + select_material.to_s + " decrease 20%."
+      puts "System: " + select_system.name + " | Planet: " + select_planet.name + " | Material: " + select_material.to_s + " decrease 20%."
     when :supply_hike
       select_system = @solar_systems.sample
       select_planet = select_system.system_planets.sample
       select_material = select_planet.materials.keys.sample
       select_planet.materials[select_material][:Stored] = (select_planet.materials[select_material][:Stored] * 1.2).ceil
-      puts select_system.name + select_planet.name + select_material.to_s + " increase 20%."
+      puts "System: " + select_system.name + " | Planet: " + select_planet.name + " | Material: " + select_material.to_s + " increase 20%."
     end
   end
 end
