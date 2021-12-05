@@ -153,7 +153,6 @@ class SceneMain < Scene
       select_material = select_planet.materials[select_planet.materials.keys.sample]
       select_system[select_planet][select_material][:Stored] = (select_system[select_planet][select_material][:Stored] * 0.8).ceil
       puts select_system.name.to_a + select_planet.name.to_a + select_material.to_a + " decrease 20%."
-    end
     when :supply_hike
       select_system = @solar_systems.sample
       select_planet = select_system.system_planets.sample
