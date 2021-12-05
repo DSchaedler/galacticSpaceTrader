@@ -149,7 +149,9 @@ class SceneMain < Scene
     case event
     when :supply_crash
       select_system = @solar_systems.sample
+      puts select_system
       select_planet = select_system.system_planets.sample
+      puts select_planet
       select_material = select_planet.materials.sample
       puts select_material
     end
