@@ -72,7 +72,12 @@ class UISellButton < UIButton
     return unless ship.materials[@material][:Stored] >= 1
 
     ship.materials[@material][:Paid] -= (ship.materials[@material][:Paid] / ship.materials[@material][:Stored]).round(2)
-    ship.materials[@material][:Stored] -= 1
+    if @material == 'Fuel'
+      $game.scene_main.ship.materials[@material][:Stored] -= 5
+    else
+      ship.materials[@material][:Stored] -= 1
+    end
+
     ship.money += planet.materials[@material][:Price]
     planet.materials[@material][:Stored] += 1
     planet.materials[@material][:Price] -= 1
