@@ -52,7 +52,7 @@ class SceneMain < Scene
     end
 
     minutes = 0
-    seconds = 30
+    seconds = 10
 
     random_event(args) if args.state.tick_count.positive? && (args.state.tick_count % (((minutes * 60) + seconds) * 60)).zero?
   end
@@ -152,13 +152,13 @@ class SceneMain < Scene
       select_planet = select_system.system_planets.sample
       select_material = RESOURCES.sample
       select_planet.materials[select_material][:Stored] = (select_planet.materials[select_material][:Stored] * 0.8).ceil
-      puts select_system.name.to_a + select_planet.name.to_a + select_material.to_a + " decrease 20%."
+      puts select_system.name + select_planet.name + select_material.to_s + " decrease 20%."
     when :supply_hike
       select_system = @solar_systems.sample
       select_planet = select_system.system_planets.sample
       select_material = select_planet.materials.keys.sample
       select_planet.materials[select_material][:Stored] = (select_planet.materials[select_material][:Stored] * 1.2).ceil
-      puts select_system.name.to_a + select_planet.name.to_a + select_material.to_a + " increase 20%."
+      puts select_system.name + select_planet.name + select_material.to_s + " increase 20%."
     end
   end
 end
