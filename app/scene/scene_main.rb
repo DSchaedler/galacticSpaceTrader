@@ -51,7 +51,7 @@ class SceneMain < Scene
       @ship_inventory.tick(args)
     end
 
-    # random_event(args) if (args.state.tick_count % 18000).zero?
+    random_event(args) if (args.state.tick_count % 18000).zero?
   end
 
   def cycle(args)
