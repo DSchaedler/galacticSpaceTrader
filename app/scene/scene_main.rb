@@ -152,7 +152,7 @@ class SceneMain < Scene
       puts select_system
       select_planet = select_system.system_planets.sample
       puts select_planet
-      select_material = select_planet.materials.sample
+      select_material = select_planet.materials[select_planet.materials.keys.sample]
       puts select_material
     end
   end
