@@ -54,7 +54,7 @@ class ContextPlanetMap < Context
     @system = $game.scene_main.system_select
     @planets = @system.system_planets
 
-    $game.draw[2] << {x: 0, y: 0, w: 1280, h: 720, path: :planet_map, primitive_marker: :sprite}
+    $game.draw.layers[2] << {x: 0, y: 0, w: 1280, h: 720, path: :planet_map, primitive_marker: :sprite}
 
     @tick_output = []
 
