@@ -51,7 +51,10 @@ class SceneMain < Scene
       @ship_inventory.tick(args)
     end
 
-    random_event(args) if (args.state.tick_count % 18000).zero?
+    minutes = 0
+    seconds = 30
+
+    random_event(args) if (args.state.tick_count % ((minutes * 60) + seconds) * 60).zero?
   end
 
   def cycle(args)
