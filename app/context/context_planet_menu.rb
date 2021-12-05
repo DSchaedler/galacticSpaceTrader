@@ -99,7 +99,7 @@ class ContextPlanetMenu < Context
 
 
     return unless args.inputs.mouse.click&.inside_rect?(box)
-    destroy_menu
+    destroy_menu(args)
     $game.scene_main.context = :context_planet_map
   end
 
