@@ -143,7 +143,7 @@ class SceneMain < Scene
       :supply_hike
     ].sample
 
-    puts "Random Event: " + event
+    puts "Random Event: " + "#{event}"
 
     case event
     when :supply_crash
