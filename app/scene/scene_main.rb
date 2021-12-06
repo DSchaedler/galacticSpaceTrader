@@ -152,12 +152,14 @@ class SceneMain < Scene
       select_material = RESOURCES.sample
       select_planet.materials[select_material][:Stored] = (select_planet.materials[select_material][:Stored] * 0.8).ceil
       puts "System: " + select_system.name + " | Planet: " + select_planet.name + " | Material: " + select_material.to_s + " decrease 20%."
+      args.gtk.notify! "Supply of #{select_material.to_s} reduced by 20% on #{select_planet.name} in #{select_system.name} system."
     when :supply_hike
       select_system = @solar_systems.sample
       select_planet = select_system.system_planets.sample
       select_material = select_planet.materials.keys.sample
       select_planet.materials[select_material][:Stored] = (select_planet.materials[select_material][:Stored] * 1.2).ceil
       puts "System: " + select_system.name + " | Planet: " + select_planet.name + " | Material: " + select_material.to_s + " increase 20%."
+      args.gtk.notify! "Supply of #{select_material.to_s} increased by 20% on #{select_planet.name} in #{select_system.name} system."
     end
   end
 end
