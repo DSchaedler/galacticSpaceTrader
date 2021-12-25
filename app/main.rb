@@ -43,3 +43,8 @@ def gaussian(mean, stddev)
   scale = stddev * rho
   [mean + scale * Math.cos(theta), mean + scale * Math.sin(theta)]
 end
+
+def reset_game
+  $game = nil
+  $gtk.reset
+end
