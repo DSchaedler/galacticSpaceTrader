@@ -45,6 +45,7 @@ def gaussian(mean, stddev)
 end
 
 def reset_game
+  $gtk.console.clear
   $game = nil
   $gtk.reset
 end
