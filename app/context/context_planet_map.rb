@@ -45,7 +45,7 @@ class ContextPlanetMap < Context
     args.render_target(:planet_map).primitives << @static_output
   end
 
-  def destroy_map
+  def destroy_map(args)
     @static_output = []
     args.render_target(:planet_map).clear_before_render = true
   end
