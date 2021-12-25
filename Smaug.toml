@@ -9,8 +9,8 @@ icon = "metadata/icon.png"
 compile_ruby = true
 
 [dragonruby]
-version = "2.26"
-edition = "standard"
+version = "3.2"
+edition = "pro"
 
 [dependencies]
 
