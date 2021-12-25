@@ -146,6 +146,7 @@ class SceneMain < Scene
       select_planet = select_system.system_planets.sample
       select_material = select_planet.materials.sample
       puts select_material
+      args.gtk.notify select_material.name
     end
   end
 end
