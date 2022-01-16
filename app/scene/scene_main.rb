@@ -11,11 +11,7 @@ class SceneMain < Scene
     # Generate Planets
     @solar_systems = []
     @system_select = nil
-    # 5.times do
-    #   x = randr(64, args.grid.right - 64)
-    #   y = randr(64, args.grid.top - 64)
-    #   @solar_systems.each
-    # end
+
     5.times { ; @solar_systems << ObjectSystem.new(args); }
 
     @ship = ObjectShip.new
@@ -51,7 +47,7 @@ class SceneMain < Scene
       @ship_inventory.tick(args)
     end
 
-    # random_event(args) if (args.state.tick_count % 18000).zero?
+    random_event(args) if args.state.tick_count > 0 && (args.state.tick_count % 18000).zero?
   end
 
   def cycle(args)
@@ -137,18 +133,30 @@ class SceneMain < Scene
     event = [
       :pirate_attack,
       :supply_crash,
-      :supply_hike
+      :supply_hike,
+      :price_crash,
+      :price_hike
     ].sample
+
+    selected_system = @solar_systems.sample
+    selected_planet = selected_system.system_planets.sample
+    sample = selected_planet.materials.keys.sample
+    selected_material = selected_planet.materials.select { |k,v| k == sample}
+    key = selected_material.keys[0]
 
     case event
     when :supply_crash
-      select_system = @systems.sample
-      puts @select_system
-      select_planet = select_system.system_planets.sample
-      puts @select_planet
-      select_material = select_planet.materials.sample
-      puts select_material
-      args.gtk.notify select_material.name
+      selected_planet.materials[key][:Stored] = (selected_planet.materials[key][:Stored] * 0.8).ceil
+      args.gtk.notify! "Supply of #{key} on #{selected_planet.name} in #{selected_system.name} fell 20%"
+    when :supply_hike
+      selected_planet.materials[key][:Stored] = (selected_planet.materials[key][:Stored] * 1.2).ceil
+      args.gtk.notify! "Supply of #{key} on #{selected_planet.name} in #{selected_system.name} spiked 20%"
+    when :price_crash
+      selected_planet.materials[key][:Price] = (selected_planet.materials[key][:Price] * 0.8).ceil
+      args.gtk.notify! "Price of #{key} on #{selected_planet.name} in #{selected_system.name} fell 20%"
+    when :price_hike
+      selected_planet.materials[key][:Price] = (selected_planet.materials[key][:Price] * 1.2).ceil
+      args.gtk.notify! "Price of #{key} on #{selected_planet.name} in #{selected_system.name} spiked 20%"
     end
   end
 end
