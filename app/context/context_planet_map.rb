@@ -7,7 +7,7 @@ PLAYFIELD = [0, 8, 1280, 716].freeze
 class ContextPlanetMap < Context
   def initialize(args, system_planets:, stars: 150, min_star_size: 1, max_star_size: 6, star_saturation: 127)
     super
-    
+
     # @system = system
     @planets = []
     @planets = system_planets

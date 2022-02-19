@@ -123,17 +123,15 @@ class ContextGalaxyMap < Context
       select_output << dock_button
 
       if args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dock_button[0])
-        if $game.scene_main.system_select != @current_system
-          if ($game.scene_main.ship.materials['Cores'][:Stored]).positive?
-            @current_system = $game.scene_main.system_select
-            @system_name = @current_system.name
-            $game.scene_main.ship.materials['Cores'][:Stored] -= 1
+        if $game.scene_main.system_select == @current_system
+          $game.scene_main.planet_map = @current_system.star_map
+          $game.scene_main.planet_map.create_map(args)
+          $game.scene_main.context = :context_planet_map
+        elsif ($game.scene_main.ship.materials['Cores'][:Stored]).positive?
+          @current_system = $game.scene_main.system_select
+          @system_name = @current_system.name
+          $game.scene_main.ship.materials['Cores'][:Stored] -= 1
 
-            $game.scene_main.planet_map = @current_system.star_map
-            $game.scene_main.planet_map.create_map(args)
-            $game.scene_main.context = :context_planet_map
-          end
-        else
           $game.scene_main.planet_map = @current_system.star_map
           $game.scene_main.planet_map.create_map(args)
           $game.scene_main.context = :context_planet_map

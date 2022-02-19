@@ -41,7 +41,7 @@ def gaussian(mean, stddev)
   theta = 2 * Math::PI * rand
   rho = Math.sqrt(-2 * Math.log(1 - rand))
   scale = stddev * rho
-  [mean + scale * Math.cos(theta), mean + scale * Math.sin(theta)]
+  [mean + (scale * Math.cos(theta)), mean + (scale * Math.sin(theta))]
 end
 
 def reset_game

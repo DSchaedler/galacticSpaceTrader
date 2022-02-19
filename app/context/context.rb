@@ -7,7 +7,7 @@ require 'app/context/context_ship_inventory.rb'
 
 # super class for scene_main contexts.
 class Context
-  def initialize
+  def initialize(args)
     args.outputs = []
   end
 end
