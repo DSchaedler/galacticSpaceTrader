@@ -22,7 +22,6 @@ class ContextPlanetMenu < Context
   end
 
   def create_menu(args, planet)
-
     args.render_target(:planet_menu).clear_before_render = true
     # Textbox
     @static_output << textbox_background(x_pos: @origin_x,
@@ -50,7 +49,6 @@ class ContextPlanetMenu < Context
 
     @planet = planet
     @table = []
-
   end
 
   def destroy_menu(args)
@@ -59,10 +57,9 @@ class ContextPlanetMenu < Context
   end
 
   def tick(args)
-
     exit_button(args)
 
-    $game.draw.layers[3] << {x: 0, y: 0, w: 1280, h: 720, path: :planet_menu, primitive_marker: :sprite}
+    $game.draw.layers[3] << { x: 0, y: 0, w: 1280, h: 720, path: :planet_menu, primitive_marker: :sprite }
 
     if args.inputs.keyboard.key_up.escape
       destroy_menu(args)
@@ -81,8 +78,8 @@ class ContextPlanetMenu < Context
     buttons.each { |button|; button.tick(args, @planet); } # Tick buttons
 
     if table != @table
-      #args.render_target(:table_values).clear_before_render = true
-      #args.render_target(:table_values).primitives << table
+      # args.render_target(:table_values).clear_before_render = true
+      # args.render_target(:table_values).primitives << table
       @table = table
     end
 
@@ -90,15 +87,15 @@ class ContextPlanetMenu < Context
   end
 
   def exit_button(args)
-    color = {a: 200, r: 168, g: 181, b: 178}
-    box = {x: @origin_x + @width, y: @origin_y - 32, w: 32, h: 32}
+    color = { a: 200, r: 168, g: 181, b: 178 }
+    box = { x: @origin_x + @width, y: @origin_y - 32, w: 32, h: 32 }
     button_sprite = { path: 'sprites/rounded_x_box.png' }.merge(color)
     button_sprite = button_sprite.merge(box)
 
     $game.draw.layers[3] << button_sprite
 
-
     return unless args.inputs.mouse.click&.inside_rect?(box)
+
     destroy_menu(args)
     $game.scene_main.context = :context_planet_map
   end
@@ -143,9 +140,7 @@ class ContextPlanetMenu < Context
       # Click the column header to sort
       next unless args.inputs.mouse.click
 
-      if args.inputs.mouse.intersect_rect? [label_hash[:x], label_hash[:y] - @text_height, @column_width, @text_height]
-        @column_sort = key
-      end
+      @column_sort = key if args.inputs.mouse.intersect_rect? [label_hash[:x], label_hash[:y] - @text_height, @column_width, @text_height]
     end
   end
 

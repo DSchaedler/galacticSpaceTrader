@@ -5,6 +5,8 @@ class SceneMain < Scene
   attr_accessor :planets, :systems, :system_select, :planet_select, :planet_map, :planet_menu, :ship, :context, :ship_inventory
 
   def initialize(args)
+    super
+
     @context = :context_galaxy_map
     @pregeneration = false
 
@@ -12,7 +14,40 @@ class SceneMain < Scene
     @solar_systems = []
     @system_select = nil
 
-    5.times { ; @solar_systems << ObjectSystem.new(args); }
+    system_count = 5
+
+    system_locations = []
+    while system_locations.length < system_count
+
+      new_system_pos = [randr(64, args.grid.right - 64), randr(64, args.grid.top - 64)]
+      reject = false
+
+      if system_locations.include? new_system_pos
+        puts "#{new_system_pos} rejected: duplicate"
+        reject = true
+      end
+
+      unless system_locations.empty?
+        system_locations.each do |old_system_pos|
+          if args.geometry.point_inside_circle? new_system_pos, old_system_pos, 128
+            puts "#{new_system_pos} rejected: too close"
+            reject = true
+          end
+        end
+      end
+
+      unless reject
+        puts "New system at #{new_system_pos}"
+        system_locations << new_system_pos
+      end
+
+    end
+
+    puts system_locations
+
+    system_locations.each do |location|
+      @solar_systems << ObjectSystem.new(args, location[0], location[1])
+    end
 
     @ship = ObjectShip.new
     @systems = []
@@ -36,7 +71,7 @@ class SceneMain < Scene
       @planet_map.tick(args)
       @planet_map.check_planet_select(args)
     when :context_galaxy_map
-      @planet_map.destroy_map(args) if @planet_map
+      @planet_map&.destroy_map(args)
       @galaxy_map.tick(args, @solar_systems)
       @galaxy_map.check_system_select(args, @solar_systems)
     when :context_planet_menu
@@ -47,7 +82,7 @@ class SceneMain < Scene
       @ship_inventory.tick(args)
     end
 
-    random_event(args) if args.state.tick_count > 0 && (args.state.tick_count % 18000).zero?
+    random_event(args) if args.state.tick_count.positive? && (args.state.tick_count % 18_000).zero?
   end
 
   def cycle(args)
@@ -130,18 +165,18 @@ class SceneMain < Scene
   end
 
   def random_event(args)
-    event = [
-      :pirate_attack,
-      :supply_crash,
-      :supply_hike,
-      :price_crash,
-      :price_hike
+    event = %i[
+      pirate_attack
+      supply_crash
+      supply_hike
+      price_crash
+      price_hike
     ].sample
 
     selected_system = @solar_systems.sample
     selected_planet = selected_system.system_planets.sample
     sample = selected_planet.materials.keys.sample
-    selected_material = selected_planet.materials.select { |k,v| k == sample}
+    selected_material = selected_planet.materials.select { |k, _v| k == sample }
     key = selected_material.keys[0]
 
     case event

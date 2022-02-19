@@ -54,13 +54,11 @@ class ContextPlanetMap < Context
     @system = $game.scene_main.system_select
     @planets = @system.system_planets
 
-    $game.draw.layers[2] << {x: 0, y: 0, w: 1280, h: 720, path: :planet_map, primitive_marker: :sprite}
+    $game.draw.layers[2] << { x: 0, y: 0, w: 1280, h: 720, path: :planet_map, primitive_marker: :sprite }
 
     @tick_output = []
 
-    if args.inputs.keyboard.key_up.escape && ($game.scene_main.context == :context_planet_map)
-      $game.scene_main.context = :context_galaxy_map
-    end
+    $game.scene_main.context = :context_galaxy_map if args.inputs.keyboard.key_up.escape && ($game.scene_main.context == :context_planet_map)
 
     ship_frame = args.state.tick_count.idiv(5).mod(3)
 
@@ -95,9 +93,7 @@ class ContextPlanetMap < Context
         ship_target = (distance * Math.cos(ship_degree * DEGREES_TO_RADIANS)) + @planet_select.x,
                       (distance * Math.sin(ship_degree * DEGREES_TO_RADIANS)) + @planet_select.y
         ship_degree = move_ship(args, ship_target)
-        if (args.state.tick_count % @fuel_ticker).zero?
-          $game.scene_main.ship.materials['Fuel'][:Stored] -= 1
-        end
+        $game.scene_main.ship.materials['Fuel'][:Stored] -= 1 if (args.state.tick_count % @fuel_ticker).zero?
       end
       @tick_output << { x: @ship_pos[0], y: @ship_pos[1], w: 32, h: 32,
                         path: "sprites/spaceship#{ship_frame}.png",
@@ -130,13 +126,7 @@ class ContextPlanetMap < Context
       primitive_marker: :label
     }
 
-    if args.inputs.mouse.up
-      if args.inputs.mouse.inside_rect? [464, 32, 96, 32]
-        if $game.scene_main.context == :context_planet_map
-          $game.scene_main.context = :context_galaxy_map
-        end
-      end
-    end
+    $game.scene_main.context = :context_galaxy_map if args.inputs.mouse.up && args.inputs.mouse.inside_rect?([464, 32, 96, 32]) && ($game.scene_main.context == :context_planet_map)
 
     $game.draw.layers[3] << warp_button
   end

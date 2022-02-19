@@ -51,11 +51,11 @@ class UIBuyButton < UIButton
     return unless $game.scene_main.ship.money >= planet.materials[@material][:Price]
 
     $game.scene_main.ship.materials[@material][:Paid] += planet.materials[@material][:Price]
-    if @material == 'Fuel'
-      $game.scene_main.ship.materials[@material][:Stored] += 5
-    else
-      $game.scene_main.ship.materials[@material][:Stored] += 1
-    end
+    $game.scene_main.ship.materials[@material][:Stored] += if @material == 'Fuel'
+                                                             5
+                                                           else
+                                                             1
+                                                           end
     $game.scene_main.ship.money -= planet.materials[@material][:Price]
     planet.materials[@material][:Stored] -= 1
     planet.materials[@material][:Price] += 1

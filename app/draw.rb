@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Abstracted drawing handler.
 class Draw
   attr_accessor :layers, :debug_layer

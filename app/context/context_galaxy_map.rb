@@ -119,7 +119,7 @@ class ContextGalaxyMap < Context
 
       if args.inputs.mouse.click && args.inputs.mouse.intersect_rect?(dock_button[0])
         if $game.scene_main.system_select != @current_system
-          if $game.scene_main.ship.materials['Cores'][:Stored] > 0
+          if ($game.scene_main.ship.materials['Cores'][:Stored]).positive?
             @current_system = $game.scene_main.system_select
             @system_name = @current_system.name
             $game.scene_main.ship.materials['Cores'][:Stored] -= 1

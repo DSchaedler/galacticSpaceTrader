@@ -10,7 +10,7 @@ class ContextShipInventory < Context
     @column_count = 3
     @column_sort = :Stored
 
-    @width = (@column_width * @column_count) + (@element_padding * (@column_count))
+    @width = (@column_width * @column_count) + (@element_padding * @column_count)
     @height = args.grid.h
     @origin_x = (args.grid.w / 2) - (@width / 2)
     @origin_y = args.grid.top
@@ -25,8 +25,6 @@ class ContextShipInventory < Context
     # Textbox
     @static_output << textbox_background(x_pos: @origin_x, y_pos: @origin_y,
                                          width: @width, height: @height - 32)
-
-
   end
 
   def destroy_menu
@@ -56,23 +54,23 @@ class ContextShipInventory < Context
     $game.draw.layers[3] << table # Make it so
 
     $game.draw.layers[3] << { x: @origin_x + (@width / 2) - (@image_width / 2) - @element_padding,
-                        y: @origin_y - @image_height - @element_padding,
-                        w: @image_width,
-                        h: @image_height,
-                        path: "sprites/spaceship#{ship_frame}.png",
-                        primitive_marker: :sprite }
+                              y: @origin_y - @image_height - @element_padding,
+                              w: @image_width,
+                              h: @image_height,
+                              path: "sprites/spaceship#{ship_frame}.png",
+                              primitive_marker: :sprite }
   end
 
   def exit_button(args)
-    color = {a: 200, r: 168, g: 181, b: 178}
-    box = {x: @origin_x + @width, y: @origin_y - 32, w: 32, h: 32}
+    color = { a: 200, r: 168, g: 181, b: 178 }
+    box = { x: @origin_x + @width, y: @origin_y - 32, w: 32, h: 32 }
     button_sprite = { path: 'sprites/rounded_x_box.png' }.merge(color)
     button_sprite = button_sprite.merge(box)
 
     $game.draw.layers[3] << button_sprite
 
-
     return unless args.inputs.mouse.click&.inside_rect?(box)
+
     destroy_menu
     $game.scene_main.context = :context_planet_map
   end
@@ -107,13 +105,11 @@ class ContextShipInventory < Context
       # Click the column header to sort
       next unless args.inputs.mouse.click
 
-      if args.inputs.mouse.intersect_rect? [label_hash[:x], label_hash[:y] - @text_height, @column_width, @text_height]
-        @column_sort = key
-      end
+      @column_sort = key if args.inputs.mouse.intersect_rect? [label_hash[:x], label_hash[:y] - @text_height, @column_width, @text_height]
     end
   end
 
-  def print_columns(args, table, row_index, row, contents, start_y)
+  def print_columns(_args, table, row_index, row, contents, start_y)
     column_index = 0
 
     # Put the element name at the beginning of the row

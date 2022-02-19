@@ -7,9 +7,13 @@ Style/ClassAndModuleChildren:
 Metrics/MethodLength:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
+  Enabled: false
+
+Style/RedundantFileExtensionInRequire:
   Enabled: false
 
 AllCops:
+  NewCops: enable
   Exclude:
     - 'builds/**/*'

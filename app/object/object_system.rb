@@ -4,7 +4,7 @@
 class ObjectSystem < Object
   attr_accessor :system_planets, :x, :y, :name, :star_map
 
-  def initialize(args)
+  def initialize(args, x, y)
     @name = $available_planet_names.sample
     $available_planet_names.delete(@name)
 
@@ -43,8 +43,8 @@ class ObjectSystem < Object
 
     @star_map = ContextPlanetMap.new(args, system_planets: @system_planets)
 
-    @x = randr(64, args.grid.right - 64)
-    @y = randr(64, args.grid.top - 64)
+    @x = x
+    @y = y
   end
 
   def draw(_args)
