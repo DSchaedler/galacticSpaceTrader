@@ -5,6 +5,8 @@ class ContextGalaxyMap < Context
   attr_accessor :current_system, :system_name
 
   def initialize(args, stars: 600, min_star_size: 1, max_star_size: 6, star_saturation: 127)
+    super
+
     @stars = []
 
     until @stars.length >= stars
@@ -18,7 +20,7 @@ class ContextGalaxyMap < Context
       point = gaussian(0.5, 0.2)
 
       @stars << {
-        x: point[0] * 1280, y: point[1] * 720 + 32, w: rand_size, h: rand_size,
+        x: point[0] * 1280, y: (point[1] * 720) + 32, w: rand_size, h: rand_size,
         r: random_color[0], g: random_color[1], b: random_color[2],
         a: randr(85, 255)
       }.solid!
