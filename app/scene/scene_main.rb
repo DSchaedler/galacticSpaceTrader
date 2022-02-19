@@ -14,12 +14,12 @@ class SceneMain < Scene
     @solar_systems = []
     @system_select = nil
 
-    system_count = 5
+    system_count = 8
 
     system_locations = []
     while system_locations.length < system_count
 
-      new_system_pos = [randr(64, args.grid.right - 64), randr(64, args.grid.top - 64)]
+      new_system_pos = [randr(64, args.grid.right - 64), randr(128, args.grid.top - 64)]
       reject = false
 
       if system_locations.include? new_system_pos

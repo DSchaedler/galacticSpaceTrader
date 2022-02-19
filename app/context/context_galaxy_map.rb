@@ -12,6 +12,9 @@ class ContextGalaxyMap < Context
 
       random_color = [randr(star_saturation, 255), 255, star_saturation]
       random_color = random_color.shuffle
+      random_color.map do |color|
+        color * 0.6
+      end
       point = gaussian(0.5, 0.2)
 
       @stars << {

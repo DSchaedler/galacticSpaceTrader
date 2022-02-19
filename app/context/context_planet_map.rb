@@ -16,6 +16,9 @@ class ContextPlanetMap < Context
 
       random_color = [randr(star_saturation, 255), 255, star_saturation]
       random_color = random_color.shuffle
+      random_color.map do |color|
+        color * 0.6
+      end
 
       args.render_target(:system_stars).solids << {
         x: randr(0, 1280), y: randr(0 + 32, 720), w: rand_size, h: rand_size,
