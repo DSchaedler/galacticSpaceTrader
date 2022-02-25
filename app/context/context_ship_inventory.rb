@@ -7,7 +7,7 @@ class ContextShipInventory < Context
     @sample_text = args.gtk.calcstringbox('Manganese')
     @column_width = @sample_text[0]
     @text_height = @sample_text[1]
-    @column_count = 3
+    @column_count = 4
     @column_sort = :Stored
 
     @width = (@column_width * @column_count) + (@element_padding * @column_count)
@@ -45,11 +45,14 @@ class ContextShipInventory < Context
 
     # Start Table
     table = []
+    buttons = []
 
     # Define the start location of the table
     list_start = @origin_y - @image_height - (@text_height * 4)
 
-    print_table(args, table, list_start)
+    print_table(args, table, list_start, buttons)
+    buttons.each { |button|; button.tick(args); } # Tick buttons
+
 
     $game.draw.layers[3] << table # Make it so
 
@@ -75,7 +78,7 @@ class ContextShipInventory < Context
     $game.scene_main.context = :context_planet_map
   end
 
-  def print_table(args, table, start_y)
+  def print_table(args, table, start_y, buttons)
     materials = $game.scene_main.ship.materials
 
     sorted_materials = materials.sort_by { |_material, values| -values[@column_sort] }
@@ -86,7 +89,7 @@ class ContextShipInventory < Context
 
     row_index = 0
     sorted_materials.each do |row, value| # For each row of materials in the table
-      print_columns(args, table, row_index, row, value, start_y) # Print all of the columns for that row.
+      print_columns(args, table, row_index, row, value, start_y, buttons) # Print all of the columns for that row.
       row_index += 1
     end
   end
@@ -109,7 +112,7 @@ class ContextShipInventory < Context
     end
   end
 
-  def print_columns(_args, table, row_index, row, contents, start_y)
+  def print_columns(args, table, row_index, row, contents, start_y, buttons)
     column_index = 0
 
     # Put the element name at the beginning of the row
@@ -124,5 +127,15 @@ class ContextShipInventory < Context
                  y: start_y - (@text_height * row_index), text: value, primitive_marker: :label }
       column_index += 1
     end
+
+    # And add buy and sell buttons at the end of each row
+    new_button = UICraftButton.new(
+      args, @origin_x + (@column_width * column_index) +
+      (@element_padding * (column_index + 1)),
+      start_y - (@text_height * row_index), 'Craft', row
+    )
+
+    new_button.create_button
+    buttons << new_button
   end
 end
