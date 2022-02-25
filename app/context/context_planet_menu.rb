@@ -3,8 +3,6 @@
 # Handles calculations and drawing of the planet data screens.
 class ContextPlanetMenu < Context
   def initialize(args)
-    super
-
     @element_padding = 10
     @sample_text = args.gtk.calcstringbox('Manganese')
     @column_width = @sample_text[0]
