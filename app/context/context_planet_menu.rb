@@ -28,13 +28,7 @@ class ContextPlanetMenu < Context
                                          y_pos: @origin_y,
                                          width: @width,
                                          height: @height - 32)
-    # Planet Image
-    @static_output << { x: @origin_x + (@width / 2) - (@image_width / 2) - @element_padding,
-                        y: @origin_y - @image_height - @element_padding,
-                        w: @image_width,
-                        h: @image_height,
-                        path: planet.image,
-                        primitive_marker: :sprite }
+                                         
     # Planet Name
     @static_output << { x: @origin_x + @element_padding,
                         y: @origin_y - @image_height - @element_padding - (@text_height * 1),
@@ -60,6 +54,10 @@ class ContextPlanetMenu < Context
     exit_button(args)
 
     $game.draw.layers[3] << { x: 0, y: 0, w: 1280, h: 720, path: :planet_menu, primitive_marker: :sprite }
+    $game.draw.layers[3] << @planet.draw.merge({ x: @origin_x + (@width / 2) - (@image_width / 2) - @element_padding,
+      y: @origin_y - @image_height - @element_padding,
+      w: @image_width,
+      h: @image_height})
 
     if args.inputs.keyboard.key_up.escape
       destroy_menu(args)

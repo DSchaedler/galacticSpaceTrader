@@ -50,7 +50,7 @@ $available_planet_names = [
 ]
 
 PLANET_TYPE_STRINGS = %w[
-  Terran Jungle Rock Ocean Desert Arctic Gas Inferno Toxic
+  Terran Forest Moon Ocean Ice Toxic Lava
 ].freeze
 
 # RESOURCES = %w[Silicon Oxygen Copper Iron Carbon Manganese Nickel Aluminum

@@ -40,11 +40,6 @@ class ContextPlanetMap < Context
       source_x: 0, source_y: 0, source_w: args.grid.right, source_h: args.grid.top
     }
 
-    puts @planets
-
-    @planets.each do |planet|
-      @static_output << planet.draw
-    end
     args.render_target(:planet_map).primitives << @static_output
   end
 
@@ -58,6 +53,9 @@ class ContextPlanetMap < Context
     @planets = @system.system_planets
 
     $game.draw.layers[2] << { x: 0, y: 0, w: 1280, h: 720, path: :planet_map, primitive_marker: :sprite }
+    @planets.each do |planet|
+      $game.draw.layers[2] << planet.draw
+    end
 
     @tick_output = []
 

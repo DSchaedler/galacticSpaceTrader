@@ -16,11 +16,19 @@ class ObjectPlanet < GameObject
 
     # Randomly determine which planet image we should use.
     # These two have fewer images available, so we treat them specially.
-    @image = if @type == 'Inferno' || @type == 'Toxic'
-               "sprites/PixelPlanets/#{@type.downcase}#{randr(0, 3)}.png"
-             else
-               "sprites/PixelPlanets/#{@type.downcase}#{randr(0, 5)}.png"
-             end
+
+    @image = "sprites/AnimatedPlanetsSheets/#{@type.downcase}#{randr(0, 3)}.png" if %w[Forest Moon Terran Toxic].include?(@type)
+    @image = "sprites/AnimatedPlanetsSheets/#{@type.downcase}#{randr(0, 2)}.png" if @type == 'Lava'
+    @image = "sprites/AnimatedPlanetsSheets/#{@type.downcase}#{randr(0, 1)}.png" if @type == 'Ocean'
+    @image = 'sprites/AnimatedPlanetsSheets/ice0.png' if @type == 'Ice'
+
+    if ['sprites/AnimatedPlanetsSheets/forest1.png', 'sprites/AnimatedPlanetsSheets/forest2.png', 'sprites/AnimatedPlanetsSheets/ocean1.png', 'sprites/AnimatedPlanetsSheets/terran1.png', 'sprites/AnimatedPlanetsSheets/terran2.png'].include?(@image)
+      @frames = 120
+    else
+      @frames = 60
+    end
+
+    @rotation_speed = [4, 8, 16].sample
 
     @materials = {}
     RESOURCES.each do |resource|
@@ -99,6 +107,6 @@ class ObjectPlanet < GameObject
   end
 
   def draw
-    { x: @x, y: @y, w: 28, h: 28, path: @image, primitive_marker: :sprite }
+    { x: @x, y: @y, w: 28, h: 28, path: @image, primitive_marker: :sprite, source_x: ((($gtk.args.state.tick_count / @rotation_speed).floor % @frames).floor) * 48, source_w: 48, source_h: 48 }
   end
 end
