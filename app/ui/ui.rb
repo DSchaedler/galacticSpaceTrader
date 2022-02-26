@@ -94,33 +94,31 @@ end
 
 class UICraftButton < UIButton
   def tick(args)
-    recipe_hash = { 'Fuel' => [['Fuel', 5], ['Hydrogen', 1], ['Oxygen', 4]] }
-
-    $game.draw.layers[3] << @static_output if recipe_hash.key?(@material)
+    $game.draw.layers[3] << @static_output if RECIPES.key?(@material)
     return unless args.inputs.mouse.click&.inside_rect? @static_output[0]
 
-    ship_craft(args, recipe_hash[@material], @material)
+    ship_craft(args, RECIPES[@material].clone, @material)
   end
 end
 
 def ship_craft(_args, recipe, _material)
-  # recipe = [[product, int], [ingredient, int], [...]]
-
-  ship = $game.scene_main.ship
-
   product = recipe[0]
   recipe.shift
 
   # Request Materials
   have_materials = []
   recipe.each do |i|
-    have_materials << ship.materials[i[0]][:Stored] >= i[1]
+    if $game.scene_main.ship.materials[i[0]][:Stored] >= i[1]
+      have_materials << true
+    else
+      have_materials << false
+    end
   end
 
   return if have_materials.include? false # Don't craft if we're missing materials
 
   recipe.each do |i|
-    ship.materials[i[0]][:Stored] = (ship.materials[i[0]][:Stored] - i[1])
+    $game.scene_main.ship.materials[i[0]][:Stored] = ($game.scene_main.ship.materials[i[0]][:Stored] - i[1])
   end
-  ship.materials[product[0]][:Stored] = (ship.materials[product[0]][:Stored] + product[1])
+  $game.scene_main.ship.materials[product[0]][:Stored] = ($game.scene_main.ship.materials[product[0]][:Stored] + product[1])
 end

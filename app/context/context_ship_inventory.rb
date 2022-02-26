@@ -7,7 +7,7 @@ class ContextShipInventory < Context
     @sample_text = args.gtk.calcstringbox('Manganese')
     @column_width = @sample_text[0]
     @text_height = @sample_text[1]
-    @column_count = 4
+    @column_count = 5
     @column_sort = :Stored
 
     @width = (@column_width * @column_count) + (@element_padding * @column_count)
@@ -79,6 +79,10 @@ class ContextShipInventory < Context
 
   def print_table(args, table, start_y, buttons)
     materials = $game.scene_main.ship.materials
+
+    materials.each do |m, v|
+      v[:Formula] = RECIPES_FORMULA[m]
+    end
 
     sorted_materials = materials.sort_by { |_material, values| -values[@column_sort] }
 

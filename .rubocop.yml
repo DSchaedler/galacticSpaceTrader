@@ -16,6 +16,9 @@ Style/RedundantFileExtensionInRequire:
 Lint/MissingSuper:
   Enabled: false
 
+Style/ConditionalAssignment:
+  Enabled: false
+
 AllCops:
   NewCops: enable
   Exclude:

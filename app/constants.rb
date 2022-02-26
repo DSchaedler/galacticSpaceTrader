@@ -61,3 +61,6 @@ COMMODITIES = [
   'Solar Panel', 'Factory', 'Space Station', 'Food', 'Water', 'Battery',
   'Charged Battery', 'Computer', 'Energy'
 ].freeze
+
+RECIPES = { 'Fuel' => [['Fuel', 5], ['Hydrogen', 1], ['Oxygen', 4]] }.freeze
+RECIPES_FORMULA = { 'Fuel' => 'HO4' }.freeze
