@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Instance class of the systems in the galaxy
-class ObjectSystem < Object
+class ObjectSystem < GameObject
   attr_accessor :system_planets, :x, :y, :name, :star_map
 
   def initialize(args, x, y)

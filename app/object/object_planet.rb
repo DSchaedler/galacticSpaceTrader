@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Instance class for every planet
-class ObjectPlanet < Object
+class ObjectPlanet < GameObject
   # Creates attribute accessors for instance variables.
   # Just pretend that you have to declare instance variables and it will be fine.
   attr_accessor :x

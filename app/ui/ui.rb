@@ -92,6 +92,7 @@ class UISellButton < UIButton
   end
 end
 
+# Craft button on Ship Inventory screen
 class UICraftButton < UIButton
   def tick(args)
     $game.draw.layers[3] << @static_output if RECIPES.key?(@material)

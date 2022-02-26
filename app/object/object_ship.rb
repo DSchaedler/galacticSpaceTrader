@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Instance class of the player ship.
-class ObjectShip < Object
+class ObjectShip < GameObject
   attr_accessor :name, :money, :fuel, :cores, :materials
 
   def initialize
