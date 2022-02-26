@@ -94,44 +94,33 @@ end
 
 class UICraftButton < UIButton
   def tick(args)
-    $game.draw.layers[3] << @static_output
+    recipe_hash = { 'Fuel' => [['Fuel', 5], ['Hydrogen', 1], ['Oxygen', 4]] }
+
+    $game.draw.layers[3] << @static_output if recipe_hash.key?(@material)
     return unless args.inputs.mouse.click&.inside_rect? @static_output[0]
 
-    ship = $game.scene_main.ship
+    ship_craft(args, recipe_hash[@material], @material)
   end
 end
 
-def ship_craft(_args, recipe)
+def ship_craft(_args, recipe, _material)
   # recipe = [[product, int], [ingredient, int], [...]]
+
+  ship = $game.scene_main.ship
+
   product = recipe[0]
   recipe.shift
-
-  product_cost = @materials[product[0]][:Price] * product[1]
-
-  sum_cost = 0
-  recipe.each do |i|
-    sum_cost += @materials[i[0]][:Price] * i[1]
-  end
-
-  return unless product_cost > sum_cost
 
   # Request Materials
   have_materials = []
   recipe.each do |i|
-    if @materials[i[0]][:Stored] < i[1] # If we don't have enough materials
-      have_materials << false
-      @materials[i[0]][:Price] = (@materials[i[0]][:Price] + 1) # Increase the price with increased deman
-    else
-      have_materials << true
-    end
+    have_materials << ship.materials[i[0]][:Stored] >= i[1]
   end
 
   return if have_materials.include? false # Don't craft if we're missing materials
 
   recipe.each do |i|
-    @materials[i[0]][:Stored] = (@materials[i[0]][:Stored] - i[1])
+    ship.materials[i[0]][:Stored] = (ship.materials[i[0]][:Stored] - i[1])
   end
-  @materials[product[0]][:Stored] = (@materials[product[0]][:Stored] + product[1])
-  @materials[product[0]][:Price] -= 1
-  @materials[product[0]][:Price] = @materials[product[0]][:Price]
+  ship.materials[product[0]][:Stored] = (ship.materials[product[0]][:Stored] + product[1])
 end

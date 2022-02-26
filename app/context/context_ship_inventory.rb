@@ -53,7 +53,6 @@ class ContextShipInventory < Context
     print_table(args, table, list_start, buttons)
     buttons.each { |button|; button.tick(args); } # Tick buttons
 
-
     $game.draw.layers[3] << table # Make it so
 
     $game.draw.layers[3] << { x: @origin_x + (@width / 2) - (@image_width / 2) - @element_padding,
